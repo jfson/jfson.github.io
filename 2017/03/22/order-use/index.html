@@ -188,7 +188,28 @@
 </li>
 <li><p>merge 代码<br>  git merge –no–ff develop  （–no–ff 保留merge之前的提交记录） </p>
 </li>
+<li><p>合并    代码（rebase 分之之间）<br>  1.git fetch origin<br>  2.git rebase 分支名，适用于 (1 本地的4.40 和远程的origin/4.40  &amp;&amp;  2 本地的4.40 和 自己为了写4.40开的临时小分支)<br>  3.解决代码冲突<br>  4.顺利解决完冲突，运行代码无误</p>
+<pre><code>git add .
+git rebase --continue   (此处千万注意，不是commit） 解决代码碰到困难
+git rebase --abort            (自动回到了fetch 之前）
+</code></pre><p>  5.git push origin 分支名</p>
+</li>
+<li><p>合并代码 （merge Pr之间）<br>  1.git fetch origin<br>  2.git merger –no-ff<br>  3.解决冲突<br>  4.顺利解决完冲突，运行代码无误</p>
+<pre><code>git add .
+git commit
+解决代码碰到困难
+git add .
+git merge --abort   (自动回到了fetch 之前）
+</code></pre><p>  5.git push origin 远程分支名</p>
+</li>
 <li><p>本地分支提交到远程分支（feature-2）<br>  git checkout feature-1<br>  git push origin feature-1:feature-2</p>
+</li>
+<li><p>Git 合并N个提交</p>
+<ol>
+<li>git rebase -i HEAD~N(N代表具体合并几个，比如git rebase -i HEAD~2)</li>
+<li>在弹出的vim框中把第二行以后的每个 pick 改成 s</li>
+<li>git处理完后，会再次弹出vim框，把上面的注释整理一下就ok</li>
+</ol>
 </li>
 <li><p>本地代码commit 后，回滚代码commit丢失，找回（！！！贼好用）<br>  git reflog    （查看本地所有commit &amp; 操作记录）<br>  git reset –hard xxxxx （找到commit 的版本进行回滚）</p>
 </li>
@@ -230,6 +251,9 @@
 </li>
 <li><p>退出<br>  ：q! + 回车</p>
 </li>
+</ul>
+<h3 id="Homebrew-mac-软件安装工具"><a href="#Homebrew-mac-软件安装工具" class="headerlink" title="Homebrew mac 软件安装工具"></a>Homebrew mac 软件安装工具</h3><ul>
+<li>brew install </li>
 </ul>
 
 
