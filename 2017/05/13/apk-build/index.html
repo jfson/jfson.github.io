@@ -13,11 +13,11 @@
 
     <title>
         
-          2017 Plan - Jfson的博客 | Jfson&#39;s Blog
+          Android项目构建过程 - Jfson的博客 | Jfson&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/2017/05/03/plan-a/">
+    <link rel="canonical" href="http://yoursite.com/2017/05/13/apk-build/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -149,11 +149,11 @@
                     <div class="tags">
                         
                     </div>
-                    <h1>2017 Plan</h1>
+                    <h1>Android项目构建过程</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Jfson on
-                        2017-05-03
+                        2017-05-13
                     </span>
                 </div>
             </div>
@@ -172,55 +172,25 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h3 id="UI-绘制"><a href="#UI-绘制" class="headerlink" title="UI 绘制"></a>UI 绘制</h3><ul>
-<li>Android 源码</li>
-</ul>
+                <h3 id="Google-官方构建流程图"><a href="#Google-官方构建流程图" class="headerlink" title="Google 官方构建流程图"></a>Google 官方构建流程图</h3><p><img src="http://img.blog.csdn.net/20160204114932917" alt="Google官方提供的流程图来具体了解构建的过程"></p>
+<p>具体描述：</p>
 <ul>
-<li><p>View 的绘制流程</p>
-<ul>
-<li>setContentView,DecorView</li>
-<li>measure</li>
-<li>layout</li>
-<li>draw</li>
-</ul>
+<li><p>1.AAPT(Android Asset Packaging Tool)工具会打包应用中的资源文件，如AndroidManifest.xml、layout布局中的xml等，并将xml文件编译为二进制形式，当然assets文件夹中的文件不会被编译，图片及raw文件夹中的资源也会保持原来的形态，需要注意的是raw文件夹中的资源也会生成资源id。AAPT编译完成之后会生成R.Java文件。</p>
 </li>
-<li><p>ViewTree</p>
-<ul>
-<li>遍历时机和流程</li>
-</ul>
+<li><p>2.AIDL工具会将所有的aidl接口转化为java接口。</p>
 </li>
-<li><p>自定义View</p>
-<ul>
-<li>canas</li>
-<li>事件分发</li>
-</ul>
+<li><p>3.所有的java代码，包括R.java与aidl文件都会被Java编译器编译成.class文件。</p>
 </li>
-<li><p>UI 性能优化</p>
-<ul>
-<li>ViewGrop</li>
-<li>merge标签</li>
-<li>ViewStub</li>
-</ul>
+<li><p>4.Dex工具会将上述产生的.class文件及第三库及其他.class文件编译成.dex文件（dex文件是Dalvik虚拟机可以执行的格式），dex文件最终会被打包进APK文件。</p>
 </li>
-<li><p>UI 卡顿分析</p>
-<ul>
-<li>16ms</li>
-<li>过度绘制</li>
-</ul>
+<li><p>5.ApkBuilder工具会将编译过的资源及未编译过的资源（如图片等）以及.dex文件打包成APK文件。</p>
+</li>
+<li><p>6.生成APK文件后，需要对其签名才可安装到设备，平时测试时会使用debug keystore，当正式发布应用时必须使用release版的keystore对应用进行签名。</p>
+</li>
+<li><p>7.如果对APK正式签名，还需要使用zipalign工具对APK进行对齐操作，这样做的好处是当应用运行时会提高速度，但是相应的会增加内存的开销。</p>
 </li>
 </ul>
-<h3 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h3><ul>
-<li>界面UI</li>
-<li>App 启动</li>
-<li>Dex 加载优化</li>
-<li>卡顿</li>
-<li>OOM</li>
-<li>ANR</li>
-<li>内存优化 &amp; 分析工具</li>
-<li>电量</li>
-<li>网络</li>
-</ul>
-<h3 id="Java-虚拟机，GC"><a href="#Java-虚拟机，GC" class="headerlink" title="Java 虚拟机，GC"></a>Java 虚拟机，GC</h3><h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><h3 id="HTTP-amp-HTTPS-网络请求-写个项目"><a href="#HTTP-amp-HTTPS-网络请求-写个项目" class="headerlink" title="HTTP &amp; HTTPS 网络请求 写个项目"></a>HTTP &amp; HTTPS 网络请求 写个项目</h3>
+
 
                 <hr>
 
@@ -229,12 +199,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2017/05/13/apk-build/" data-toggle="tooltip" data-placement="top" title="Android项目构建过程">&larr; Previous Post</a>
+                            <a href="/2017/05/15/Handler-Looper/" data-toggle="tooltip" data-placement="top" title="Handler、Looper、MessageQueue">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2017/03/22/order-use/" data-toggle="tooltip" data-placement="top" title="Git常用命令">Next Post &rarr;</a>
+                            <a href="/2017/05/03/plan-a/" data-toggle="tooltip" data-placement="top" title="2017 Plan">Next Post &rarr;</a>
                         </li>
                     
                 </ul>

@@ -13,11 +13,11 @@
 
     <title>
         
-          2017 Plan - Jfson的博客 | Jfson&#39;s Blog
+          Handler、Looper、MessageQueue - Jfson的博客 | Jfson&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/2017/05/03/plan-a/">
+    <link rel="canonical" href="http://yoursite.com/2017/05/15/Handler-Looper/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -149,11 +149,11 @@
                     <div class="tags">
                         
                     </div>
-                    <h1>2017 Plan</h1>
+                    <h1>Handler、Looper、MessageQueue</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Jfson on
-                        2017-05-03
+                        2017-05-15
                     </span>
                 </div>
             </div>
@@ -172,55 +172,19 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h3 id="UI-绘制"><a href="#UI-绘制" class="headerlink" title="UI 绘制"></a>UI 绘制</h3><ul>
-<li>Android 源码</li>
-</ul>
-<ul>
-<li><p>View 的绘制流程</p>
-<ul>
-<li>setContentView,DecorView</li>
-<li>measure</li>
-<li>layout</li>
-<li>draw</li>
-</ul>
-</li>
-<li><p>ViewTree</p>
-<ul>
-<li>遍历时机和流程</li>
-</ul>
-</li>
-<li><p>自定义View</p>
-<ul>
-<li>canas</li>
-<li>事件分发</li>
-</ul>
-</li>
-<li><p>UI 性能优化</p>
-<ul>
-<li>ViewGrop</li>
-<li>merge标签</li>
-<li>ViewStub</li>
-</ul>
-</li>
-<li><p>UI 卡顿分析</p>
-<ul>
-<li>16ms</li>
-<li>过度绘制</li>
-</ul>
-</li>
-</ul>
-<h3 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h3><ul>
-<li>界面UI</li>
-<li>App 启动</li>
-<li>Dex 加载优化</li>
-<li>卡顿</li>
-<li>OOM</li>
-<li>ANR</li>
-<li>内存优化 &amp; 分析工具</li>
-<li>电量</li>
-<li>网络</li>
-</ul>
-<h3 id="Java-虚拟机，GC"><a href="#Java-虚拟机，GC" class="headerlink" title="Java 虚拟机，GC"></a>Java 虚拟机，GC</h3><h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><h3 id="HTTP-amp-HTTPS-网络请求-写个项目"><a href="#HTTP-amp-HTTPS-网络请求-写个项目" class="headerlink" title="HTTP &amp; HTTPS 网络请求 写个项目"></a>HTTP &amp; HTTPS 网络请求 写个项目</h3>
+                <h3 id="Handler-初始化时和-Looper调用关系"><a href="#Handler-初始化时和-Looper调用关系" class="headerlink" title="Handler 初始化时和 Looper调用关系"></a>Handler 初始化时和 Looper调用关系</h3><p>在 UI 线程创建 Handler<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">private Handler mHandler = new Handler() &#123;</div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            super.handleMessage(msg);</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>UI Thread 初始Handler化时 对Looper进行初始化过程, main()是在 UI Thread 启动时调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;</div><div class="line">       SamplingProfilerIntegration.start();</div><div class="line">       </div><div class="line">       CloseGuard.setEnabled(false);</div><div class="line"></div><div class="line">       Environment.initForCurrentUser();</div><div class="line"></div><div class="line">       EventLogger.setReporter(new EventLoggingReporter());</div><div class="line"></div><div class="line">       Security.addProvider(new AndroidKeyStoreProvider());</div><div class="line"></div><div class="line">       final File configDir = Environment.getUserConfigDirectory(UserHandle.myUserId());</div><div class="line">       TrustedCertificateStore.setDefaultUserDirectory(configDir);</div><div class="line"></div><div class="line">       Process.setArgV0(&quot;&lt;pre-initialized&gt;&quot;);</div><div class="line"></div><div class="line">       _Looper.prepareMainLooper();_</div><div class="line"></div><div class="line">       ActivityThread thread = new ActivityThread();</div><div class="line">       thread.attach(false);</div><div class="line"></div><div class="line">       if (sMainThreadHandler == null) &#123;</div><div class="line">           sMainThreadHandler = thread.getHandler();</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       if (false) &#123;</div><div class="line">           Looper.myLooper().setMessageLogging(new</div><div class="line">                   LogPrinter(Log.DEBUG, &quot;ActivityThread&quot;));</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       Looper.loop();</div><div class="line"></div><div class="line">       throw new RuntimeException(&quot;Main thread loop unexpectedly exited&quot;);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>关注一下：Looper.prepareMainLooper();</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">public static void prepareMainLooper() &#123;</div><div class="line">       _ prepare(false);_</div><div class="line">        synchronized (Looper.class) &#123;</div><div class="line">            if (sMainLooper != null) &#123;</div><div class="line">                throw new IllegalStateException(&quot;The main Looper has already been prepared.&quot;);</div><div class="line">            &#125;</div><div class="line">            sMainLooper = myLooper();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    </div><div class="line">    </div><div class="line">public static void prepare() &#123;</div><div class="line">        prepare(f);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">private static void prepare(boolean quitAllowed) &#123;</div><div class="line">        if (sThreadLocal.get() != null) &#123;</div><div class="line">            throw new RuntimeException(&quot;Only one Looper may be created per thread&quot;);</div><div class="line">        &#125;</div><div class="line">       _ sThreadLocal.set(new Looper(quitAllowed));</div><div class="line">_    &#125;</div></pre></td></tr></table></figure>
+<p>以上是UI Thread 初始化new Handler 调用过程，接下来看一下 Other Thread 初始化调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Looper.prepare();</div><div class="line">private Handler mHandler = new Handler() &#123;</div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            super.handleMessage(msg);</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure></p>
+<p>查看下Looper.prepare();</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public static void prepare() &#123;</div><div class="line">        prepare(true);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">private static void prepare(boolean quitAllowed) &#123;</div><div class="line">        if (sThreadLocal.get() != null) &#123;</div><div class="line">            throw new RuntimeException(&quot;Only one Looper may be created per thread&quot;);</div><div class="line">        &#125;</div><div class="line">       _ sThreadLocal.set(new Looper(quitAllowed));</div><div class="line">_    &#125;</div></pre></td></tr></table></figure>
+<p>Ps: 在其他地方需要用到Handler,并且需要刷新UI时，不通过Looper.prepare();调用，通过Looper.getMainLooper()也可以；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Handler mHandler = new Handler(Looper.getMainLooper());</div><div class="line"></div><div class="line">class Looper&#123;</div><div class="line">    public static Looper getMainLooper() &#123;</div><div class="line">        synchronized (Looper.class) &#123;</div><div class="line">            return sMainLooper;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>梳理一下调用关系，来张流程图理解消化下。</p>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/10.png?raw=true" alt="handler-looper流程图"></p>
+
 
                 <hr>
 
@@ -228,13 +192,9 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2017/05/13/apk-build/" data-toggle="tooltip" data-placement="top" title="Android项目构建过程">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2017/03/22/order-use/" data-toggle="tooltip" data-placement="top" title="Git常用命令">Next Post &rarr;</a>
+                            <a href="/2017/05/13/apk-build/" data-toggle="tooltip" data-placement="top" title="Android项目构建过程">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
