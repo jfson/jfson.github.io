@@ -193,22 +193,24 @@
 </ul>
 <ul>
 <li><p>4.下载Repo</p>
+</li>
+<li><p>4.1 创建bin目录并指向Path，确保存在bin目录</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir ~/bin</div><div class="line">$ PATH=~/bin:$PATH</div></pre></td></tr></table></figure>
+</li>
+<li><p>4.2 然后在命令行中输入下面的命令，下载Repo，并且修改属性（翻墙）：</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo</div><div class="line">$ chmod a+x ~/bin/repo</div></pre></td></tr></table></figure>
+</li>
+</ul>
 <ul>
-<li>4.1 创建bin目录并指向Path，确保存在bin目录<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir ~/bin</div><div class="line">$ PATH=~/bin:$PATH</div></pre></td></tr></table></figure>
-</li>
+<li>4.3 修改Repo文件中 REPO_URL地址为国内镜像(~/bin/repo)<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">REPO_URL = &apos;https://gerrit-google.tuna.tsinghua.edu.cn/git-repo&apos;</div></pre></td></tr></table></figure>
+</code></pre></li>
 </ul>
-</li>
+<ul>
+<li>4.4 修改地址<pre><code>创建目录
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir /Volumes/untitled/xxx</div><div class="line">cd /Volumes/untitled/xxx</div></pre></td></tr></table></figure>
+</code></pre></li>
 </ul>
-<pre><code>* 4.2 然后在命令行中输入下面的命令，下载Repo，并且修改属性（翻墙）：
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo</div><div class="line">$ chmod a+x ~/bin/repo</div></pre></td></tr></table></figure>
-
-* 4.3 修改Repo文件中 REPO_URL地址为国内镜像(~/bin/repo)
-     <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">REPO_URL = &apos;https://gerrit-google.tuna.tsinghua.edu.cn/git-repo&apos;</div></pre></td></tr></table></figure>
-
-* c.修改地址
-   创建目录
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir /Volumes/untitled/xxx</div><div class="line">cd /Volumes/untitled/xxx</div></pre></td></tr></table></figure>
-</code></pre><ul>
+<ul>
 <li>5.下载<br>  选择版本进行同步<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">repo init -u https://aosp.tuna.tsinghua.edu.cn/platform/manifest -b android-android-6.0.1_r79</div><div class="line">repo sync</div></pre></td></tr></table></figure>
 </code></pre></li>
 </ul>
