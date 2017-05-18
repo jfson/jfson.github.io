@@ -176,16 +176,22 @@
 <li>参考文章</li>
 </ul>
 <blockquote>
-<p><a href="https://source.android.com/source/initializing#setting-up-a-mac-os-x-build-environment" target="_blank" rel="external">官方文档</a><br><a href="http://wl9739.github.io/2016/05/09/Android%E6%BA%90%E7%A0%81%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E7%BC%96%E8%AF%91%E4%B8%8E%E5%AF%BC%E5%85%A5%E5%88%B0Android-Studio/" target="_blank" rel="external">湫水blog</a><br><a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank" rel="external">清华镜像</a><br>以下所有操作在mac上进行</p>
+<p><a href="https://source.android.com/source/initializing#setting-up-a-mac-os-x-build-environment" target="_blank" rel="external">官方文档</a><br><a href="http://wl9739.github.io/2016/05/09/Android%E6%BA%90%E7%A0%81%E7%9A%84%E4%B8%8B%E8%BD%BD%E3%80%81%E7%BC%96%E8%AF%91%E4%B8%8E%E5%AF%BC%E5%85%A5%E5%88%B0Android-Studio/" target="_blank" rel="external">湫水blog</a><br><a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank" rel="external">清华镜像</a><br><a href="http://www.jianshu.com/p/30a628335114" target="_blank" rel="external">调试</a><br>以下所有操作在mac上进行</p>
 </blockquote>
 <ul>
+<li><p>推荐下载 7.0及以上系统！！！</p>
+</li>
 <li><p>1.创建磁盘映像（80G）</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hdiutil create -type SPARSE -fs &apos;Case-sensitive Journaled HFS+&apos; -size 80g ~/android.dmg</div></pre></td></tr></table></figure>
 </li>
 <li><p>2.安装MacPorts （类似brew）<br>  安装完成后，运行：</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 一路根据提示，选择y，回车</div><div class="line">$ POSIXLY_CORRECT=1 sudo port install gmake libsdl git gnupg</div></pre></td></tr></table></figure>
-<p>  如果这里报错了，说找不到port命令，就需要在~/.bash_profile中添加一行：export PATH=/opt/local/bin:$PATH。 （操作步骤–&gt;打开终端–&gt; open .bash_profile –&gt;添加 –&gt; source .bash_profile）<br>  Xcode自带，不需要安装</p>
+<p>  如果这里报错了，说找不到port命令，就需要在~/.bash_profile中添加一行：</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PATH=/opt/local/bin:$PATH。</div></pre></td></tr></table></figure>
 </li>
+</ul>
+<p>（操作步骤–&gt;打开终端–&gt; open .bash_profile –&gt;添加 –&gt; source .bash_profile）<br>    Xcode自带，不需要安装</p>
+<ul>
 <li><p>3.设置文件描述符限制</p>
 <p>  在Mac OS中，默认限制的同时打开的文件数量很少，不能满足编译过程中的高并发需要，因此，在~/.bash_profile中添加下面的命令(步骤同上)：</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># set the number of open files to be 1024</div><div class="line">ulimit -S -n 1024</div></pre></td></tr></table></figure>
@@ -202,17 +208,86 @@
 </li>
 </ul>
 <ul>
-<li>4.3 修改Repo文件中 REPO_URL地址为国内镜像(~/bin/repo)<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">REPO_URL = &apos;https://gerrit-google.tuna.tsinghua.edu.cn/git-repo&apos;</div></pre></td></tr></table></figure>
+<li>4.3 打开并修改Repo文件中 REPO_URL地址为国内镜像(~/bin/repo)<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">REPO_URL = &apos;https://gerrit-google.tuna.tsinghua.edu.cn/git-repo&apos;</div></pre></td></tr></table></figure>
 </code></pre></li>
 </ul>
 <ul>
-<li>4.4 修改地址<pre><code>创建目录
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir /Volumes/untitled/xxx</div><div class="line">cd /Volumes/untitled/xxx</div></pre></td></tr></table></figure>
+<li>4.4 修改地址, 创建目录<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir /Volumes/untitled/xxx</div><div class="line">cd /Volumes/untitled/xxx</div></pre></td></tr></table></figure>
 </code></pre></li>
 </ul>
 <ul>
 <li>5.下载<br>  选择版本进行同步<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">repo init -u https://aosp.tuna.tsinghua.edu.cn/platform/manifest -b android-android-6.0.1_r79</div><div class="line">repo sync</div></pre></td></tr></table></figure>
 </code></pre></li>
+</ul>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>使用下面的命令开始编译源码：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 16为线程数量</div><div class="line">make -j16</div></pre></td></tr></table></figure></p>
+<ul>
+<li><p>1.编译过程中可能会失败，我遇到个找不到系统版本的问题一：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">build/core/combo/mac_version.mk:38: *****************************************************</div><div class="line">build/core/combo/mac_version.mk:39: * Can not find SDK 10.6 at /Developer/SDKs/MacOSX10.6.sdk</div><div class="line">build/core/combo/mac_version.mk:40: *****************************************************</div><div class="line">build/core/combo/mac_version.mk:41: *** Stop..  Stop.</div></pre></td></tr></table></figure>
+<ul>
+<li>1.1 首先查看系统版本，我的是10.12.2</li>
+<li>1.2然后找到源码目录，打开build/core/combo/mac_version.mk文件，将mac_sdk_versions_supported改为系统中所装版本<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#mac_sdk_versions_supported := 10.6 10.7 10.8 10.9</div><div class="line">mac_sdk_versions_supported := 10.12</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>2.问题二，MacOSXSDK 版本不对，10.12不支持<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">system/core/libcutils/threads.c:38:10: error: &apos;syscall&apos; is deprecated: first deprecated in OS X 10.12 - syscall(2) is unsupported; please switch to a supported interface. For SYS_kdebug_trace use kdebug_signpost(). [-Werror,-Wdeprecated-declarations]</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>* 2.1下载：https://github.com/phracker/MacOSX-SDKs
+* 2.2解压zip包以后将 MacOSX10.11.sdk 拷贝到我的目录 /Users/sun/Downloads/macos/MacOSX10.10.sdk
+* 2.3修改引用
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo ln -s /Users/sun/Downloads/macos/MacOSX10.10.sdk /Applications/XCode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk</div></pre></td></tr></table></figure>
+
+* 2.4 然后确保AOSP源码下build/core/combo/mac_version.mk文件中mac_sdk_versions_supported := 10.9 10.10 10.11,不多说，都是泪啊
+* [参考地址](http://palanceli.com/2016/09/25/2016/0925AOSPOnMac/)
+</code></pre><h3 id="导入Android-Studio"><a href="#导入Android-Studio" class="headerlink" title="导入Android Studio"></a>导入Android Studio</h3><ul>
+<li><p>1.编译idegen模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ mmm development/tools/idegen/</div><div class="line"># 如果报错</div><div class="line"># 就在源码目录下执行如下指令（点与build之间是有空格的）：</div><div class="line">$ . build/envsetup.sh</div></pre></td></tr></table></figure>
+</li>
+<li><p>2.在根目录生成对应的android.ipr、android.iml IDEA工程配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">development/tools/idegen/idegen.sh</div></pre></td></tr></table></figure>
+</li>
+<li><p>3.生成的三个文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">android.ipr:通常是保存工程相关的设置,比如编译器配置,入口,相关的libraries等</div><div class="line">android.iml:则是主要是描述了modules,比如modules的路径,依赖关系等.</div><div class="line">android.iws:则主要是包含了一些个人工作区的设置.</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>4 优化配置，减少编译时长<br>  修改android.iml文件,只保留了framworks和packages模块，添加以下代码</p>
+<pre><code>&lt;excludeFolder url=&quot;file://$MODULE_DIR$/.repo&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/abi&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/art&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/bionic&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/bootable&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/build&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/cts&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/dalvik&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/developers&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/development&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/device&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/docs&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/external&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/hardware&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/libcore&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/libnativehelper&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/ndk&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/out&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/pdk&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/prebuilt&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/prebuilts&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/sdk&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/system&quot; /&gt;
+&lt;excludeFolder url=&quot;file://$MODULE_DIR$/tools&quot; /&gt;
+</code></pre></li>
+<li><p>5.使用Android studio打开任意一个项目，然后选择File-&gt;Open，打开根目录下的android.ipr文件夹，然后等待漫长的index完成后，就可以方便查看源码了。<br>如果访问不了之前创建的磁盘，直接双击android.ipr文件用 Android Studio 打开即可。</p>
+</li>
+<li><p>6.调试优化参见最上链接。</p>
+</li>
+<li><p>7.如果你的sh命令执行不了，去下载一个iTerm2终端吧，好使。</p>
+</li>
+</ul>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><ul>
+<li>嫑放弃，嫑放弃，嫑放弃！哈哈，整了3day，供参考！</li>
 </ul>
 
 
