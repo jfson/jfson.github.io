@@ -172,7 +172,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h3 id="Handler-初始化时和-Looper调用关系"><a href="#Handler-初始化时和-Looper调用关系" class="headerlink" title="Handler 初始化时和 Looper调用关系"></a>Handler 初始化时和 Looper调用关系</h3><ul>
+                <h3 id="Handler、Looper、MessageQueue-初始化"><a href="#Handler、Looper、MessageQueue-初始化" class="headerlink" title="Handler、Looper、MessageQueue 初始化"></a>Handler、Looper、MessageQueue 初始化</h3><ul>
 <li><p>1.在 UI 线程创建 Handler，通常直接new Handler；</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">private Handler mHandler = new Handler() &#123;</div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            super.handleMessage(msg);</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
 <p>  UI Thread 初始Handler化时 对Looper进行初始化过程, main()是在 UI Thread 启动时调用</p>
@@ -188,13 +188,62 @@
 </li>
 </ul>
 <ul>
-<li><p>3其他用法: 在其他地方需要用到Handler,并且需要刷新UI时，不通过Looper.prepare();调用，通过Looper.getMainLooper()也可以；</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Handler mHandler = new Handler(Looper.getMainLooper());</div><div class="line"></div><div class="line">class Looper&#123;</div><div class="line">    public static Looper getMainLooper() &#123;</div><div class="line">        synchronized (Looper.class) &#123;</div><div class="line">            return sMainLooper;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<li>3.其他用法: 在其他地方需要用到Handler,并且需要刷新UI时，不通过Looper.prepare();调用，通过Looper.getMainLooper()也可以；</li>
+</ul>
+<pre><code>` Handler mHandler = new Handler(Looper.getMainLooper());
+
+class Looper{
+    public static Looper getMainLooper() {
+        synchronized (Looper.class) {
+            return sMainLooper;
+        }
+    }
+} `
+</code></pre><ul>
+<li><p>4.MessageQueue 初始化</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">private Looper(boolean quitAllowed) &#123;</div><div class="line">       mQueue = new MessageQueue(quitAllowed);</div><div class="line">       mThread = Thread.currentThread();</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>  Looper 在初始化时创建一个关联MessageQueue，一个线程中对应一个Looper &amp; MessageQueue </p>
 </li>
-<li><p>4.梳理一下调用关系，来张流程图,清晰的梳理一下调用关系</p>
+<li><p>Handler 初始化</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">// 常用构造</div><div class="line">public Handler(Callback callback) &#123;</div><div class="line">    this(callback, false);</div><div class="line">&#125;</div><div class="line"></div><div class="line"> public Handler(Callback callback, boolean async) &#123;</div><div class="line">    if (FIND_POTENTIAL_LEAKS) &#123;</div><div class="line">        final Class&lt;? extends Handler&gt; klass = getClass();</div><div class="line">        if ((klass.isAnonymousClass() || klass.isMemberClass() || klass.isLocalClass()) &amp;&amp;</div><div class="line">                (klass.getModifiers() &amp; Modifier.STATIC) == 0) &#123;</div><div class="line">            Log.w(TAG, &quot;The following Handler class should be static or leaks might occur: &quot; +</div><div class="line">                klass.getCanonicalName());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    mLooper = Looper.myLooper();</div><div class="line">    if (mLooper == null) &#123;</div><div class="line">        throw new RuntimeException(</div><div class="line">            &quot;Can&apos;t create handler inside thread that has not called Looper.prepare()&quot;);</div><div class="line">    &#125;</div><div class="line">    mQueue = mLooper.mQueue;</div><div class="line">    mCallback = callback;</div><div class="line">    mAsynchronous = async;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ul>
-<p><img src="https://github.com/jfson/ImgResource/blob/master/10.png?raw=true" alt="handler-looper流程图"></p>
+<pre><code>从这里我们基本可以看到Handler 初始化时，关联了线程唯一的Looper &amp; MessageQueue。
+</code></pre><ul>
+<li><p>UI Thread 和 其他 Thread 初始完Looper和MessageQueue后，会调用Looper.loop(),来轮询分发消息。</p>
+</li>
+<li><p>5.梳理一下调用关系，来张流程图理解一下；</p>
+<ul>
+<li><p>UI Thread:<br>  ActivityThread.main() –&gt;Looper.prepareMainLooper() –&gt; prepare(false) –&gt; new Looper(quitAllowed) –&gt; new MessageQueue(quitAllowed)</p>
+</li>
+<li><p>Other Thread:<br>  prepare() –&gt; prepare(true) –&gt; new Looper(quitAllowed) –&gt; new MessageQueue(quitAllowed)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/11.png?raw=true" alt="Handler-Looper-MessageQueue流程图"></p>
+<h3 id="异步消息"><a href="#异步消息" class="headerlink" title="异步消息"></a>异步消息</h3><ul>
+<li><p>1.调用,存储消息</p>
+<pre><code>`
+mHandler.sendMessage(new Message());
+mHandler.post();
+mHandler.postDelay();
+    `
+</code></pre><p>  追踪一下不难发现，最后都走的一个地方</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMillis) &#123;</div><div class="line">        msg.target = this;</div><div class="line">        if (mAsynchronous) &#123;</div><div class="line">            msg.setAsynchronous(true);</div><div class="line">        &#125;</div><div class="line">        return queue.enqueueMessage(msg, uptimeMillis);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<pre><code>这样看msg.target = this;msg.target就是Handler自己，而MessageQueue就是Looper中关联的对象，而enqueueMessage()中是对message保存，进行Message.next()按时间排序。
+</code></pre><ul>
+<li>2.消费<br>  Looper.loop()是对MessageQueue的消费</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"> public static void loop() &#123;</div><div class="line">    final Looper me = myLooper();</div><div class="line">    if (me == null) &#123;</div><div class="line">        throw new RuntimeException(&quot;No Looper; Looper.prepare() wasn&apos;t called on this thread.&quot;);</div><div class="line">    &#125;</div><div class="line">    final MessageQueue queue = me.mQueue;</div><div class="line"></div><div class="line">    // Make sure the identity of this thread is that of the local process,</div><div class="line">    // and keep track of what that identity token actually is.</div><div class="line">    Binder.clearCallingIdentity();</div><div class="line">    final long ident = Binder.clearCallingIdentity();</div><div class="line"></div><div class="line">    for (;;) &#123;</div><div class="line">        Message msg = queue.next(); // might block</div><div class="line">        if (msg == null) &#123;</div><div class="line">            // No message indicates that the message queue is quitting.</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // This must be in a local variable, in case a UI event sets the logger</div><div class="line">        Printer logging = me.mLogging;</div><div class="line">        if (logging != null) &#123;</div><div class="line">            logging.println(&quot;&gt;&gt;&gt;&gt;&gt; Dispatching to &quot; + msg.target + &quot; &quot; +</div><div class="line">                    msg.callback + &quot;: &quot; + msg.what);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        msg.target.dispatchMessage(msg);</div><div class="line"></div><div class="line">        if (logging != null) &#123;</div><div class="line">            logging.println(&quot;&lt;&lt;&lt;&lt;&lt; Finished to &quot; + msg.target + &quot; &quot; + msg.callback);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // Make sure that during the course of dispatching the</div><div class="line">        // identity of the thread wasn&apos;t corrupted.</div><div class="line">        final long newIdent = Binder.clearCallingIdentity();</div><div class="line">        if (ident != newIdent) &#123;</div><div class="line">            Log.wtf(TAG, &quot;Thread identity changed from 0x&quot;</div><div class="line">                    + Long.toHexString(ident) + &quot; to 0x&quot;</div><div class="line">                    + Long.toHexString(newIdent) + &quot; while dispatching to &quot;</div><div class="line">                    + msg.target.getClass().getName() + &quot; &quot;</div><div class="line">                    + msg.callback + &quot; what=&quot; + msg.what);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        msg.recycleUnchecked();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>看到loop()中，添加了一个死循环，不断去轮训MessageQueue中的队列是否为null，返回或者取出来继续执行 msg.target.dispatchMessage(msg);在最开始我们看到msg.target就是Handler本身</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public static Handler mHandler = new Handler() &#123;</div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            if (msg.what == 101) &#123;</div><div class="line">                Log.i(TAG, &quot;接收到handler消息...&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div></pre></td></tr></table></figure>
+<p>而handleMessage就是我们重写的回调方法。</p>
+<ul>
+<li>3.一张图梳理一下流程<br>  <img src="https://github.com/jfson/ImgResource/blob/master/12.png?raw=true" alt="流程图"></li>
+</ul>
 
 
                 <hr>
