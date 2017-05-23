@@ -167,6 +167,52 @@
 
 <div class="post-preview">
 
+    <a href="/2017/05/23/SystemServer/">
+        <h2 class="post-title">
+            SystemServer 进程启动流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            SystemServer 进程
+1.1 SystemServer进程是由Zygote进程fork 出来的。上篇介绍了fork过程
+1.2 SystemServer进程 是用来启动各种系统服务的进程，例如ActivityManagerService,WindowManagerService,PowerManagerService，PackageManagerService等等，当应用需要系统服......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-05-23
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/05/23/Zygote/">
+        <h2 class="post-title">
+            Android Zygote进程启动流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Zygote进程简介什么是Zygote进程？ Zygote进程 是整个Android系统的根进程，包括SystemServer进程和所有应用进程在内都是通过Zygote进程 fork 出来的。Zygote进程则是通过Linux系统init进程启动。
+
+启动顺序： Linux系统init进程 –&gt; Zygote进程 –&gt; SystemServer进程 –&gt; Applicati......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-05-23
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2017/05/16/Android-source/">
         <h2 class="post-title">
             Android Studio 编译系统源码
@@ -258,6 +304,13 @@
             UI 绘制
 Android 源码
 
+打包流程，Apk安装流程
+
+Android 进程启动流程
+
+Activity 启动流程
+
+应用进程Content创建流程 
 
 View 的绘制流程
 
@@ -280,22 +333,7 @@ canas
 
 UI 性能优化
 
-ViewGrop
-merge标签
-ViewStub
-
-
-UI 卡顿分析
-
-16ms
-过度绘制
-
-
-
-性能优化
-界面UI
-App 启动
-D......
+ViewGr......
         </div>
     </a>
     <p class="post-meta">
