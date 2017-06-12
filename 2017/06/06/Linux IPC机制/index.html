@@ -13,11 +13,11 @@
 
     <title>
         
-          Jfson的博客 | Jfson
+          对比 Binder 和 Linux IPC 现有机制 - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/page/2/">
+    <link rel="canonical" href="http://yoursite.com/2017/06/06/Linux IPC机制/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -130,209 +130,140 @@
 
 
     <!-- Main Content -->
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/image/kite.jpeg')">
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>Jfson‘s blog</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading">to be or not !</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>对比 Binder 和 Linux IPC 现有机制</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2017-06-06
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
 
-
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        
-
-<!-- USE SIDEBAR -->
     <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
-            
-                <!-- Main Content -->
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
-
-<div class="post-preview">
-
-    <a href="/2017/03/22/order-use/">
-        <h2 class="post-title">
-            Git常用命令
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-好记性不如小笔记，命令一段时间不用就忘记了，索性还是记下好了
-
-Git 常用命令
-查看远程分支  git branch -r
-
-提交代码  1.git status  2.git diff  3.git commit -m “commit内容注释”  4.git status  5.git merger –no-ff (有冲突的时候用，冲突解决完重复1,2,3,4)  6 git push......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-03-22
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/03/07/ae-work/">
-        <h2 class="post-title">
-            AE 制作一个简单的动画
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            创建一个简单的动画
-常用快捷键：command + 3 打开预览界面；空格键 直接预览
-
-1、 command + N  创建一个工作空间，尺寸选择 720 x 1280或者如图在当前工作空间右键 New Composition 
-
-2、在下方工作空间中右键New –&gt; Solid –&gt; ok,新建一个正方形于工作区间。如图
-
-3、打开刚刚新建图层的选项，直至最后一级，我们可以看......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-03-07
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/03/06/AE-Bodymovin-environment/">
-        <h2 class="post-title">
-            AE & Bodymovin 安装配置
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            AE安装（mac）AE 下载及安装地址
- 下载完成后，打开dmg 文件,找到 Build/After Effects CC 2017_Install.pkg文件，双击安装，具体参考下载地址内容
-安装 Bodymovin 插件 （mac）AE 插件 &amp; Bodymovin 百度云盘下载地址
-密码: zdsh
- 打开 ZXP Installer并安装,ZXP是一个AE的插件安装器，随后将......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-03-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/03/06/Lottie/">
-        <h2 class="post-title">
-            Lottie
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Lottie - Android 动画详解
-Lottie 是 Airbnb 开源的火热动画库，让程序员告别痛苦的动画。对于曾经写一个大动画两三千行代码的我来说，无疑是一个巨大的福利。接下来我将逐步介绍Lottie的使用及源码，以及 Adobe After Effects 和 Bodymovin 的安装和使用（mac）。 俗话说，不会做动画的设计不是好程序员，让我们开始吧。
-
-相关文章
-AE ......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-03-06
-    </p>
-
-</div>
-<hr>
-
-
-
-<!-- Pager -->
-
-<ul class="pager">
-    
-        <li class="previous">
-            <a href="/">&larr; Newer Posts</a>
-        </li>
-    
-    
+                <h1 id="Linux-IPC-机制"><a href="#Linux-IPC-机制" class="headerlink" title="Linux IPC 机制"></a>Linux IPC 机制</h1><blockquote>
+<p>IPC(InterProcess Communication)进程间通讯，我们都知道Android内核其实就是Linux内核，而每个Android Application进程其实就是一个Linux进程，Linux 已经有比较好的IPC机制，为什么Android用Binder实现IPC机制呢？，分析Linux 一下的IPC 机制，方便深入理解Android Binder机制。</p>
+</blockquote>
+<h3 id="Linux-现有IPC机制"><a href="#Linux-现有IPC机制" class="headerlink" title="Linux 现有IPC机制"></a>Linux 现有IPC机制</h3><ul>
+<li>1.管道(pipe)</li>
+<li>2.信号量</li>
+<li>3.信号</li>
+<li>4.消息队列</li>
+<li>5.共享内存</li>
+<li>6.socket</li>
+</ul>
+<h4 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h4><ul>
+<li>数据拷贝两次(读取端 &amp; 写入端)</li>
+<li>借助内核缓存区(4K 限制)</li>
+</ul>
+<h4 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h4><ul>
+<li>资源共享，（PV操作）信号量提供互斥锁，防止多进程访问资源冲突。主要用于多进程和多线程的同步手段</li>
+</ul>
+<h4 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h4><ul>
+<li>进程间通信外，进程还可以发送信号给进程本身，多用于消息传递 &amp; 通知，不适合传递信息。</li>
+</ul>
+<h4 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h4><ul>
+<li>数据拷贝两次，数据有最大限制。</li>
+</ul>
+<h4 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h4><ul>
+<li>可直接加载到内存，但是不提供同步工具，需要结合类似信号量使用。</li>
+</ul>
+<h4 id="socket"><a href="#socket" class="headerlink" title="socket"></a>socket</h4><ul>
+<li>传输效率低，C/S架构，多用于跨网络,跨设备的通信</li>
+</ul>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a href="https://www.zhihu.com/question/39440766" target="_blank" rel="external">参考Gityuan 分析的Binder的结果</a></p>
+<h3 id="为什么选用Binder作为Android-IPC机制呢"><a href="#为什么选用Binder作为Android-IPC机制呢" class="headerlink" title="为什么选用Binder作为Android IPC机制呢"></a>为什么选用Binder作为Android IPC机制呢</h3><ul>
+<li>从性能来说，管道、消息队列、Socket对数据都会进行两次拷贝，耗费性能，而Binder只需要一次，对于移动设备来说，性能不得不考虑。</li>
+<li>从架构来看，C/S架构，功能分离明确，稳定性好</li>
+<li>最重要的一点，Linux IPC 无法鉴别身份，而Binder 可以鉴别用户进程Uid，给予Android身份机制。</li>
+<li>从语言来说，Linux 是基于C语言面向过程，而Binder是基于Java面向对象来实现的。</li>
+</ul>
+<h4 id="贴出-Gityuan-的架构分析"><a href="#贴出-Gityuan-的架构分析" class="headerlink" title="贴出 Gityuan 的架构分析"></a>贴出 Gityuan 的架构分析</h4><p>最后，简单讲讲Android </p>
+<ul>
+<li>Binder架构Binder在Android系统中江湖地位非常之高。在Zygote孵化出system_server进程后，在system_server进程中出初始化支持整个Android framework的各种各样的Service，而这些Service从大的方向来划分，分为Java层Framework和Native Framework层(C++)的Service，几乎都是基于BInder IPC机制。<ul>
+<li>Java framework：作为Server端继承(或间接继承)于Binder类，Client端继承(或间接继承)于BinderProxy类。例如 ActivityManagerService(用于控制Activity、Service、进程等) 这个服务作为Server端，间接继承Binder类，而相应的ActivityManager作为Client端，间接继承于BinderProxy类。 当然还有PackageManagerService、WindowManagerService等等很多系统服务都是采用C/S架构；</li>
+<li>Native Framework层：这是C++层，作为Server端继承(或间接继承)于BBinder类，Client端继承(或间接继承)于BpBinder。例如MediaPlayService(用于多媒体相关)作为Server端，继承于BBinder类，而相应的MediaPlay作为Client端，间接继承于BpBinder类。</li>
+</ul>
+</li>
 </ul>
 
 
+                <hr>
 
-                <!-- 如果开启评论功能 -->
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/06/02/parse-mainfest/" data-toggle="tooltip" data-placement="top" title="系统 Mainfest 文件解析流程">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
                 
 
             </div>
+    <!-- Side Catalog Container -->
+        
+
     <!-- Sidebar Container -->
+
             <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
                 <!-- Featured Tags -->
                 
 
-                <!-- Short About -->
-                <section class="visible-md visible-lg">
-                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
-                    <div class="short-about">
-
-                        
-
-                        
-
-                        <!-- SNS Link -->
-                        <ul class="list-inline">
-                            
-                            
-                            
-
-                            
-
-                            
-
-                            
-                            
-                            
-                            
-                        </ul>
-                    </div>
-                </section>
-                
                 <!-- Friends Blog -->
                 
             </div>
-        
+
+        </div>
     </div>
-</div>
+</article>
+
+
+
+
+
+
+
 
 
     <!-- Footer -->
