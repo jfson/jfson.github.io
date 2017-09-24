@@ -13,11 +13,11 @@
 
     <title>
         
-          About - Jfson的博客 | Jfson
+          构造者模式(Builder Pattern) - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/about/">
+    <link rel="canonical" href="http://yoursite.com/2017/07/28/22-builder-pattern/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -137,122 +137,124 @@
 
 
     <!-- Main Content -->
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/image/kite.jpeg')">
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>About</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading">Hi, This is Jfson !</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Design Patterns" title="Design Patterns">Design Patterns</a>
+                        
+                    </div>
+                    <h1>构造者模式(Builder Pattern)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2017-07-28
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
 
-
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        
-
-<!-- USE SIDEBAR -->
     <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
-            
-                <blockquote>
-<p>孙震<br>映客直播 Android Developer 努力爬生活的坑</p>
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <ul>
+<li><p>构造者模式（Builder Pattern）</p>
+<blockquote>
+<p>建造者模式是及其常用的一种设计模式，经常提现在一些开源的三方库中来进行return 当前对象进行链式调用，如果你要开源一个niubility 的库，那么学习一下建造者模式是非常有必要的。</p>
 </blockquote>
-<p>春天来了，清晨的凉风略过，写代码才是最惬意啊。</p>
-<h4 id="生活摘记"><a href="#生活摘记" class="headerlink" title="生活摘记"></a>生活摘记</h4><ul>
-<li><p>2017 年 03 月 06 ，终于把拖了好久的blog搭好了，着手 Airbnb/Lottie 的学习。</p>
 </li>
-<li><p>2017 年 03月 10，3.8号是入职inke一年整，公司变化很快，团对已经四百多人了。</p>
+<li><p>介绍：将一个复杂对象的构建与它的表示分离，用于属性参数很多时。</p>
 </li>
-<li><p>2017 年 06 月 08，很久没有记事了，总是说忙过这一段再来梳理，实际上忙过这一段还有下一段，转瞬3个月已过，东隅已逝，桑榆非晚，经常回过头看看自己，收拾一下再出发还是很有必要的哦,blog 写了10篇，月均3篇，效率慢的出奇啊。公司从复地首府小别墅中搬到望京soho，一年多，明天又要搬了，锤子隔壁，号称映客大厦，看着公司变化这么大，自己这一年半却沉浸在无尽的敏捷开发当中，最快的时候一周发2个大版本，到现在稳定2周一个版本，当工作节奏稳定后，回看自己这一年多，精力全都放在需求的迭代开发中，自己技术的提升却很少，最近时常焦虑，我该怎么提升？梳理了很久，稍稍有一点头绪，跟自己的懒惰博弈真是困难哦。索性趁着这个劲头，今年还要做的事列一列。</p>
+<li><p>很多流行框架用到它，举个最典型的Retrofit的使用。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 忽略参数，看下如何使用</div><div class="line">Retrofit retrofit = new Retrofit.Builder()</div><div class="line">                .client(null)</div><div class="line">                .baseUrl(null)</div><div class="line">                .addConverterFactory(null)</div><div class="line">                .addCallAdapterFactory(null)</div><div class="line">                .build();</div></pre></td></tr></table></figure>
 <ul>
-<li>1.Android 源码系列（6月）、2.性能优化（7月）、 3.设计模式（8月）、4.JVM(9月)、5.网络编程(10月) 、6.架构(三方库拆解 11月)、 7、数据结构，算法（12月） … 东西有点多QAQ 希望能完成80%，还有kotlin!</li>
+<li>创建一个自己的builder 模式类,制作咖啡，需要水，咖啡，加冰多少，加糖多少等变量</li>
 </ul>
-</li>
-<li>2017 年 08 24，你看生活的脚步总是走的这么快,一不留神2个月都过去了，最近看了很多大牛的blog，感触颇深，有些差距早在十年前就产生了，无奈了解知道的有点晚。工作几年后居然第一次产生了想去念书的想法，人生呵，真是有点神奇。<br>  少关注身边人在做什么…GRE &amp; TOEFL</li>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Author: jfson</div><div class="line"> * Create on:  2017/9/20</div><div class="line"> * Description:</div><div class="line"> */</div><div class="line">public class Coffee &#123;</div><div class="line">    public String water;  //放多少水</div><div class="line">    public String coffee; // 放多少咖啡</div><div class="line">    public String ice;  // 多少冰</div><div class="line">    public String suger; // 多少糖</div><div class="line"></div><div class="line">    public Coffee() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Coffee(Coffee coffee) &#123;</div><div class="line">        if (coffee == null) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        this.water = coffee.water;</div><div class="line">        this.coffee = coffee.coffee;</div><div class="line">        this.ice = coffee.ice;</div><div class="line">        this.suger = coffee.suger;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    public static final class Builder &#123;</div><div class="line">        private Coffee mCoffee;</div><div class="line"></div><div class="line">        public Builder() &#123;</div><div class="line">            mCoffee = new Coffee();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public Coffee.Builder setWater(String water)&#123;</div><div class="line">            mCoffee.water = water;</div><div class="line">            return Builder.this;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public Coffee.Builder setCoffee(String coffee)&#123;</div><div class="line">            mCoffee.coffee = coffee;</div><div class="line">            return Builder.this;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public Coffee.Builder setIce(String ice)&#123;</div><div class="line">            mCoffee.ice = ice;</div><div class="line">            return Builder.this;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public Coffee.Builder setSuger(String suger)&#123;</div><div class="line">            mCoffee.suger = suger;</div><div class="line">            return Builder.this;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public Coffee build()&#123;</div><div class="line">            return new Coffee(mCoffee);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>使用跟Retrofit方式一样</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Coffee coffee = new Coffee.Builder()</div><div class="line">                .setCoffee(&quot;more&quot;)</div><div class="line">                .setIce(&quot;no&quot;)</div><div class="line">                .setSuger(&quot;no&quot;)</div><div class="line">                .setWater(&quot;little&quot;)</div><div class="line">                .build();</div></pre></td></tr></table></figure>
+<ul>
+<li>so,是不是很简单，很酸爽。</li>
 </ul>
 
 
-                <!-- 如果开启评论功能 -->
+                <hr>
+
                 
-                    <hr>
 
+                <ul class="pager">
                     
-
+                        <li class="previous">
+                            <a href="/2017/08/01/23-binder-a/" data-toggle="tooltip" data-placement="top" title="Binder (2) - 序列化">&larr; Previous Post</a>
+                        </li>
                     
-
-
                     
-
+                        <li class="next">
+                            <a href="/2017/07/24/21-abstract-factory-pattern/" data-toggle="tooltip" data-placement="top" title="抽象工厂模式(Abstract Factory Pattern)">Next Post &rarr;</a>
+                        </li>
                     
+                </ul>
 
-
+                
 
                 
 
             </div>
+    <!-- Side Catalog Container -->
+        
+
     <!-- Sidebar Container -->
+
             <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
                 <!-- Featured Tags -->
                 
 
-                <!-- Short About -->
-                <section class="visible-md visible-lg">
-                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
-                    <div class="short-about">
-
-                        
-                            <img src="/image/head.png" />
-                        
-
-                        
-                            <p>劝君惜取少年时</p>
-                        
-
-                        <!-- SNS Link -->
-                        <ul class="list-inline">
-                            
-                            
-                            
-
-                            
-
-                            
-
-                            
-                            
-                            
-                            
-                        </ul>
-                    </div>
-                </section>
-                
                 <!-- Friends Blog -->
                 
             </div>
-        
+
+        </div>
     </div>
-</div>
+</article>
+
+
+
+
+
+
+
 
 
     <!-- Footer -->

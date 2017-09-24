@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="to be or not !">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Binder (4) - ServiceManager 启动流程 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2017/08/05/25-binder-c/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Binder" title="Binder">Binder</a>
+                        
+                    </div>
+                    <h1>Binder (4) - ServiceManager 启动流程</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2017-08-05
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>纵观Binder通讯过程，无不在跟ServiceManager打交道，了解ServiceManager 交互流程就显得很有必要了。ServiceManager分为启动和、获取、添加、注册服务。首先从启动过程来了解,ServiceManager如何成为Binder守护进程。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">源码路径</div><div class="line">android/system/core/rootdir/init.rc</div><div class="line">android/frameworks/native/cmds/servicemanager/</div><div class="line">    |-- service_manager.c</div><div class="line">    |-- binder.c</div><div class="line">Binder内核</div></pre></td></tr></table></figure>
+<h4 id="1-启动ServiceManager"><a href="#1-启动ServiceManager" class="headerlink" title="1 启动ServiceManager"></a>1 启动ServiceManager</h4><ul>
+<li>1.Android在init进程启动以后，通过脚本init.rc,启动ServiceManager:</li>
+</ul>
+<p>|– init.rc<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">service servicemanager /system/bin/servicemanager</div><div class="line">    class core</div><div class="line">    user system</div><div class="line">    group system</div><div class="line">    critical</div><div class="line">    onrestart restart healthd</div><div class="line">    onrestart restart zygote</div><div class="line">    onrestart restart media</div><div class="line">    onrestart restart surfaceflinger</div><div class="line">    onrestart restart drm</div></pre></td></tr></table></figure></p>
+<p>对应执行程序/system/bin/servicemanager，源码service_manager.c。下一步追踪一下service_manager.c的main()入口程序。</p>
+<h4 id="2-1-main"><a href="#2-1-main" class="headerlink" title="2.1 main"></a>2.1 main</h4><p>|– service_manager.c</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">int main(int argc, char **argv)</div><div class="line">&#123;</div><div class="line">    struct binder_state *bs;</div><div class="line">    // 打开Binder驱动..并申请128字节内存</div><div class="line">    bs = binder_open(128*1024);</div><div class="line">    if (!bs) &#123;</div><div class="line">        ALOGE(&quot;failed to open binder driver\n&quot;);</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line">    // 变成 Context Manager</div><div class="line">    if (binder_become_context_manager(bs)) &#123;</div><div class="line">        ALOGE(&quot;cannot become context manager (%s)\n&quot;, strerror(errno));</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line">    // 判断 selinux 权限能否使用</div><div class="line">    selinux_enabled = is_selinux_enabled();</div><div class="line">    sehandle = selinux_android_service_context_handle();</div><div class="line">    selinux_status_open(true);</div><div class="line"></div><div class="line">    if (selinux_enabled &gt; 0) &#123;</div><div class="line">        if (sehandle == NULL) &#123;</div><div class="line">            // 获取sehandle 权限失败</div><div class="line">            ALOGE(&quot;SELinux: Failed to acquire sehandle. Aborting.\n&quot;);</div><div class="line">            abort();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (getcon(&amp;service_manager_context) != 0) &#123;</div><div class="line">            // 获取service_manager 上下文失败</div><div class="line">            ALOGE(&quot;SELinux: Failed to acquire service_manager context. Aborting.\n&quot;);</div><div class="line">            abort();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    union selinux_callback cb;</div><div class="line">    cb.func_audit = audit_callback;</div><div class="line">    selinux_set_callback(SELINUX_CB_AUDIT, cb);</div><div class="line">    cb.func_log = selinux_log_callback;</div><div class="line">    selinux_set_callback(SELINUX_CB_LOG, cb);</div><div class="line">    // 进入 binder 循环</div><div class="line">    binder_loop(bs, svcmgr_handler);</div><div class="line"></div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>mian 入口函数一共处理了三件事：<ul>
+<li>1.打开Binder驱动并申请内存 </li>
+<li>2.告诉Binder驱动成为Binder的上下文管理者（ServiceManager成为守护进程）</li>
+<li>3.开启循环，处理IPC请求（等待Client请求）</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-2-binder-open"><a href="#2-2-binder-open" class="headerlink" title="2.2 binder_open"></a>2.2 binder_open</h4><p>在ServiceManaer 的main入口第一步看到打开Binder驱动，调用了binder_open。binder_open又做了哪些具体的工作呢？</p>
+<p>|– binder.c</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">struct binder_state *binder_open(size_t mapsize)</div><div class="line">&#123;</div><div class="line">    struct binder_state *bs; // 初始化状态参数</div><div class="line">    struct binder_version vers;</div><div class="line"></div><div class="line">    bs = malloc(sizeof(*bs));</div><div class="line">    if (!bs) &#123;</div><div class="line">        errno = ENOMEM;</div><div class="line">        return NULL;</div><div class="line">    &#125;</div><div class="line">    //打开 Binder 设备驱动</div><div class="line">    bs-&gt;fd = open(&quot;/dev/binder&quot;, O_RDWR);</div><div class="line">    if (bs-&gt;fd &lt; 0) &#123;</div><div class="line">        fprintf(stderr,&quot;binder: cannot open device (%s)\n&quot;,</div><div class="line">                strerror(errno));</div><div class="line">        goto fail_open; //打开失败</div><div class="line">    &#125;</div><div class="line">    //系统调用 ioctl获取binder版本信息</div><div class="line">    if ((ioctl(bs-&gt;fd, BINDER_VERSION, &amp;vers) == -1) ||</div><div class="line">        (vers.protocol_version != BINDER_CURRENT_PROTOCOL_VERSION)) &#123;</div><div class="line">        fprintf(stderr,</div><div class="line">                &quot;binder: kernel driver version (%d) differs from user space version (%d)\n&quot;,</div><div class="line">                vers.protocol_version, BINDER_CURRENT_PROTOCOL_VERSION);</div><div class="line">        goto fail_open;//内核空间与用户空间的binder不是同一版本</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    bs-&gt;mapsize = mapsize;</div><div class="line">    // 系统调用，mmap内存映射，必须是page的整数倍</div><div class="line">    bs-&gt;mapped = mmap(NULL, mapsize, PROT_READ, MAP_PRIVATE, bs-&gt;fd, 0);</div><div class="line">    if (bs-&gt;mapped == MAP_FAILED) &#123;</div><div class="line">        fprintf(stderr,&quot;binder: cannot map device (%s)\n&quot;,</div><div class="line">                strerror(errno));</div><div class="line">        goto fail_map; // 映射失败</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    return bs;</div><div class="line"></div><div class="line">fail_map: // 映射失败关闭</div><div class="line">    close(bs-&gt;fd);</div><div class="line">fail_open: // 打开驱动失败</div><div class="line">    free(bs);</div><div class="line">    return NULL;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 初始化状态参数</div><div class="line">struct binder_state</div><div class="line">&#123;</div><div class="line">    int fd; // binder_open中 /dev/binder的描述</div><div class="line">    void *mapped; // 指向mmap映射地址</div><div class="line">    size_t mapsize;// 分配内存大小 默认128字节</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<ul>
+<li>打开Binder驱动相关操作：<ul>
+<li>初始化状态参数 binder_state</li>
+<li>通过open打开Binder驱动</li>
+<li>通过ioctl()校验内核空间Binder与用户空间Binder是否版本一致</li>
+<li>映射mmap内存</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-3-binder-become-context-manager"><a href="#2-3-binder-become-context-manager" class="headerlink" title="2.3 binder_become_context_manager"></a>2.3 binder_become_context_manager</h4><ul>
+<li>在ServiceManaer 的main入口第一步看到打开Binder驱动，调用了binder_open。随后执行了binder_become_context_manager。使Binder成为上下文的管理者，具体的操作解读一下源码来看看</li>
+</ul>
+<p>|– binder.c</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">int binder_become_context_manager(struct binder_state *bs)</div><div class="line">&#123;</div><div class="line">    //通过ioctl，传递BINDER_SET_CONTEXT_MGR指令</div><div class="line">    return ioctl(bs-&gt;fd, BINDER_SET_CONTEXT_MGR, 0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>1.这里直接调用系统ioctl()方法。由于没找到kernel/drivers/android/binder.c源码文件。这里主要梳理一下调用逻辑好了</li>
+<li><ol>
+<li>ioctl() 后会回调binder_ioctl()，根据BINDER_SET_CONTEXT_MGR参数，最终调用binder_ioctl_set_ctx_mgr()，过程中会持有binder_main_lock。</li>
+</ol>
+</li>
+<li>3.binder_ioctl_set_ctx_mgr中首先保证只创建一次mgr_node对象，并将当前线程euid作为Service Manager的uid。在最后通过binder_new_node创建ServiceManager类</li>
+<li>4.binder_new_node 中创建binder_node给新创建对象分配内存空间，同时将新创建的node对象添加到proc红黑树；最后init两个队列：async_todo和binder_work。</li>
+</ul>
+<h4 id="2-4-binder-loop"><a href="#2-4-binder-loop" class="headerlink" title="2.4 binder_loop"></a>2.4 binder_loop</h4><p>在执行了binder_become_context_manager之后，调用了binder_loop开启循环，处理IPC请求。查看其源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">void binder_loop(struct binder_state *bs, binder_handler func)</div><div class="line">&#123;</div><div class="line">    int res;</div><div class="line">    struct binder_write_read bwr;</div><div class="line">    uint32_t readbuf[32];</div><div class="line"></div><div class="line">    bwr.write_size = 0;</div><div class="line">    bwr.write_consumed = 0;</div><div class="line">    bwr.write_buffer = 0;</div><div class="line"></div><div class="line">    readbuf[0] = BC_ENTER_LOOPER;</div><div class="line">    //将BC_ENTER_LOOPER命令传递给binder驱动，使Service Manager进入循环</div><div class="line">    binder_write(bs, readbuf, sizeof(uint32_t));</div><div class="line"></div><div class="line">    for (;;) &#123;</div><div class="line">        bwr.read_size = sizeof(readbuf);</div><div class="line">        bwr.read_consumed = 0;</div><div class="line">        bwr.read_buffer = (uintptr_t) readbuf;</div><div class="line">        </div><div class="line">        //进入循环，不断地binder读写过程</div><div class="line">        res = ioctl(bs-&gt;fd, BINDER_WRITE_READ, &amp;bwr);</div><div class="line"></div><div class="line">        if (res &lt; 0) &#123;</div><div class="line">            ALOGE(&quot;binder_loop: ioctl failed (%s)\n&quot;, strerror(errno));</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // 解析binder信息</div><div class="line">        res = binder_parse(bs, 0, (uintptr_t) readbuf, bwr.read_consumed, func);</div><div class="line">        if (res == 0) &#123;</div><div class="line">            ALOGE(&quot;binder_loop: unexpected reply?!\n&quot;);</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">        if (res &lt; 0) &#123;</div><div class="line">            ALOGE(&quot;binder_loop: io error %d %s\n&quot;, res, strerror(errno));</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>主要操作：</p>
+<ul>
+<li>binder_write通过ioctl()将BC_ENTER_LOOPER命令发送给binder驱动，ServiceManager进入循环</li>
+<li>进入循环，不断读写</li>
+<li>读写需要进行 binder_parse 解析</li>
+</ul>
+<h4 id="2-4-1-binder-write"><a href="#2-4-1-binder-write" class="headerlink" title="2.4.1 binder_write"></a>2.4.1 binder_write</h4><ul>
+<li>binder_loop 中将BC_ENTER_LOOPER命令发送给binder驱动，ServiceManager进入循环</li>
+</ul>
+<p>|– binder.c</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">int binder_write(struct binder_state *bs, void *data, size_t len)</div><div class="line">&#123;</div><div class="line">    struct binder_write_read bwr;</div><div class="line">    int res;</div><div class="line"></div><div class="line">    bwr.write_size = len;</div><div class="line">    bwr.write_consumed = 0;</div><div class="line">    bwr.write_buffer = (uintptr_t) data;//这里data为BC_ENTER_LOOPER</div><div class="line">    bwr.read_size = 0;</div><div class="line">    bwr.read_consumed = 0;</div><div class="line">    bwr.read_buffer = 0;</div><div class="line">    res = ioctl(bs-&gt;fd, BINDER_WRITE_READ, &amp;bwr);</div><div class="line">    if (res &lt; 0) &#123;</div><div class="line">        fprintf(stderr,&quot;binder_write: ioctl failed (%s)\n&quot;,</div><div class="line">                strerror(errno));</div><div class="line">    &#125;</div><div class="line">    return res;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>这里其实将传递过来的BC_ENTER_LOOPER通过ioctl（）调用回调给binder_ioctl</li>
+</ul>
+<h4 id="2-4-2-binder-ioctl"><a href="#2-4-2-binder-ioctl" class="headerlink" title="2.4.2 binder_ioctl"></a>2.4.2 binder_ioctl</h4><ul>
+<li>binder_ioctl中通过binder_ioctl_write_read将用户空间的binder_write_read结构体拷贝到内核空间.</li>
+<li>如果层次是有缓存数据，通过binder_thread_write，从bwr.write_buffer拿出cmd数据，设置线程的looper状态为BINDER_LOOPER_STATE_ENTERED</li>
+</ul>
+<h4 id="2-5-binder-parse"><a href="#2-5-binder-parse" class="headerlink" title="2.5 binder_parse"></a>2.5 binder_parse</h4><ul>
+<li>在循环读写过程中，对相应的binder进行解析，查看binder_parse源码：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div></pre></td><td class="code"><pre><div class="line">int binder_parse(struct binder_state *bs, struct binder_io *bio,</div><div class="line">                 uintptr_t ptr, size_t size, binder_handler func)</div><div class="line">&#123;</div><div class="line">    int r = 1;</div><div class="line">    uintptr_t end = ptr + (uintptr_t) size;</div><div class="line"></div><div class="line">    while (ptr &lt; end) &#123;</div><div class="line">        uint32_t cmd = *(uint32_t *) ptr;</div><div class="line">        ptr += sizeof(uint32_t);</div><div class="line">#if TRACE</div><div class="line">        fprintf(stderr,&quot;%s:\n&quot;, cmd_name(cmd));</div><div class="line">#endif</div><div class="line">        switch(cmd) &#123;</div><div class="line">        case BR_NOOP:</div><div class="line">            break;</div><div class="line">        case BR_TRANSACTION_COMPLETE:</div><div class="line">            break;</div><div class="line">        case BR_INCREFS:</div><div class="line">        case BR_ACQUIRE:</div><div class="line">        case BR_RELEASE:</div><div class="line">        case BR_DECREFS:</div><div class="line">#if TRACE</div><div class="line">            fprintf(stderr,&quot;  %p, %p\n&quot;, (void *)ptr, (void *)(ptr + sizeof(void *)));</div><div class="line">#endif</div><div class="line">            ptr += sizeof(struct binder_ptr_cookie);</div><div class="line">            break;</div><div class="line">        case BR_TRANSACTION: &#123;</div><div class="line">            struct binder_transaction_data *txn = (struct binder_transaction_data *) ptr;</div><div class="line">            if ((end - ptr) &lt; sizeof(*txn)) &#123;</div><div class="line">                ALOGE(&quot;parse: txn too small!\n&quot;);</div><div class="line">                return -1;</div><div class="line">            &#125;</div><div class="line">            binder_dump_txn(txn);</div><div class="line">            if (func) &#123;</div><div class="line">                unsigned rdata[256/4];</div><div class="line">                struct binder_io msg;</div><div class="line">                struct binder_io reply;</div><div class="line">                int res;</div><div class="line"></div><div class="line">                bio_init(&amp;reply, rdata, sizeof(rdata), 4);</div><div class="line">                bio_init_from_txn(&amp;msg, txn);</div><div class="line">                res = func(bs, txn, &amp;msg, &amp;reply);</div><div class="line">                binder_send_reply(bs, &amp;reply, txn-&gt;data.ptr.buffer, res);</div><div class="line">            &#125;</div><div class="line">            ptr += sizeof(*txn);</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">        case BR_REPLY: &#123;</div><div class="line">            struct binder_transaction_data *txn = (struct binder_transaction_data *) ptr;</div><div class="line">            if ((end - ptr) &lt; sizeof(*txn)) &#123;</div><div class="line">                ALOGE(&quot;parse: reply too small!\n&quot;);</div><div class="line">                return -1;</div><div class="line">            &#125;</div><div class="line">            binder_dump_txn(txn);</div><div class="line">            if (bio) &#123;</div><div class="line">                bio_init_from_txn(bio, txn);</div><div class="line">                bio = 0;</div><div class="line">            &#125; else &#123;</div><div class="line">                /* todo FREE BUFFER */</div><div class="line">            &#125;</div><div class="line">            ptr += sizeof(*txn);</div><div class="line">            r = 0;</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">        case BR_DEAD_BINDER: &#123;</div><div class="line">            struct binder_death *death = (struct binder_death *)(uintptr_t) *(binder_uintptr_t *)ptr;</div><div class="line">            ptr += sizeof(binder_uintptr_t);</div><div class="line">            death-&gt;func(bs, death-&gt;ptr);</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">        case BR_FAILED_REPLY:</div><div class="line">            r = -1;</div><div class="line">            break;</div><div class="line">        case BR_DEAD_REPLY:</div><div class="line">            r = -1;</div><div class="line">            break;</div><div class="line">        default:</div><div class="line">            ALOGE(&quot;parse: OOPS %d\n&quot;, cmd);</div><div class="line">            return -1;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    return r;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>参考ServiceManager中开启循环时的调用， binder_loop(bs, svcmgr_handler)</li>
+<li>ptr 指向BC_ENTER_LOOPER，func指向svcmgr_handler；</li>
+</ul>
+<h4 id="2-6-svcmgr-handler"><a href="#2-6-svcmgr-handler" class="headerlink" title="2.6 svcmgr_handler"></a>2.6 svcmgr_handler</h4><p>|– service_manager.c</p>
+<p>继续查看ServiceManager中的svcmgr_handler源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div></pre></td><td class="code"><pre><div class="line">int svcmgr_handler(struct binder_state *bs,</div><div class="line">                   struct binder_transaction_data *txn,</div><div class="line">                   struct binder_io *msg,</div><div class="line">                   struct binder_io *reply)</div><div class="line">&#123;</div><div class="line">    struct svcinfo *si;</div><div class="line">    uint16_t *s;</div><div class="line">    size_t len;</div><div class="line">    uint32_t handle;</div><div class="line">    uint32_t strict_policy;</div><div class="line">    int allow_isolated;</div><div class="line"></div><div class="line">    //ALOGI(&quot;target=%p code=%d pid=%d uid=%d\n&quot;,</div><div class="line">    //      (void*) txn-&gt;target.ptr, txn-&gt;code, txn-&gt;sender_pid, txn-&gt;sender_euid);</div><div class="line"></div><div class="line">    if (txn-&gt;target.ptr != BINDER_SERVICE_MANAGER)</div><div class="line">        return -1;</div><div class="line"></div><div class="line">    if (txn-&gt;code == PING_TRANSACTION)</div><div class="line">        return 0;</div><div class="line"></div><div class="line">    // Equivalent to Parcel::enforceInterface(), reading the RPC</div><div class="line">    // header with the strict mode policy mask and the interface name.</div><div class="line">    // Note that we ignore the strict_policy and don&apos;t propagate it</div><div class="line">    // further (since we do no outbound RPCs anyway).</div><div class="line">    strict_policy = bio_get_uint32(msg);</div><div class="line">    s = bio_get_string16(msg, &amp;len);</div><div class="line">    if (s == NULL) &#123;</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    if ((len != (sizeof(svcmgr_id) / 2)) ||</div><div class="line">        memcmp(svcmgr_id, s, sizeof(svcmgr_id))) &#123;</div><div class="line">        fprintf(stderr,&quot;invalid id %s\n&quot;, str8(s, len));</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    if (sehandle &amp;&amp; selinux_status_updated() &gt; 0) &#123;</div><div class="line">        struct selabel_handle *tmp_sehandle = selinux_android_service_context_handle();</div><div class="line">        if (tmp_sehandle) &#123;</div><div class="line">            selabel_close(sehandle);</div><div class="line">            sehandle = tmp_sehandle;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    switch(txn-&gt;code) &#123;</div><div class="line">    case SVC_MGR_GET_SERVICE: // 获取服务</div><div class="line">    case SVC_MGR_CHECK_SERVICE: //查找服务</div><div class="line">        s = bio_get_string16(msg, &amp;len);</div><div class="line">        if (s == NULL) &#123;</div><div class="line">            return -1;</div><div class="line">        &#125;</div><div class="line">        handle = do_find_service(bs, s, len, txn-&gt;sender_euid, txn-&gt;sender_pid);</div><div class="line">        if (!handle)</div><div class="line">            break;</div><div class="line">        bio_put_ref(reply, handle);</div><div class="line">        return 0;</div><div class="line"></div><div class="line">    case SVC_MGR_ADD_SERVICE: // 查找服务</div><div class="line">        s = bio_get_string16(msg, &amp;len);</div><div class="line">        if (s == NULL) &#123;</div><div class="line">            return -1;</div><div class="line">        &#125;</div><div class="line">        handle = bio_get_ref(msg);</div><div class="line">        allow_isolated = bio_get_uint32(msg) ? 1 : 0;</div><div class="line">        if (do_add_service(bs, s, len, handle, txn-&gt;sender_euid,</div><div class="line">            allow_isolated, txn-&gt;sender_pid))</div><div class="line">            return -1;</div><div class="line">        break;</div><div class="line"></div><div class="line">    case SVC_MGR_LIST_SERVICES: &#123; // 列举服务list</div><div class="line">        uint32_t n = bio_get_uint32(msg);</div><div class="line"></div><div class="line">        if (!svc_can_list(txn-&gt;sender_pid)) &#123;</div><div class="line">            ALOGE(&quot;list_service() uid=%d - PERMISSION DENIED\n&quot;,</div><div class="line">                    txn-&gt;sender_euid);</div><div class="line">            return -1;</div><div class="line">        &#125;</div><div class="line">        si = svclist;</div><div class="line">        while ((n-- &gt; 0) &amp;&amp; si)</div><div class="line">            si = si-&gt;next;</div><div class="line">        if (si) &#123;</div><div class="line">            bio_put_string16(reply, si-&gt;name);</div><div class="line">            return 0;</div><div class="line">        &#125;</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line">    default:</div><div class="line">        ALOGE(&quot;unknown code %d\n&quot;, txn-&gt;code);</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    bio_put_uint32(reply, 0);</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>该方法提供了查询服务，添加注册服务，列举服务list功能。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>ServiceManager通过init.rc脚本启动成为Android 进程间通信机制Binder的守护进程的过程：</p>
+<ul>
+<li>1.打开Binder驱动 /dev/binder文件：open(“/dev/binder”, O_RDWR)</li>
+<li>2.申请128k内存随后并建立映射: mmap(NULL, mapsize, PROT_READ, MAP_PRIVATE, bs-&gt;fd, 0)</li>
+<li>3.告诉Binder驱动成为Binder的上下文管理者（ServiceManager成为其守护进程）：binder_become_context_manager(struct binder_state *bs)</li>
+<li>4.开启循环，处理IPC请求（等待Client请求）:binder_loop(bs, svcmgr_handler);</li>
+</ul>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/17.png?raw=true" alt="image"></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2017/08/07/26-launch-optimize/" data-toggle="tooltip" data-placement="top" title="Android 启动速度优化">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/08/03/24-binder-b/" data-toggle="tooltip" data-placement="top" title="Binder (3) - AIDL使用">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

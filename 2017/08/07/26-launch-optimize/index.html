@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="to be or not !">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Android 启动速度优化 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2017/08/07/26-launch-optimize/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Binder" title="Binder">Binder</a>
+                        
+                    </div>
+                    <h1>Android 启动速度优化</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2017-08-07
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="启动优化"><a href="#启动优化" class="headerlink" title="启动优化"></a>启动优化</h3><blockquote>
+<p>随着项目越来越大，App的启动时间愈来愈长，有必要对给初始化进行梳理，并预留初始化接口。<br>经过一番折腾后，并对比优化前，成果还不错：优化35%-50%。</p>
+</blockquote>
+<h5 id="Google文档：https-developer-android-com-topic-performance-launch-time-html"><a href="#Google文档：https-developer-android-com-topic-performance-launch-time-html" class="headerlink" title="Google文档：https://developer.android.com/topic/performance/launch-time.html"></a>Google文档：<a href="https://developer.android.com/topic/performance/launch-time.html" target="_blank" rel="external">https://developer.android.com/topic/performance/launch-time.html</a></h5><h4 id="1-启动时间统计"><a href="#1-启动时间统计" class="headerlink" title="1.启动时间统计"></a>1.启动时间统计</h4><ul>
+<li>a.第一种方式查看Logcat日志，搜索关键字：Displayed。（注：范围一定选择 No Filters ）<br>  <img src="https://github.com/jfson/ImgResource/blob/master/19.png?raw=true" alt="image"></li>
+<li>b.第二种方式adb命令启动：adb shell am start -W -n 应用包名/Launch Activity全路径<br>  <img src="https://github.com/jfson/ImgResource/blob/master/20.png?raw=true" alt="image"></li>
+<li>c.第三种，在所有代码执行完后加上 reportFullyDrawn() ，查看Logcat日志Fully drawn时间</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">system_process I/ActivityManager: Fully drawn &#123;package&#125;/.MainActivity: +1s54ms</div></pre></td></tr></table></figure>
+<h4 id="2-启动耗时代码"><a href="#2-启动耗时代码" class="headerlink" title="2.启动耗时代码"></a>2.启动耗时代码</h4><p><img src="https://github.com/jfson/ImgResource/blob/master/21.png?raw=true" alt="image"></p>
+<p>由图可见影响App启动时间操作主要在：</p>
+<ul>
+<li>Application onCreate()</li>
+<li>Activity onCreate()</li>
+</ul>
+<p>主要操作位置部分已经了解了，接下来就是对耗时操作进行定位了</p>
+<h4 id="3-耗时操作定位"><a href="#3-耗时操作定位" class="headerlink" title="3.耗时操作定位"></a>3.耗时操作定位</h4><ul>
+<li><p>a.第一种生成trace文件。由于启动过快，无法利用Android Studio进行打点。这时候可以利用代码对想定位的代码块进行分析。</p>
+<ul>
+<li>Debug.startMethodTracing(“/sdcard/admtrace1.trace”); 开始</li>
+<li>Debug.stopMethodTracing(); 结束</li>
+<li>运行结束后将trace文件拖进Android</li>
+<li>Studio进行分析即可(示例为release包，为方便分析建议打debug包进行分析)<br><img src="https://github.com/jfson/ImgResource/blob/master/18.png?raw=true" alt="image"></li>
+</ul>
+</li>
+<li><p>b.LogCat （建议Release包）</p>
+<ul>
+<li>逐句代码进行log,定位每一句代码执行耗时时间</li>
+<li><p>如果Release包，需要打开Log操作。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">buildTypes &#123;</div><div class="line">    release &#123;</div><div class="line">       debuggable true</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>推荐使用Log.简单直观。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-优化方案"><a href="#4-优化方案" class="headerlink" title="4.优化方案"></a>4.优化方案</h4><p>定位到耗时操作后，这时候往往只需要对定位到的主要耗时操作进行优化便可。这样不用动大部分的代码，缩小影响范围。</p>
+<ul>
+<li><p>1.体验优化。</p>
+<ul>
+<li><p>很多App没有做体验优化，导致点击App后，icon会灰置2s不等…这个等待的体验会非常不好，对此可以设置 Launch Activity 默认的Theme来进行规避，Theme 可以是一张默认的图片（建议使用.9图片），可以是默认的颜色来填充。接下来体验下顺滑的秒启感觉。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;style name=&quot;StartTheme&quot; parent=&quot;AppStartTheme&quot;&gt;</div><div class="line">        &lt;item name=&quot;android:windowNoTitle&quot;&gt;true&lt;/item&gt;</div><div class="line">        &lt;item name=&quot;android:windowActionBar&quot;&gt;false&lt;/item&gt;</div><div class="line">        &lt;item name=&quot;android:windowFullscreen&quot;&gt;true&lt;/item&gt;</div><div class="line">        &lt;item name=&quot;android:windowBackground&quot;&gt;@drawable/splash&lt;/item&gt;</div><div class="line">    &lt;/style&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;layer-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</div><div class="line">    &lt;!-- 背景颜色 --&gt;</div><div class="line">    &lt;item android:drawable=&quot;@color/color_1&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;item&gt;</div><div class="line">        &lt;!-- 图片 --&gt;</div><div class="line">        &lt;bitmap</div><div class="line">            android:gravity=&quot;fill&quot;</div><div class="line">            android:src=&quot;@drawable/bg&quot; /&gt;</div><div class="line">    &lt;/item&gt;</div><div class="line">&lt;/layer-list&gt;</div></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>2.异步初始化</p>
+<ul>
+<li>对定位到的耗时操作进行分析，尽量放倒异步线程中进行初始化操作，不占用主线程资源。</li>
+</ul>
+</li>
+<li><p>3.延时初始化</p>
+<ul>
+<li>对不能放在异步初始化的代码，进行延后加载。炒鸡好使。</li>
+</ul>
+</li>
+<li><p>4.动态申请权限不建议放在Application中，放在LaunchActivity中。</p>
+</li>
+<li><p>5.LaunchActivity中尽量在View绘制完成后，在进行相关初始化操作。UI绘制完成回调后进行初始化比较好。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">getWindow().getDecorView().post(new Runnable() &#123;</div><div class="line"></div><div class="line">  @Override public void run() &#123;</div><div class="line">    ……</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2017/09/08/02-master/" data-toggle="tooltip" data-placement="top" title="劝君惜取少年时">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/08/05/25-binder-c/" data-toggle="tooltip" data-placement="top" title="Binder (4) - ServiceManager 启动流程">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

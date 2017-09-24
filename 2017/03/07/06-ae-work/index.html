@@ -13,11 +13,11 @@
 
     <title>
         
-          Jfson的博客 | Jfson
+          AE 制作一个简单的动画 - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/archives/page/2/">
+    <link rel="canonical" href="http://yoursite.com/2017/03/07/06-ae-work/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -137,7 +137,121 @@
 
 
     <!-- Main Content -->
-    <!-- Default Archive layout, we use archives instead. -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>AE 制作一个简单的动画</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2017-03-07
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h4 id="创建一个简单的动画"><a href="#创建一个简单的动画" class="headerlink" title="创建一个简单的动画"></a>创建一个简单的动画</h4><blockquote>
+<p>常用快捷键：command + 3 打开预览界面；空格键 直接预览</p>
+</blockquote>
+<p>1、 command + N  创建一个工作空间，尺寸选择 720 x 1280<br>或者如图在当前工作空间右键 New Composition </p>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/1.jpg?raw=true" alt="image"></p>
+<p>2、在下方工作空间中右键New –&gt; Solid –&gt; ok,新建一个正方形于工作区间。如图</p>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/2.jpg?raw=true" alt="image"></p>
+<p>3、打开刚刚新建图层的选项，直至最后一级，我们可以看到Anchor Point,Position,Scale,Rotation,Opacity等动画变换。<br>接下来我们做一个简单的位移动画。<br>如图点击Position，如图左侧一个菱形图标是打点的东西，打点是记录当前图形位置的重要操作。</p>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/4.png?raw=true" alt="image"></p>
+<p>4、拖动进度指示器至某一时间点，再次打点，通过拖动这个图形，发现Position的位置已经改动。<br>这时候一个简单的动画已经完成，将进度指示器归置为初始位置0，点击空格进行预览。<br>其他旋转，伸缩简单变换同理。慢慢折腾吧，哈哈。</p>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/3.png?raw=true" alt="image"></p>
+<p>5、导出json文件<br>点击Window –&gt; Extensions –&gt; Bodymovin，如图</p>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/6.jpg?raw=true" alt="image"></p>
+<p>6、渲染并导出，如图，选中素材，设置导出目录，渲染就可以输出到指定目录了。</p>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/5.png?raw=true" alt="image"></p>
+<p>这时候如果遇到一个如图的警告，很有可能是软件写文件的权限设置没打开，按照提示操作即可，有可能在Edit目录下找不到这个设置选项，那么试试下面这个目录一定就有了。<br>Affect Effects CC —&gt; Preferences—&gt; General—&gt; Allow Scripts To Writr Files ….</p>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/8.png?raw=true" alt="image"></p>
+<p>7、 什么？你觉得麻烦，ok，下面我们用airbnb现成的动画资源来试一下</p>
+<h4 id="利用airbnb-开源库提供的资源"><a href="#利用airbnb-开源库提供的资源" class="headerlink" title="利用airbnb 开源库提供的资源"></a>利用airbnb 开源库提供的资源</h4><p>1、 Git clone 一份资源到本地，找到目录 After Effects Samples/TwitterHeart.aep<br>将这个资源拖入AE 工作区间。双击选中,点击空格 进行预览</p>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/9.png?raw=true" alt="image"></p>
+<p>2、同上6，导出json文件即可</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2017/03/22/05-order-use/" data-toggle="tooltip" data-placement="top" title="常用命令">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/03/06/07-AE-Bodymovin-environment/" data-toggle="tooltip" data-placement="top" title="AE & Bodymovin 安装配置">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
 
     <!-- Footer -->
     <!-- Footer -->

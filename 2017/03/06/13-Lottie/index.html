@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="to be or not !">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Lottie - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2017/03/06/13-Lottie/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>Lottie</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2017-03-06
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="Lottie-Android-动画详解"><a href="#Lottie-Android-动画详解" class="headerlink" title="Lottie - Android 动画详解"></a>Lottie - Android 动画详解</h3><blockquote>
+<p>Lottie 是 Airbnb 开源的火热动画库，让程序员告别痛苦的动画。对于曾经写一个大动画两三千行代码的我来说，无疑是一个巨大的福利。<br>接下来我将逐步介绍Lottie的使用及源码，以及 Adobe After Effects 和 Bodymovin 的安装和使用（mac）。 俗话说，不会做动画的设计不是好程序员，让我们开始吧。</p>
+</blockquote>
+<h4 id="相关文章"><a href="#相关文章" class="headerlink" title="相关文章"></a>相关文章</h4><ul>
+<li><p>AE 以及 Bodymovin的安装 ：<a href="https://jfson.github.io/2017/03/06/AE-Bodymovin-environment/" target="_blank" rel="external">https://jfson.github.io/2017/03/06/AE-Bodymovin-environment/</a></p>
+</li>
+<li><p>TODO: 后期持续更新，ae的使用，以及源码的分析</p>
+</li>
+</ul>
+<h4 id="Lottie-是什么-？"><a href="#Lottie-是什么-？" class="headerlink" title="Lottie 是什么 ？"></a>Lottie 是什么 ？</h4><p>Lottie 是在 Android 和 iOS上 原生渲染 的After Effects（AE）动画,Lottie是 Airbnb 开源的支持Android 和 iOS 的动画库，它可以解析 AE 动画中用Bodymovin 导出的json文件，并在移动设备上利用原生库进行渲染 ！<br>本文翻译于Lottie Git 项目，项目地址：<a href="https://github.com/airbnb/lottie-android" target="_blank" rel="external">https://github.com/airbnb/lottie-android</a></p>
+<h4 id="Lottie-好处-？"><a href="#Lottie-好处-？" class="headerlink" title="Lottie 好处 ？"></a>Lottie 好处 ？</h4><p>先上图 ！</p>
+<p><img src="https://github.com/jfson/lottie-android/raw/master/gifs/Example2.gif" alt="image"></p>
+<p>设计师的动画可以完全的复现，无需程序员手工重新创建，并且超于设计师预期，麻麻再也不用担心实现跟设计有差距。<br>所有的这些动画都是在 After Effects 中创建，使用Bodymovin导出，无需额外的工作，Bodymovin 是一个AE 的插件，导出效果文件作为json和一个javascript web 播放器，在其之上，Lottie将它扩展到 Android，iOS和React Native。</p>
+<h4 id="Lottie-的使用"><a href="#Lottie-的使用" class="headerlink" title="Lottie 的使用"></a>Lottie 的使用</h4><p>1、添加 Gradle 依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;  </div><div class="line">  compile &apos;com.airbnb.android:lottie:1.5.3&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2、使用View<br>Lottie支持Jellybean（API 16）及以上。最简单的使用方法是LottieAnimationView</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt; com .airbnb.lottie.LottieAnimationView</div><div class="line">         android ：id = “ @ + id / animation_view ”</div><div class="line">         android ：layout_width = “ wrap_content ”</div><div class="line">         android ：layout_height = “ wrap_content ”</div><div class="line">         app ：lottie_fileName = “ hello-world.json ”</div><div class="line">         app ：lottie_loop = “ true “</div><div class="line">         app ：lottie_autoPlay = ” true “ /&gt;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>或者从 代码中加载。 从 app / src / main / assets中的json资源：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">LottieAnimationView animationView = (LottieAnimationView) findViewById(R.id.animation_view);</div><div class="line">animationView.setAnimation(&quot;hello-world.json&quot;);</div><div class="line">animationView.loop(true);</div></pre></td></tr></table></figure>
+<p>如果你想复用动画，比如在列表中的每个项目或者从网络请求加载JSONObject</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">LottieAnimationView animationView = (LottieAnimationView) findViewById(R.id.animation_view);</div><div class="line"> ...</div><div class="line"> Cancellable compositionCancellable = LottieComposition.Factory.fromJson(getResources(), jsonObject, (composition) -&gt; &#123;</div><div class="line">     animationView.setComposition(composition);</div><div class="line">     animationView.playAnimation();</div><div class="line"> &#125;);</div></pre></td></tr></table></figure>
+<p>然后控制动画执行或者对动画添加监听</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">animationView.addAnimatorUpdateListener((animation) -&gt; &#123;</div><div class="line">    // Do something.</div><div class="line">&#125;);</div><div class="line">animationView.playAnimation();</div><div class="line">...</div><div class="line">if (animationView.isAnimating()) &#123;</div><div class="line">    // Do something.</div><div class="line">&#125;</div><div class="line">...</div><div class="line">animationView.setProgress(0.5f);</div><div class="line">...</div><div class="line">// 自定义动画的速度和持续时间</div><div class="line">ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f)</div><div class="line">    .setDuration(500);</div><div class="line">animator.addUpdateListener(animation -&gt; &#123;</div><div class="line">    animationView.setProgress(animation.getAnimatedValue());</div><div class="line">&#125;);</div><div class="line">animator.start(); // 动画开始</div><div class="line">...</div><div class="line">animationView.cancelAnimation(); // 关闭</div></pre></td></tr></table></figure>
+<h4 id="支持-After-Effects-的功能"><a href="#支持-After-Effects-的功能" class="headerlink" title="支持 After Effects 的功能"></a>支持 After Effects 的功能</h4><h5 id="关键的插值器"><a href="#关键的插值器" class="headerlink" title="关键的插值器"></a>关键的插值器</h5><ul>
+<li><p>Linear Interpolation 线性插值器</p>
+</li>
+<li><p>Bezier Interpolation 贝塞尔插值器</p>
+</li>
+<li><p>Hold Interpolation 保持插值器</p>
+</li>
+<li><p>Rove Across Time </p>
+</li>
+<li><p>Spatial Bezier </p>
+</li>
+</ul>
+<h5 id="固定变换"><a href="#固定变换" class="headerlink" title="固定变换"></a>固定变换</h5><ul>
+<li><p>Transform Anchor Point 锚点变换</p>
+</li>
+<li><p>Transform Position 位置变换</p>
+</li>
+<li><p>Transform Scale 伸缩比例变换</p>
+</li>
+<li><p>Transform Rotation 旋转变换</p>
+</li>
+<li><p>Transform Opacity 透明度变换</p>
+</li>
+</ul>
+<h5 id="遮罩-（碉堡了！）"><a href="#遮罩-（碉堡了！）" class="headerlink" title="遮罩 （碉堡了！）"></a>遮罩 （碉堡了！）</h5><ul>
+<li><p>Path 路径</p>
+</li>
+<li><p>Opacity 不透明度</p>
+</li>
+<li><p>Multiple Masks (additive, subtractive, inverted) 多重多样的遮罩</p>
+</li>
+</ul>
+<h6 id="Track"><a href="#Track" class="headerlink" title="Track"></a>Track</h6><ul>
+<li>Alpha Matte 透明度遮罩</li>
+</ul>
+<h5 id="Parenting"><a href="#Parenting" class="headerlink" title="Parenting"></a>Parenting</h5><ul>
+<li><p>Multiple Parenting</p>
+</li>
+<li><p>Nulls</p>
+</li>
+</ul>
+<h5 id="图层形状"><a href="#图层形状" class="headerlink" title="图层形状"></a>图层形状</h5><ul>
+<li><p>Rectangle (All properties)  矩形</p>
+</li>
+<li><p>Ellipse (All properties) 椭圆</p>
+</li>
+<li><p>Polystar (All properties) 北极星？什么鬼</p>
+</li>
+<li><p>Polygon (All properties. Integer point values only.) 多边形</p>
+</li>
+<li><p>Path (All properties) 路径</p>
+</li>
+<li><p>Anchor Point 锚点</p>
+</li>
+<li><p>Position 位置坐标</p>
+</li>
+<li><p>Scale 缩放</p>
+</li>
+<li><p>Rotation 旋转</p>
+</li>
+<li><p>Opacity 不透明</p>
+</li>
+<li><p>Group Transforms (Anchor point, position, scale etc) 合成变换</p>
+</li>
+<li><p>Multiple paths in one group 多路径合成</p>
+</li>
+</ul>
+<h5 id="冲程（形状层，外层）"><a href="#冲程（形状层，外层）" class="headerlink" title="冲程（形状层，外层）"></a>冲程（形状层，外层）</h5><ul>
+<li><p>Stroke Color 描边颜色</p>
+</li>
+<li><p>Stroke Opacity 不透明描边</p>
+</li>
+<li><p>Stroke Width 描边宽度</p>
+</li>
+<li><p>Line Cap 压线帽</p>
+</li>
+<li><p>Dashes 破折号</p>
+</li>
+</ul>
+<h5 id="填充"><a href="#填充" class="headerlink" title="填充"></a>填充</h5><ul>
+<li><p>Fill Color 填充颜色</p>
+</li>
+<li><p>Fill Opacity 填充不透明度</p>
+</li>
+</ul>
+<h5 id="修剪路径"><a href="#修剪路径" class="headerlink" title="修剪路径"></a>修剪路径</h5><ul>
+<li><p>Trim Paths Start </p>
+</li>
+<li><p>Trim Paths End</p>
+</li>
+<li><p>Trim Paths Offset</p>
+</li>
+</ul>
+<h4 id="性能和内存"><a href="#性能和内存" class="headerlink" title="性能和内存"></a>性能和内存</h4><p>1、如果组合没有用到遮罩masks或mattes，那么性能和内存开销应该相当不错。没有创建位图bitmap，大多数操作都是简单的画布操作。<br>2、如果组合中有遮罩masks或mattes，将在合成的地方创建2-3个bitmap，当动画师徒添加到view时，bitmap由lotti自动创建，并在View删除时被回收。所以不建议在RecyclerView中使用带有遮罩masks或mattes的动画，可能会造成溢出。（后面看到git又把这一条更新掉了，索性还是贴上来吧）！后来看到Git更新为：如果组合有遮罩或遮罩，将使用屏幕外缓冲区，画面以外的缓冲区的使用和性能会有影响了。<br>3、如果在list中使用，建议在LottieAnimationView.setAnimation（String，CacheStrategy）中使用CacheStrategy，因此动画不必每次都反序列化。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2017/03/06/07-AE-Bodymovin-environment/" data-toggle="tooltip" data-placement="top" title="AE & Bodymovin 安装配置">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

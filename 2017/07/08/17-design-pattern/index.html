@@ -13,11 +13,11 @@
 
     <title>
         
-          Jfson的博客 | Jfson
+          设计模式 - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/archives/page/2/">
+    <link rel="canonical" href="http://yoursite.com/2017/07/08/17-design-pattern/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -137,7 +137,193 @@
 
 
     <!-- Main Content -->
-    <!-- Default Archive layout, we use archives instead. -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Design Patterns" title="Design Patterns">Design Patterns</a>
+                        
+                    </div>
+                    <h1>设计模式</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2017-07-08
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><blockquote>
+<p>一直所熟知的设计模式： 单例模式、工厂模式、建造者模式等等。这些常用的之外，其他非常见的设计模式没有专门归类总结，借此机会，归纳一下咯。</p>
+</blockquote>
+<ul>
+<li>设计模式总分为：创建型模式、结构性模式、行为型模式、J2EE模式</li>
+</ul>
+<h4 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h4><blockquote>
+<p>在创建对象的同时隐藏了创建逻辑的方式（非直接实例化）</p>
+</blockquote>
+<ul>
+<li>工厂模式（Factory Pattern）</li>
+<li>抽象工厂模式（Abstract Factory Pattern）</li>
+<li>单例模式（Singleton Pattern）</li>
+<li>建造者模式（Builder Pattern）</li>
+<li>原型模式（Prototype Pattern）</li>
+<li>对象池模式（The Object Pool Pattern）</li>
+</ul>
+<h4 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h4><blockquote>
+<p>这种设计模式更注重的是类与对象的组合。</p>
+</blockquote>
+<ul>
+<li>代理模式（Proxy Pattern）</li>
+<li>适配器模式（Adapter Pattern）</li>
+<li>桥接模式（Bridge Pattern）</li>
+<li>过滤器模式（Filter、Criteria Pattern）</li>
+<li>组合模式（Composite Pattern）</li>
+<li>装饰器模式（Decorator Pattern）</li>
+<li>外观模式（Facade Pattern）</li>
+<li>享元模式（Flyweight Pattern）</li>
+</ul>
+<h4 id="行为型模式"><a href="#行为型模式" class="headerlink" title="行为型模式"></a>行为型模式</h4><blockquote>
+<p>行为型更注重对象与对象之间的通信</p>
+</blockquote>
+<ul>
+<li>责任链模式（Chain of Responsibility Pattern）</li>
+<li>命令模式（Command Pattern）</li>
+<li>解释器模式（Interpreter Pattern）</li>
+<li>迭代器模式（Iterator Pattern）</li>
+<li>中介者模式（Mediator Pattern）</li>
+<li>备忘录模式（Memento Pattern）</li>
+<li>观察者模式（Observer Pattern）</li>
+<li>状态模式（State Pattern）</li>
+<li>空对象模式（Null Object Pattern）</li>
+<li>策略模式（Strategy Pattern）</li>
+<li>模板模式（Template Pattern）</li>
+<li>访问者模式（Visitor Pattern）</li>
+</ul>
+<h4 id="J2EE-模式"><a href="#J2EE-模式" class="headerlink" title="J2EE 模式"></a>J2EE 模式</h4><blockquote>
+<p>J2EE模式特别关注表示层，我理解为架构层的模式</p>
+</blockquote>
+<ul>
+<li>MVC 模式（MVC Pattern）</li>
+<li>MVP 模式</li>
+<li>MVVM 模式</li>
+<li>业务代表模式（Business Delegate Pattern）</li>
+<li>组合实体模式（Composite Entity Pattern）</li>
+<li>数据访问对象模式（Data Access Object Pattern）</li>
+<li>前端控制器模式（Front Controller Pattern）</li>
+<li>拦截过滤器模式（Intercepting Filter Pattern）</li>
+<li>服务定位器模式（Service Locator Pattern）</li>
+<li>传输对象模式（Transfer Object Pattern）</li>
+</ul>
+<h4 id="设计模式原则"><a href="#设计模式原则" class="headerlink" title="设计模式原则"></a>设计模式原则</h4><ul>
+<li>1.开闭原则（Open Close Principle）<ul>
+<li>对扩展开发,对修改关闭</li>
+</ul>
+</li>
+<li>2.里氏代换原则（Liskov Substitution Principle）<ul>
+<li>基类与子类的继承关系，基类尽量抽象化</li>
+</ul>
+</li>
+<li>3.依赖倒转原则（Dependence Inversion Principle）<ul>
+<li>针对接口编程，依赖于抽象而不依赖于具体。</li>
+</ul>
+</li>
+<li>4.接口隔离原则（Interface Segregation Principle）<ul>
+<li>多接口，低耦合，低依赖</li>
+</ul>
+</li>
+<li>5.迪米特法则，又称最少知道原则（Demeter Principle）<ul>
+<li>相对独立。 </li>
+</ul>
+</li>
+<li>6.合成复用原则（Composite Reuse Principle）<ul>
+<li>尽量使用合成/聚合的方式，而不是使用继承。</li>
+</ul>
+</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>设计模式有很多，但常用的就几种。接下来着重总结一下：工厂模式，单例模式，建造者模式，对象池模式，观察者模式，代理模式等等</li>
+</ul>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2017/07/14/19-proxy-pattern/" data-toggle="tooltip" data-placement="top" title="代理模式(Proxy Pattern)">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/06/06/12-Linux IPC机制/" data-toggle="tooltip" data-placement="top" title="Binder (1) - Linux IPC 现有机制">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
 
     <!-- Footer -->
     <!-- Footer -->
