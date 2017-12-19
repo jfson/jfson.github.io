@@ -13,11 +13,11 @@
 
     <title>
         
-          劝君惜取少年时 - Jfson的博客 | Jfson
+          单例模式 - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/2017/09/08/02-master/">
+    <link rel="canonical" href="http://yoursite.com/2017/09/21/29-single-Design-Patterns/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -155,12 +155,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
+                          <a class="tag" href="/tags/#Design Patterns" title="Design Patterns">Design Patterns</a>
+                        
                     </div>
-                    <h1>劝君惜取少年时</h1>
+                    <h1>单例模式</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Jfson on
-                        2017-09-08
+                        2017-09-21
                     </span>
                 </div>
             </div>
@@ -179,26 +181,67 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h3 id="惜取少年时"><a href="#惜取少年时" class="headerlink" title="惜取少年时"></a>惜取少年时</h3><blockquote>
-<p>看过 <a href="https://www.byvoid.com/" target="_blank" rel="external">byvoid</a> 的博文，确认，自己的前二十年过的跟玩笑似的，阴差阳错学了计算机专业，从事程序员行业.却带来了前所未有的成就感。当然我也进入了瓶颈期。</p>
+                <h4 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h4><blockquote>
+<p>最常用的单例模式，经常在项目中见，梳理后发现各种各样的单例，索性梳理一下。</p>
 </blockquote>
-<h4 id="困惑"><a href="#困惑" class="headerlink" title="困惑"></a>困惑</h4><p><img src="https://github.com/jfson/ImgResource/blob/master/22.jpg?raw=true" alt="image"></p>
 <ul>
-<li><p>普通玩家指的是，循规蹈矩，按照大多数人的生活轨迹来生活的人，5岁上学，20岁大学毕业参加工作，25岁结婚，30岁生孩子，50岁退休，这不是大多数人的一生吗，这就是普通玩家。<br>高端玩家，不会拘泥于大家眼中该怎样怎样的生活，会按照自己的心意来生活，来追求自己想要的东西，几岁读书，几岁工作，几岁结婚，都会按照自己的意愿来，这就跟手机配置一样，按照自己的喜好做自定义配置，但在现实生活中能按照自己的喜好追求来安排自己生活的人也是少数人，少数是因为大多数人最终还是选择了标准配置，随波逐流，能坚持自己的理想追求按照自己的节奏来走的人少，因为对玩家自身的要求也高，即为高端玩家。<br>说到这里，高端玩家也就是不用在乎别人的看法，也不用拘泥于常人所走的路，想做什么就去做，不用别人来定义自己的人生。</p>
+<li>自己创建自己，提供了访问其唯一对象的方式，可以直接访问，不需要实例化对象。</li>
+<li>私有构造</li>
+<li><p>自己创建唯一实例</p>
 </li>
-<li><p>当然无外乎我们都是普通人，总是无畏实际情况幻想自己总是特别的那一个也不对。但有时候你不去推自己一把，可能情况又或是不一样呢。</p>
+<li><p>1.懒汉式 </p>
+<ul>
+<li>非线程安全</li>
+<li>lazy loading</li>
+<li>不标准，不常用</li>
+</ul>
 </li>
 </ul>
-<h4 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h4><ul>
-<li>李牧：重要的是理想和情怀。人一生要工作五十年，为什么不花五年来追求下理想和情怀呢？</li>
-<li>当然考虑自己的情况，做出改变吧。总好过在悔恨中度过，不推自己一把，或许自己也不知道自己到底是不是潜力股。</li>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public class UserModel&#123;</div><div class="line">        private static UserModel instance; </div><div class="line">        private UserModel()&#123;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        public static UserModel getInstance()&#123;</div><div class="line">            if(instance == null)&#123;</div><div class="line">                instance = new UserModel;</div><div class="line">            &#125;</div><div class="line">            return instance;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>2.懒汉式<ul>
+<li>线程安全</li>
+<li>lazy loading </li>
+<li>synchronized 加锁影响效率</li>
 </ul>
-<h4 id="plan"><a href="#plan" class="headerlink" title="plan"></a>plan</h4><ul>
-<li>在职研究生刷gpa(曲线救国)</li>
-<li>英语（在职英语词汇/托福词汇/GRE词汇）</li>
-<li>工作（Android Fragment &amp; python）</li>
+</li>
 </ul>
-<h4 id="十字路口"><a href="#十字路口" class="headerlink" title="十字路口"></a>十字路口</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public class UserModel&#123;</div><div class="line">        private static UserModel instance; </div><div class="line">        private UserModel()&#123;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        public static synchronized UserModel getInstance()&#123;</div><div class="line">            if(instance == null)&#123;</div><div class="line">                instance = new UserModel;</div><div class="line">            &#125;</div><div class="line">            return instance;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>3.饿汉式<ul>
+<li>线程安全</li>
+<li>非lazy loading</li>
+<li>非加锁，效率高</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public class UserModel&#123;</div><div class="line">    private static UserModel instance = new UserModel;</div><div class="line">    private UserModel()&#123;&#125;</div><div class="line"></div><div class="line">    public static UserModel getInstance&#123;</div><div class="line">        return instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>4.双重锁校验<ul>
+<li>线程安全</li>
+<li>lazy loading</li>
+<li>双锁机制，保持高性能</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public class UserModel&#123;</div><div class="line">    private volatile static UserModel instance;</div><div class="line">    private UserModel()&#123;&#125;</div><div class="line">    public static UserModel getInstance&#123;</div><div class="line">        if(instance == null)&#123;</div><div class="line">            synchronized(UserModel.class)&#123;</div><div class="line">                if(instance == null)&#123;</div><div class="line">                    instance = new UserModel();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>5 静态内部类<ul>
+<li>线程安全</li>
+<li>lazy loading</li>
+<li>书写简单</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class UserModel&#123;</div><div class="line">    private static class Hodler&#123;</div><div class="line">        private static final UserModel INSTANCE = new UserModel();</div><div class="line">    &#125;</div><div class="line">    private UserModel()&#123;&#125;</div><div class="line">    public static final UserModel getInstance()&#123;</div><div class="line">        return Hodler.INSTANCE;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>​    </p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><p>推荐4，5使用方式，但由于双锁代码量过多，推荐使用优雅的静态内部类。这也是《Effect Java》 所推荐使用的。</p>
+</li>
+<li><p>单例好用，维护难。作为已经在单例模式踩过坑的来讲，梳理好业务场景，建议在对单例模式的维护成本不大的情况下，以及使用场景不复杂的情况下使用。否则，多业务耦合和，对单例的维护，将会很头疼。</p>
+</li>
+</ul>
+
 
                 <hr>
 
@@ -207,12 +250,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2017/09/20/27-HUAWEIP9-bug/" data-toggle="tooltip" data-placement="top" title="FastgrabCongigReader 华为P9 内存泄漏">&larr; Previous Post</a>
+                            <a href="/2017/09/21/30-Factory Pattern-Design-Patterns/" data-toggle="tooltip" data-placement="top" title="工厂模式(Factory Pattern)">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2017/08/07/26-launch-optimize/" data-toggle="tooltip" data-placement="top" title="Android 启动速度优化">Next Post &rarr;</a>
+                            <a href="/2017/09/21/28-Design-Patterns-all/" data-toggle="tooltip" data-placement="top" title="设计模式">Next Post &rarr;</a>
                         </li>
                     
                 </ul>

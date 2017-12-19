@@ -174,29 +174,321 @@
 
 <div class="post-preview">
 
-    <a href="/2017/05/03/16-plan-b/">
+    <a href="/2017/07/16/18-single-pattern/">
         <h2 class="post-title">
-            TODO
+            单例模式
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            单例模式
+最常用的单例模式，经常在项目中见，梳理后发现各种各样的单例，索性梳理一下。
+
+
+自己创建自己，提供了访问其唯一对象的方式，可以直接访问，不需要实例化对象。
+私有构造
+自己创建唯一实例
+
+1.懒汉式 
+
+非线程安全
+lazy loading
+不标准，不常用
+
+
+
+123456789101112public class UserModel&#123;        private st......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-07-16
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/07/14/19-proxy-pattern/">
+        <h2 class="post-title">
+            代理模式(Proxy Pattern)
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-刚刚看了一个技术型的面试文章，发现很多知识点容易被遗漏。也有很多不会的东西。梳理一下点。加油！
+代理模式在java 中的使用很常见，在Android中使用更为常见，类似代理一些生命周期，或者AOP编程以及业务解耦等等使用场景。
 
-书
-1.《深入Java虚拟机》
-2.《剑指offer》算法
-3.《Android 艺术探索》
 
-练习
-1.LeetCode or lintcode 刷题查缺补漏1.设计模式2.多线程,线程池3.锁。同步。volatie4.Http 网络编程5.开源框架学习（volley,glide,fresc......
+代理模式分为静态代理和动态代理。
+
+静态代理1234567891011121314151617181920212223242526272829303132interface BaseView &#123;    void showText();&#125;......
         </div>
     </a>
     <p class="post-meta">
         Posted by Jfson on
-        2017-05-03
+        2017-07-14
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/07/08/17-design-pattern/">
+        <h2 class="post-title">
+            设计模式
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            设计模式
+一直所熟知的设计模式： 单例模式、工厂模式、建造者模式等等。这些常用的之外，其他非常见的设计模式没有专门归类总结，借此机会，归纳一下咯。
+
+
+设计模式总分为：创建型模式、结构性模式、行为型模式、J2EE模式
+
+创建型模式
+在创建对象的同时隐藏了创建逻辑的方式（非直接实例化）
+
+
+工厂模式（Factory Pattern）
+抽象工厂模式（Abstract Factory Patter......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-07-08
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/06/06/12-Linux IPC机制/">
+        <h2 class="post-title">
+            Binder (1) - Linux IPC 现有机制
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Linux IPC 机制
+IPC(InterProcess Communication)进程间通讯，我们都知道Android内核其实就是Linux内核，而每个Android Application进程其实就是一个Linux进程，Linux 已经有比较好的IPC机制，为什么Android用Binder实现IPC机制呢？，分析Linux 一下的IPC 机制，方便深入理解Android Binde......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-06-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/06/02/14-parse-mainfest/">
+        <h2 class="post-title">
+            系统 Mainfest 文件解析流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            系统 Mainfest 文件解析流程
+为什么要看 Mainfest 文件解析流程呢，因为解析来分析apk的安装流程需要用到，而且 AndroidMainfest 文件是程序的配置文件，了解其解析流程还是非常有必要哒~ 之前的分析中，系统会在启动时读取所有app的Mainfest以便于启动某个应用。
+
+
+1.入口
+在PackageManagerService 中，系统去解析app文件。那么从构......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-06-02
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/06/01/01-Application启动流程/">
+        <h2 class="post-title">
+            Application 启动流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            应用启动流程
+每个Application Linux进程中，Android操作系统会启动这个进程当这个Android组件需要执行的时候，当其不在长时间使用或者系统必须回收内存为其他App时，这个进程会被干掉。
+
+
+回顾：上篇blog中，介绍了Launcher启动流程，最后点击桌面图标启动应用
+
+1234protected void onListItemClick(ListView l, Vi......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-06-01
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/06/01/09-Android桌面Launcher启动/">
+        <h2 class="post-title">
+            Launcher 启动流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Launcher 启动流程
+1 启动Launcher
+在之前分析了一下SystemServer源码，最后启动boot/core/other … Service,在startOtherService 中，有调用到 mActivityManagerService.systemReady();
+
+123456789101112131415161718192021222324252627282930......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-06-01
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/05/23/03-SystemServer/">
+        <h2 class="post-title">
+            SystemServer 进程启动流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            SystemServer 进程
+1.1 SystemServer进程是由Zygote进程fork 出来的。上篇介绍了fork过程
+1.2 SystemServer进程 是用来启动各种系统服务的进程，例如ActivityManagerService,WindowManagerService,PowerManagerService，PackageManagerService等等，当应用需要系统服......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-05-23
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/05/23/04-Zygote/">
+        <h2 class="post-title">
+            Android Zygote进程启动流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Zygote进程简介什么是Zygote进程？ Zygote进程 是整个Android系统的根进程，包括SystemServer进程和所有应用进程在内都是通过Zygote进程 fork 出来的。Zygote进程则是通过Linux系统init进程启动。
+
+启动顺序： Linux系统init进程 –&gt; Zygote进程 –&gt; SystemServer进程 –&gt; Applicati......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-05-23
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/05/16/08-Android-source/">
+        <h2 class="post-title">
+            Android Studio 编译系统源码
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            环境配置 &amp; 下载
+参考文章
+
+
+官方文档湫水blog清华镜像调试以下所有操作在mac上进行
+
+
+推荐下载 7.0及以上系统！！！
+
+1.创建磁盘映像（80G）
+  1$ hdiutil create -type SPARSE -fs &apos;Case-sensitive Journaled HFS+&apos; -size 80g ~/android.dmg
+
+2.安装MacP......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-05-16
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/05/15/11-Handler-Looper/">
+        <h2 class="post-title">
+            Handler、Looper、MessageQueue
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Handler、Looper、MessageQueue 初始化
+1.在 UI 线程创建 Handler，通常直接new Handler；
+123456private Handler mHandler = new Handler() &#123;        @Override        public void handleMessage(Message msg) &#123;     ......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-05-15
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/05/13/10-apk-build/">
+        <h2 class="post-title">
+            Android项目构建过程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Google 官方构建流程图
+具体描述：
+
+1.AAPT(Android Asset Packaging Tool)工具会打包应用中的资源文件，如AndroidManifest.xml、layout布局中的xml等，并将xml文件编译为二进制形式，当然assets文件夹中的文件不会被编译，图片及raw文件夹中的资源也会保持原来的形态，需要注意的是raw文件夹中的资源也会生成资源id。AAPT......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-05-13
     </p>
 
 </div>
@@ -249,6 +541,36 @@ merge......
 
 <div class="post-preview">
 
+    <a href="/2017/05/03/16-plan-b/">
+        <h2 class="post-title">
+            TODO
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+刚刚看了一个技术型的面试文章，发现很多知识点容易被遗漏。也有很多不会的东西。梳理一下点。加油！
+
+书
+1.《深入Java虚拟机》
+2.《剑指offer》算法
+3.《Android 艺术探索》
+
+练习
+1.LeetCode or lintcode 刷题查缺补漏1.设计模式2.多线程,线程池3.锁。同步。volatie4.Http 网络编程5.开源框架学习（volley,glide,fresc......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-05-03
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2017/03/22/05-order-use/">
         <h2 class="post-title">
             常用命令
@@ -261,9 +583,9 @@ merge......
 好记性不如小笔记，命令一段时间不用就忘记了，索性还是记下好了
 
 Git 常用命令
-查看远程分支  git branch -r
+查看远程分支git branch -r
 
-提交代码  1.git status  2.git diff  3.git commit -m “commit内容注释”  4.git status  5.git merger –no-ff (有冲突的时候用，冲突解决完重复1,2,3,4)  6 git push......
+提交代码1.git status2.git diff3.git commit -m “commit内容注释”4.git status5.git merger –no-ff (有冲突的时候用，冲突解决完重复1,2,3,4)6 git push origin featur......
         </div>
     </a>
     <p class="post-meta">

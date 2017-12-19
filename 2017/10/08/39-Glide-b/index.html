@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="to be or not !">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Glide(二)Request队列管理 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2017/10/08/39-Glide-b/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#sound code" title="sound code">sound code</a>
+                        
+                    </div>
+                    <h1>Glide(二)Request队列管理</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2017-10-08
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h3><p>上篇总结了下Glide利用fm和一个空Fragment 进行生命周期的管理，这里继续看load &amp; into。不多说，上代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 上篇分析了with,继续看下 load &amp; into</div><div class="line">Glide.with(this).load(&quot;url&quot;).into(...);</div></pre></td></tr></table></figure>
+<ul>
+<li>1.1 load</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public RequestBuilder&lt;Drawable&gt; load(@Nullable Object model) &#123;</div><div class="line">    return asDrawable().load(model);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  public RequestBuilder&lt;Drawable&gt; asDrawable() &#123;</div><div class="line">    return as(Drawable.class);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  // 实例一个RequestBuilder</div><div class="line">  public &lt;ResourceType&gt; RequestBuilder&lt;ResourceType&gt; as(Class&lt;ResourceType&gt; resourceClass) &#123;</div><div class="line">    return new RequestBuilder&lt;&gt;(glide, this, resourceClass);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  // RequestBuilder 构造中的 requestManager</div><div class="line">   protected RequestBuilder(Glide glide, RequestManager requestManager,</div><div class="line">      Class&lt;TranscodeType&gt; transcodeClass) &#123;</div><div class="line">    this.glide = glide;</div><div class="line">    this.requestManager = requestManager;</div><div class="line">    this.context = glide.getGlideContext();</div><div class="line">    this.transcodeClass = transcodeClass;</div><div class="line">    this.defaultRequestOptions = requestManager.getDefaultRequestOptions();</div><div class="line">    this.transitionOptions = requestManager.getDefaultTransitionOptions(transcodeClass);</div><div class="line">    this.requestOptions = defaultRequestOptions;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>2.1 into</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line">public Target&lt;TranscodeType&gt; into(ImageView view) &#123;</div><div class="line">    // 主线程校验（涉及View刷新）</div><div class="line">    Util.assertMainThread();</div><div class="line">    // View 非空校验</div><div class="line">    Preconditions.checkNotNull(view);</div><div class="line"></div><div class="line">    RequestOptions requestOptions = this.requestOptions;</div><div class="line">    if (!requestOptions.isTransformationSet()</div><div class="line">        &amp;&amp; requestOptions.isTransformationAllowed()</div><div class="line">        &amp;&amp; view.getScaleType() != null) &#123;</div><div class="line">     // 获取图片位置类型</div><div class="line">      switch (view.getScaleType()) &#123;</div><div class="line">        case CENTER_CROP:</div><div class="line">          requestOptions = requestOptions.clone().optionalCenterCrop();</div><div class="line">          break;</div><div class="line">        case CENTER_INSIDE:</div><div class="line">          requestOptions = requestOptions.clone().optionalCenterInside();</div><div class="line">          break;</div><div class="line">        case FIT_CENTER:</div><div class="line">        case FIT_START:</div><div class="line">        case FIT_END:</div><div class="line">          requestOptions = requestOptions.clone().optionalFitCenter();</div><div class="line">          break;</div><div class="line">        case FIT_XY:</div><div class="line">          requestOptions = requestOptions.clone().optionalCenterInside();</div><div class="line">          break;</div><div class="line">        case CENTER:</div><div class="line">        case MATRIX:</div><div class="line">        default:</div><div class="line">          // Do nothing.</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    return into(context.buildImageViewTarget(view, transcodeClass), requestOptions);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  // 继续看into</div><div class="line">  private &lt;Y extends Target&lt;TranscodeType&gt;&gt; Y into(@NonNull Y target, RequestOptions options) &#123;</div><div class="line">    Util.assertMainThread();</div><div class="line">    Preconditions.checkNotNull(target);</div><div class="line">    if (!isModelSet) &#123;</div><div class="line">      throw new IllegalArgumentException(&quot;You must call #load() before calling #into()&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    options = options.autoClone();</div><div class="line">    // 根据target &amp; options中的属性 build 一个 Request</div><div class="line">    Request request = buildRequest(target, options);</div><div class="line"></div><div class="line">    // target 与 request 绑定，这里复用之前的Request</div><div class="line">    Request previous = target.getRequest();</div><div class="line">    </div><div class="line">    // 这里校验request 是否一致 previous</div><div class="line">    //一致就回收掉request</div><div class="line">    if (request.isEquivalentTo(previous)) &#123;</div><div class="line">      request.recycle();</div><div class="line">      </div><div class="line">      //这里的是校验 previous 执行情况。</div><div class="line">      //begin内部机制:</div><div class="line">      //如果正在运行，会保证不中断运行</div><div class="line">      //如果完成则重新开始并提交</div><div class="line">      //如果失败，重新开始</div><div class="line">     </div><div class="line">      if (!Preconditions.checkNotNull(previous).isRunning()) &#123;</div><div class="line">        previous.begin();</div><div class="line">      &#125;</div><div class="line">      return target;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 如果两个request 不一致，则删除旧的，更新requestManager中的tartget,requesr到set</div><div class="line">    requestManager.clear(target);</div><div class="line">    target.setRequest(request);</div><div class="line">    </div><div class="line">    // requestManager 添加请求到 RequestTracker中 Set&lt;Request&gt;</div><div class="line">    requestManager.track(target, request);</div><div class="line"></div><div class="line">    return target;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>2.2 上面不难看出新建的request通过requestManager 添加请求到 RequestTracker中，requestManager 维护了一个RequestTracker，可以做到根据生命周期来处理所有request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">// 在生命周期回调中，对应targetTracker不同处理</div><div class="line">@Override</div><div class="line">  public void onStart() &#123;</div><div class="line">    resumeRequests();</div><div class="line">    targetTracker.onStart();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  @Override</div><div class="line">  public void onStop() &#123;</div><div class="line">    pauseRequests();</div><div class="line">    targetTracker.onStop();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  @Override</div><div class="line">  public void onDestroy() &#123;</div><div class="line">    targetTracker.onDestroy();</div><div class="line">    for (Target&lt;?&gt; target : targetTracker.getAll()) &#123;</div><div class="line">      clear(target);</div><div class="line">    &#125;</div><div class="line">    targetTracker.clear();</div><div class="line">    requestTracker.clearRequests();</div><div class="line">    lifecycle.removeListener(this);</div><div class="line">    lifecycle.removeListener(connectivityMonitor);</div><div class="line">    mainHandler.removeCallbacks(addSelfToLifecycle);</div><div class="line">    glide.unregisterRequestManager(this);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>3.1 RequestManager中，requestTracker做为RequestManager成员变量被创建和初始化，所有request都由RequestManager加到了requestTracker中来管理，并与生命周期挂钩。看下requestTracker</li>
+</ul>
+<p>package com.bumptech.glide.manager;</p>
+<p>import com.bumptech.glide.request.Request;<br>import com.bumptech.glide.util.Util;<br>import java.util.ArrayList;<br>import java.util.Collections;<br>import java.util.List;<br>import java.util.Set;<br>import java.util.WeakHashMap;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class RequestTracker &#123;</div><div class="line">  // 用set 防止未开始或者onPause的时候被GC干掉</div><div class="line">  private final Set&lt;Request&gt; requests =</div><div class="line">      Collections.newSetFromMap(new WeakHashMap&lt;Request, Boolean&gt;());</div><div class="line"> </div><div class="line">  @SuppressWarnings(&quot;MismatchedQueryAndUpdateOfCollection&quot;)</div><div class="line">  private final List&lt;Request&gt; pendingRequests = new ArrayList&lt;&gt;();</div><div class="line">  private boolean isPaused;</div><div class="line"></div><div class="line">  /**</div><div class="line">   * Starts tracking the given request.</div><div class="line">   */</div><div class="line">  public void runRequest(Request request) &#123;</div><div class="line">    requests.add(request);</div><div class="line">    if (!isPaused) &#123;</div><div class="line">      request.begin();</div><div class="line">    &#125; else &#123;</div><div class="line">      pendingRequests.add(request);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  // Visible for testing.</div><div class="line">  void addRequest(Request request) &#123;</div><div class="line">    requests.add(request);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">   * Stops tracking the given request, clears, and recycles it, and returns &#123;@code true&#125; if the</div><div class="line">   * request was removed or &#123;@code false&#125; if the request was not found.</div><div class="line">   */</div><div class="line">  public boolean clearRemoveAndRecycle(Request request) &#123;</div><div class="line">    if (request == null) &#123;</div><div class="line">      return false;</div><div class="line">    &#125;</div><div class="line">    boolean isOwnedByUs = requests.remove(request);</div><div class="line">    // Avoid short circuiting.</div><div class="line">    isOwnedByUs = pendingRequests.remove(request) || isOwnedByUs;</div><div class="line">    if (isOwnedByUs) &#123;</div><div class="line">      request.clear();</div><div class="line">      request.recycle();</div><div class="line">    &#125;</div><div class="line">    return isOwnedByUs;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">   * Returns &#123;@code true&#125; if requests are currently paused, and &#123;@code false&#125; otherwise.</div><div class="line">   */</div><div class="line">  public boolean isPaused() &#123;</div><div class="line">    return isPaused;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">   * Stops any in progress requests.</div><div class="line">   */</div><div class="line">  public void pauseRequests() &#123;</div><div class="line">    isPaused = true;</div><div class="line">    for (Request request : Util.getSnapshot(requests)) &#123;</div><div class="line">      if (request.isRunning()) &#123;</div><div class="line">        request.pause();</div><div class="line">        pendingRequests.add(request);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">   * Starts any not yet completed or failed requests.</div><div class="line">   */</div><div class="line">  public void resumeRequests() &#123;</div><div class="line">    isPaused = false;</div><div class="line">    for (Request request : Util.getSnapshot(requests)) &#123;</div><div class="line">      if (!request.isComplete() &amp;&amp; !request.isCancelled() &amp;&amp; !request.isRunning()) &#123;</div><div class="line">        request.begin();</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    pendingRequests.clear();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">   * Cancels all requests and clears their resources.</div><div class="line">   *</div><div class="line">   * &lt;p&gt;After this call requests cannot be restarted.</div><div class="line">   */</div><div class="line">  public void clearRequests() &#123;</div><div class="line">    for (Request request : Util.getSnapshot(requests)) &#123;</div><div class="line">      clearRemoveAndRecycle(request);</div><div class="line">    &#125;</div><div class="line">    pendingRequests.clear();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  /**</div><div class="line">   * Restarts failed requests and cancels and restarts in progress requests.</div><div class="line">   */</div><div class="line">  public void restartRequests() &#123;</div><div class="line">    for (Request request : Util.getSnapshot(requests)) &#123;</div><div class="line">      if (!request.isComplete() &amp;&amp; !request.isCancelled()) &#123;</div><div class="line">        // Ensure the request will be restarted in onResume.</div><div class="line">        request.pause();</div><div class="line">        if (!isPaused) &#123;</div><div class="line">          request.begin();</div><div class="line">        &#125; else &#123;</div><div class="line">          pendingRequests.add(request);</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  @Override</div><div class="line">  public String toString() &#123;</div><div class="line">    return super.toString() + &quot;&#123;numRequests=&quot; + requests.size() + &quot;, isPaused=&quot; + isPaused + &quot;&#125;&quot;;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>3.2 以上看出RequestTracker对所有Requst进行对应生命周期的维护</p>
+<ul>
+<li><ol>
+<li>比如onPause时，对所有Request暂停，加入set</li>
+</ol>
+</li>
+<li><ol>
+<li>onResume 时，对所有Request 进行restart</li>
+</ol>
+</li>
+<li><ol>
+<li>onStop 时，clear all Request </li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>一波666</p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>主要对所有Request 进行队列维护，并在生命周期回调中进行相应优化</li>
+<li>梳理了一下，看图比较直接</li>
+</ul>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/25.png?raw=true" alt="结构类图"></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/10/07/38-Glide-a/" data-toggle="tooltip" data-placement="top" title="Glide(一)生命周期管理">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

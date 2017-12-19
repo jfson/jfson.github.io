@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="to be or not !">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Glide(一)生命周期管理 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2017/10/07/38-Glide-a/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#sound code" title="sound code">sound code</a>
+                        
+                    </div>
+                    <h1>Glide(一)生命周期管理</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2017-10-07
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <ul>
+<li>Glide 的解耦方式很独特。</li>
+<li>相关文章：<a href="http://blog.csdn.net/sinat_24196195/article/details/78460397" target="_blank" rel="external">Fragment 如何跟Activity的生命周期进行绑定</a></li>
+<li>1.1 Glide.with()</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Glide.with(FragmentActivity activity)</div><div class="line">// RequestManager with(FragmentActivity activity)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public static RequestManager with(Activity activity) &#123;</div><div class="line">    return getRetriever(activity).get(activity);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public RequestManager get(Activity activity) &#123;</div><div class="line">    if (Util.isOnBackgroundThread()) &#123;</div><div class="line">      return get(activity.getApplicationContext());</div><div class="line">    &#125; else &#123;</div><div class="line">      assertNotDestroyed(activity);</div><div class="line">      // 获取当前Activity的FragmentManager，</div><div class="line">      // 后续用于新见Fragment并绑定到当前FragmentManager，从而获取Fragment的生命周期（同步Activity的生命周期）</div><div class="line">      android.app.FragmentManager fm = activity.getFragmentManager();</div><div class="line">      return fragmentGet(activity, fm, null /*parentHint*/);</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>1.2 这里主要看 RequestManagerFragment</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">private RequestManager fragmentGet(Context context, android.app.FragmentManager fm,</div><div class="line">      android.app.Fragment parentHint) &#123;</div><div class="line">    // a.绑定 RequestManagerFragment 至 FragmentManager ，使RequestManagerFragment 生命周期同步 Activity</div><div class="line">    RequestManagerFragment current = getRequestManagerFragment(fm, parentHint);</div><div class="line">    RequestManager requestManager = current.getRequestManager();</div><div class="line">    if (requestManager == null) &#123;</div><div class="line">      // TODO(b/27524013): Factor out this Glide.get() call.</div><div class="line">      Glide glide = Glide.get(context);</div><div class="line">      requestManager =</div><div class="line">          // b. 获取一个RequestManager 实例并给当前RequestManagerFragment</div><div class="line">          factory.build(glide, current.getGlideLifecycle(), current.getRequestManagerTreeNode());</div><div class="line">      current.setRequestManager(requestManager);</div><div class="line">    &#125;</div><div class="line">    return requestManager;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>1.3 绑定 RequestManagerFragment 至 FragmentManager，当前RequestManagerFragment已经有了其生命周期，看下如何实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)</div><div class="line">  RequestManagerFragment getRequestManagerFragment(</div><div class="line">      final android.app.FragmentManager fm, android.app.Fragment parentHint) &#123;</div><div class="line">     //a.根据TAG id获取RequestManagerFragment实例</div><div class="line">    RequestManagerFragment current = (RequestManagerFragment) fm.findFragmentByTag(FRAGMENT_TAG);</div><div class="line">    if (current == null) &#123;</div><div class="line">      // b. 如果a没获取实例，从内存的map内获取</div><div class="line">      current = pendingRequestManagerFragments.get(fm);</div><div class="line">      if (current == null) &#123;</div><div class="line">        // c. 以上a,b 都没有获取实例，则最后new一个，并put 到内存 map内</div><div class="line">        current = new RequestManagerFragment();</div><div class="line">        current.setParentFragmentHint(parentHint);</div><div class="line">        pendingRequestManagerFragments.put(fm, current);</div><div class="line">        // fragment 与 FragmentManager 绑定，那么 RequestManagerFragment 有了生命周期</div><div class="line">        fm.beginTransaction().add(current, FRAGMENT_TAG).commitAllowingStateLoss();</div><div class="line">        handler.obtainMessage(ID_REMOVE_FRAGMENT_MANAGER, fm).sendToTarget();</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    return current;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>1.4 以上步骤中参考 1.2中b操作使得RequestManagerFragment中有RequestManager，RequestManager在构造中将自身添加到Lifecycle中</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">RequestManager(</div><div class="line">      Glide glide,</div><div class="line">      Lifecycle lifecycle,</div><div class="line">      RequestManagerTreeNode treeNode,</div><div class="line">      RequestTracker requestTracker,</div><div class="line">      ConnectivityMonitorFactory factory) &#123;</div><div class="line">    this.glide = glide;</div><div class="line">    this.lifecycle = lifecycle;</div><div class="line">    this.treeNode = treeNode;</div><div class="line">    this.requestTracker = requestTracker;</div><div class="line"></div><div class="line">    ...</div><div class="line">    if (Util.isOnBackgroundThread()) &#123; // 非主线程</div><div class="line">      mainHandler.post(addSelfToLifecycle);</div><div class="line">    &#125; else &#123; // 主线程</div><div class="line">      lifecycle.addListener(this);</div><div class="line">    &#125;</div><div class="line">    lifecycle.addListener(connectivityMonitor);</div><div class="line"></div><div class="line">    setRequestOptions(glide.getGlideContext().getDefaultRequestOptions());</div><div class="line"></div><div class="line">    glide.registerRequestManager(this);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  private final Runnable addSelfToLifecycle = new Runnable() &#123;</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">      lifecycle.addListener(RequestManager.this);</div><div class="line">    &#125;</div><div class="line">  &#125;;</div></pre></td></tr></table></figure>
+<ul>
+<li>2.1 Fragment 生命周期的传递</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">public RequestManagerFragment() &#123;</div><div class="line">    // 构造时初始化ActivityFragmentLifecycle</div><div class="line">    this(new ActivityFragmentLifecycle());</div><div class="line">&#125;</div><div class="line">  </div><div class="line">@SuppressLint(&quot;ValidFragment&quot;)</div><div class="line">RequestManagerFragment(ActivityFragmentLifecycle lifecycle) &#123;</div><div class="line">    this.lifecycle = lifecycle;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 以下为生命周期的透传</div><div class="line"> @Override</div><div class="line">  public void onStart() &#123;</div><div class="line">    super.onStart();</div><div class="line">    lifecycle.onStart();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  @Override</div><div class="line">  public void onStop() &#123;</div><div class="line">    super.onStop();</div><div class="line">    lifecycle.onStop();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  @Override</div><div class="line">  public void onDestroy() &#123;</div><div class="line">    super.onDestroy();</div><div class="line">    lifecycle.onDestroy();</div><div class="line">    unregisterFragmentWithRoot();</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>2.2 回调所有生命周期的接口<ul>
+<li>RequestManagerFragment 下回调所有注册的 RequestManager <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">  public void removeListener(LifecycleListener listener) &#123;</div><div class="line">    lifecycleListeners.remove(listener);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  void onStart() &#123;</div><div class="line">    isStarted = true;</div><div class="line">    for (LifecycleListener lifecycleListener : Util.getSnapshot(lifecycleListeners)) &#123;</div><div class="line">      lifecycleListener.onStart();</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  void onStop() &#123;</div><div class="line">    isStarted = false;</div><div class="line">    for (LifecycleListener lifecycleListener : Util.getSnapshot(lifecycleListeners)) &#123;</div><div class="line">      lifecycleListener.onStop();</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  void onDestroy() &#123;</div><div class="line">    isDestroyed = true;</div><div class="line">    for (LifecycleListener lifecycleListener : Util.getSnapshot(lifecycleListeners)) &#123;</div><div class="line">      lifecycleListener.onDestroy();</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>1.通过获取 Activity 的FragmentManager，绑定一个空RequestManagerFragment，以同步Activity生命周期</li>
+<li>2.RequestManagerFragment 中初始化LifecycleListener</li>
+<li>3.初始化RequestManagerFragment，同事初始化RequestManager，并注册至LifecycleListener</li>
+<li>4.Activity 触发生命周期时，回调 Fragment，并透传至LifecycleListener,LifecycleListener会回调所有向其注册过的RequestManager</li>
+<li>综上所得解耦新技能。奉上时序图<br><img src="https://github.com/jfson/ImgResource/blob/master/24.png?raw=true" alt=" 时序图"></li>
+</ul>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2017/10/08/39-Glide-b/" data-toggle="tooltip" data-placement="top" title="Glide(二)Request队列管理">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/10/06/37-Fragment-life/" data-toggle="tooltip" data-placement="top" title="Fragment 的生命周期来龙去脉">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

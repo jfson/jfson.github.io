@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="to be or not !">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Fragment 的生命周期来龙去脉 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2017/10/06/37-Fragment-life/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#sound code" title="sound code">sound code</a>
+                        
+                    </div>
+                    <h1>Fragment 的生命周期来龙去脉</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2017-10-06
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>Fragment的生命周期我们都不陌生，但是其如何利用FragmentManager从Activity生命周期挂载而来的呢,尤其是看了glide源码后，发现其巧妙的利用了FragmentManager来绑定自己的生命周期，那么为了更清晰的深入理解，一起来看下6.0的源码是如何处理的。</p>
+</blockquote>
+<h3 id="FragmentActivity"><a href="#FragmentActivity" class="headerlink" title="FragmentActivity"></a>FragmentActivity</h3><ul>
+<li>1.从启动一个FragmentActivity开始。从onCreate()方法中</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">final FragmentController mFragments = FragmentController.createController(new HostCallbacks());</div><div class="line"></div><div class="line">@SuppressWarnings(&quot;deprecation&quot;)</div><div class="line">@Override</div><div class="line">protected void onCreate(@Nullable Bundle savedInstanceState) &#123;</div><div class="line">    mFragments.attachHost(null /*parent*/);</div><div class="line">    super.onCreate(savedInstanceState);</div><div class="line"></div><div class="line">    NonConfigurationInstances nc =</div><div class="line">                (NonConfigurationInstances) getLastNonConfigurationInstance();</div><div class="line">    if (nc != null) &#123;</div><div class="line">        mFragments.restoreLoaderNonConfig(nc.loaders);</div><div class="line">    &#125;</div><div class="line">    if (savedInstanceState != null) &#123;</div><div class="line">        Parcelable p = savedInstanceState.getParcelable(FRAGMENTS_TAG);</div><div class="line">        mFragments.restoreAllState(p, nc != null ? nc.fragments : null);</div><div class="line">    &#125;</div><div class="line">    mFragments.dispatchCreate();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>1.1 重点关注一下 mFragments 的操作。当前的mFragments其实是FragmentController，而FragmentHostCallback在FragmentController初始化时进行初始化，在FragmentHostCallback中可以拿到FragmentManager的子类FragmentManagerImpl。继续看FragmentController的代码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">//FragmentController初始化CallBack</div><div class="line"> public static final FragmentController createController(FragmentHostCallback&lt;?&gt; callbacks) &#123;</div><div class="line">        return new FragmentController(callbacks);</div><div class="line">&#125;</div><div class="line"></div><div class="line">private FragmentController(FragmentHostCallback&lt;?&gt; callbacks) &#123;</div><div class="line">        mHost = callbacks;</div><div class="line">&#125;</div><div class="line">    </div><div class="line">public void attachHost(Fragment parent) &#123;</div><div class="line">        mHost.mFragmentManager.attachController(</div><div class="line">                mHost, mHost /*container*/, parent);</div><div class="line">&#125;</div><div class="line">    </div><div class="line">public void restoreAllState(Parcelable state, FragmentManagerNonConfig nonConfig) &#123;</div><div class="line">        mHost.mFragmentManager.restoreAllState(state, nonConfig);</div><div class="line">&#125;</div><div class="line">    </div><div class="line">public void dispatchCreate() &#123;</div><div class="line">        mHost.mFragmentManager.dispatchCreate();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>1.2当前的操作其实都是对FragmentManager进行操作，继续看FragmentManagerImpl代码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">// 初始化赋值操作</div><div class="line">public void attachController(FragmentHostCallback host,</div><div class="line">            FragmentContainer container, Fragment parent) &#123;</div><div class="line">        if (mHost != null) throw new IllegalStateException(&quot;Already attached&quot;);</div><div class="line">        mHost = host;</div><div class="line">        mContainer = container;</div><div class="line">        mParent = parent;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void restoreAllState(Parcelable state, FragmentManagerNonConfig nonConfig) &#123;</div><div class="line">    ......</div><div class="line">    if (nonConfig != null) &#123;</div><div class="line">            List&lt;Fragment&gt; nonConfigFragments = nonConfig.getFragments();</div><div class="line">            childNonConfigs = nonConfig.getChildNonConfigs();</div><div class="line">            final int count = nonConfigFragments != null ? nonConfigFragments.size() : 0;</div><div class="line">            for (int i = 0; i &lt; count; i++) &#123;</div><div class="line">                Fragment f = nonConfigFragments.get(i);</div><div class="line">                if (DEBUG) Log.v(TAG, &quot;restoreAllState: re-attaching retained &quot; + f);</div><div class="line">                FragmentState fs = fms.mActive[f.mIndex];</div><div class="line">                fs.mInstance = f;</div><div class="line">                f.mSavedViewState = null;</div><div class="line">                f.mBackStackNesting = 0;</div><div class="line">                f.mInLayout = false;</div><div class="line">                f.mAdded = false;</div><div class="line">                f.mTarget = null;</div><div class="line">                if (fs.mSavedFragmentState != null) &#123;</div><div class="line">                    fs.mSavedFragmentState.setClassLoader(mHost.getContext().getClassLoader());</div><div class="line">                    f.mSavedViewState = fs.mSavedFragmentState.getSparseParcelableArray(</div><div class="line">                            FragmentManagerImpl.VIEW_STATE_TAG);</div><div class="line">                    f.mSavedFragmentState = fs.mSavedFragmentState;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    </div><div class="line">    </div><div class="line">        // Build the full list of active fragments, instantiating them from</div><div class="line">        // their saved state.</div><div class="line">        mActive = new ArrayList&lt;&gt;(fms.mActive.length); </div><div class="line">        // 注意，后面会用到</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line">public void dispatchCreate() &#123;</div><div class="line">        mStateSaved = false;</div><div class="line">        mExecutingActions = true;</div><div class="line">        moveToState(Fragment.CREATED, false);</div><div class="line">        mExecutingActions = false;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>1.3 以上，attachController() 只是简单的初始化的赋值操作，并无对生命周期相关的，继续看restoreAllState(),同样的初始化的重置操作,这里<pre><code>mActive = new ArrayList&lt;Fragment&gt;(fms.mActive.length)初始化了一个空的mActive的list。继续看dispatchCreate()，其中moveToState
+</code></pre></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">void moveToState(int newState, boolean always) &#123;</div><div class="line">    if (mHost == null &amp;&amp; newState != Fragment.INITIALIZING) &#123;</div><div class="line">        throw new IllegalStateException(&quot;No activity&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    if (!always &amp;&amp; newState == mCurState) &#123;</div><div class="line">        return;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    mCurState = newState;</div><div class="line"></div><div class="line">    if (mActive != null) &#123;</div><div class="line">        boolean loadersRunning = false;</div><div class="line"></div><div class="line">        // Must add them in the proper order. mActive fragments may be out of order</div><div class="line">        if (mAdded != null) &#123;</div><div class="line">            final int numAdded = mAdded.size();</div><div class="line">            for (int i = 0; i &lt; numAdded; i++) &#123;</div><div class="line">                Fragment f = mAdded.get(i);</div><div class="line">                moveFragmentToExpectedState(f);</div><div class="line">                if (f.mLoaderManager != null) &#123;</div><div class="line">                    loadersRunning |= f.mLoaderManager.hasRunningLoaders();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // Now iterate through all active fragments. These will include those that are removed</div><div class="line">        // and detached.</div><div class="line">        final int numActive = mActive.size();</div><div class="line">        for (int i = 0; i &lt; numActive; i++) &#123;</div><div class="line">            Fragment f = mActive.get(i);</div><div class="line">            if (f != null &amp;&amp; (f.mRemoving || f.mDetached) &amp;&amp; !f.mIsNewlyAdded) &#123;</div><div class="line">                moveFragmentToExpectedState(f);</div><div class="line">                if (f.mLoaderManager != null) &#123;</div><div class="line">                    loadersRunning |= f.mLoaderManager.hasRunningLoaders();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (!loadersRunning) &#123;</div><div class="line">            startPendingDeferredFragments();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (mNeedMenuInvalidate &amp;&amp; mHost != null &amp;&amp; mCurState == Fragment.RESUMED) &#123;</div><div class="line">            mHost.onSupportInvalidateOptionsMenu();</div><div class="line">            mNeedMenuInvalidate = false;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>1.4 moveToState() 其实是更新FragmentManager的状态至Fragment，但是当前并无Fragment,mActive在restoreAllState()初始化出来后只是个空的list，因此并没有实质的操作。至此FragmentActivity onCreate()都是初始化的操作。</p>
+</li>
+<li><p>2 Fragment的真正启动是当我们调用FragmentManager.beginTransaction().add(fragmet).commit()时触发。看下代码</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public abstract class FragmentTransaction &#123;</div><div class="line">    ......</div><div class="line">    public abstract int commit();</div><div class="line"></div><div class="line">    /**</div><div class="line">     * Calls &#123;@link #add(int, Fragment, String)&#125; with a 0 containerViewId.</div><div class="line">     */</div><div class="line">    public abstract FragmentTransaction add(Fragment fragment, String tag);</div><div class="line">    </div><div class="line">    /**</div><div class="line">     * Calls &#123;@link #add(int, Fragment, String)&#125; with a null tag.</div><div class="line">     */</div><div class="line">    public abstract FragmentTransaction add(@IdRes int containerViewId, Fragment fragment);</div><div class="line">    </div><div class="line">    public abstract FragmentTransaction add(@IdRes int containerViewId, Fragment fragment,</div><div class="line">            @Nullable String tag);</div><div class="line">    ......</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>2.1 抽象类FragmentTransaction，这里有个add(Fragment fragment, String tag)方法，添加一个Fragment，只设置tag,不设置viewId,说白了添加一个不妨碍业务的空Fragment方法，这是glide的绑定生命周期的一个点。继续看实现类</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line">final class BackStackRecord extends FragmentTransaction implements</div><div class="line">        FragmentManager.BackStackEntry, Runnable &#123;</div><div class="line">    ...</div><div class="line">     public FragmentTransaction add(int containerViewId, Fragment fragment) &#123;</div><div class="line">        doAddOp(containerViewId, fragment, null, OP_ADD);</div><div class="line">        return this;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    private void doAddOp(int containerViewId, Fragment fragment, String tag, int opcmd) &#123;</div><div class="line">        fragment.mFragmentManager = mManager;</div><div class="line"></div><div class="line">        if (tag != null) &#123;</div><div class="line">            if (fragment.mTag != null &amp;&amp; !tag.equals(fragment.mTag)) &#123;</div><div class="line">                throw new IllegalStateException(&quot;Can&apos;t change tag of fragment &quot;</div><div class="line">                        + fragment + &quot;: was &quot; + fragment.mTag</div><div class="line">                        + &quot; now &quot; + tag);</div><div class="line">            &#125;</div><div class="line">            fragment.mTag = tag;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (containerViewId != 0) &#123;</div><div class="line">            if (fragment.mFragmentId != 0 &amp;&amp; fragment.mFragmentId != containerViewId) &#123;</div><div class="line">                throw new IllegalStateException(&quot;Can&apos;t change container ID of fragment &quot;</div><div class="line">                        + fragment + &quot;: was &quot; + fragment.mFragmentId</div><div class="line">                        + &quot; now &quot; + containerViewId);</div><div class="line">            &#125;</div><div class="line">            fragment.mContainerId = fragment.mFragmentId = containerViewId;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        Op op = new Op();</div><div class="line">        op.cmd = opcmd;</div><div class="line">        op.fragment = fragment;</div><div class="line">        addOp(op);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">     void addOp(Op op) &#123;</div><div class="line">        if (mHead == null) &#123;</div><div class="line">            mHead = mTail = op;</div><div class="line">        &#125; else &#123;</div><div class="line">            op.prev = mTail;</div><div class="line">            mTail.next = op;</div><div class="line">            mTail = op;</div><div class="line">        &#125;</div><div class="line">        op.enterAnim = mEnterAnim;</div><div class="line">        op.exitAnim = mExitAnim;</div><div class="line">        op.popEnterAnim = mPopEnterAnim;</div><div class="line">        op.popExitAnim = mPopExitAnim;</div><div class="line">        mNumOp++;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public int commit() &#123;</div><div class="line">        return commitInternal(false);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    int commitInternal(boolean allowStateLoss) &#123;</div><div class="line">        if (mCommitted) throw new IllegalStateException(&quot;commit already called&quot;);</div><div class="line">        if (FragmentManagerImpl.DEBUG) &#123;</div><div class="line">            Log.v(TAG, &quot;Commit: &quot; + this);</div><div class="line">            LogWriter logw = new LogWriter(TAG);</div><div class="line">            PrintWriter pw = new PrintWriter(logw);</div><div class="line">            dump(&quot;  &quot;, null, pw, null);</div><div class="line">        &#125;</div><div class="line">        mCommitted = true;</div><div class="line">        if (mAddToBackStack) &#123;</div><div class="line">            mIndex = mManager.allocBackStackIndex(this);</div><div class="line">        &#125; else &#123;</div><div class="line">            mIndex = -1;</div><div class="line">        &#125;</div><div class="line">        mManager.enqueueAction(this, allowStateLoss);</div><div class="line">        return mIndex;</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>2.2 先看add(),在实现类中调用到了doAddOp(),而在doAddOp方法内去对当前的Fragment进栈操作,这里OP_ADD为op.cmd = opcmd;的赋值，对应的操作如下，mManager.addFragment(f, false)很明显添加一个Fragment。并break;</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line">public void run() &#123;</div><div class="line">        ...</div><div class="line">        while (op != null) &#123;</div><div class="line">            int enterAnim = state != null ? 0 : op.enterAnim;</div><div class="line">            int exitAnim = state != null ? 0 : op.exitAnim;</div><div class="line">            switch (op.cmd) &#123;</div><div class="line">                case OP_ADD: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = enterAnim;</div><div class="line">                    mManager.addFragment(f, false);</div><div class="line">                &#125; break;</div><div class="line">                case OP_REPLACE: &#123;</div><div class="line">                    ...</div><div class="line">                    if (f != null) &#123;</div><div class="line">                        f.mNextAnim = enterAnim;</div><div class="line">                        mManager.addFragment(f, false);</div><div class="line">                    &#125;</div><div class="line">                &#125; break;</div><div class="line">                case OP_REMOVE: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = exitAnim;</div><div class="line">                    mManager.removeFragment(f, transition, transitionStyle);</div><div class="line">                &#125; break;</div><div class="line">                case OP_HIDE: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = exitAnim;</div><div class="line">                    mManager.hideFragment(f, transition, transitionStyle);</div><div class="line">                &#125; break;</div><div class="line">                case OP_SHOW: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = enterAnim;</div><div class="line">                    mManager.showFragment(f, transition, transitionStyle);</div><div class="line">                &#125; break;</div><div class="line">                case OP_DETACH: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = exitAnim;</div><div class="line">                    mManager.detachFragment(f, transition, transitionStyle);</div><div class="line">                &#125; break;</div><div class="line">                case OP_ATTACH: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = enterAnim;</div><div class="line">                    mManager.attachFragment(f, transition, transitionStyle);</div><div class="line">                &#125; break;</div><div class="line">                default: &#123;</div><div class="line">                    throw new IllegalArgumentException(&quot;Unknown cmd: &quot; + op.cmd);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            op = op.next;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mManager.moveToState(mManager.mCurState, transition, transitionStyle, true);</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    </div><div class="line">    public void addFragment(Fragment fragment, boolean moveToStateNow) &#123;</div><div class="line">        if (mAdded == null) &#123;</div><div class="line">            mAdded = new ArrayList&lt;Fragment&gt;();</div><div class="line">        &#125;</div><div class="line">        if (DEBUG) Log.v(TAG, &quot;add: &quot; + fragment);</div><div class="line">        makeActive(fragment);</div><div class="line">        if (!fragment.mDetached) &#123;</div><div class="line">            if (mAdded.contains(fragment)) &#123;</div><div class="line">                throw new IllegalStateException(&quot;Fragment already added: &quot; + fragment);</div><div class="line">            &#125;</div><div class="line">            mAdded.add(fragment);</div><div class="line">            fragment.mAdded = true;</div><div class="line">            fragment.mRemoving = false;</div><div class="line">            if (fragment.mHasMenu &amp;&amp; fragment.mMenuVisible) &#123;</div><div class="line">                mNeedMenuInvalidate = true;</div><div class="line">            &#125;</div><div class="line">            if (moveToStateNow) &#123;</div><div class="line">                moveToState(fragment);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>2.3 最后肯定是走到moveToState(fragment)；moveToState(fragment)这个方法很重要，break后走这里，这个方法一会继续看，我们顺带看一下其他的commit()操作。当前BackStackRecord实现类中的mManager是FragmentManagerImpl。这就很好理解了，又转到了熟悉的FragmentManagerImpl中了，继续看代码。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">mManager.enqueueAction(this, allowStateLoss);</div><div class="line"></div><div class="line">final class FragmentManagerImpl extends FragmentManager implements LayoutInflaterFactory &#123;</div><div class="line"> /**</div><div class="line">     * Adds an action to the queue of pending actions.</div><div class="line">     *</div><div class="line">     * @param action the action to add</div><div class="line">     * @param allowStateLoss whether to allow loss of state information</div><div class="line">     * @throws IllegalStateException if the activity has been destroyed</div><div class="line">     */</div><div class="line">    public void enqueueAction(Runnable action, boolean allowStateLoss) &#123;</div><div class="line">        if (!allowStateLoss) &#123;</div><div class="line">            checkStateLoss();</div><div class="line">        &#125;</div><div class="line">        synchronized (this) &#123;</div><div class="line">            if (mDestroyed || mHost == null) &#123;</div><div class="line">                throw new IllegalStateException(&quot;Activity has been destroyed&quot;);</div><div class="line">            &#125;</div><div class="line">            if (mPendingActions == null) &#123;</div><div class="line">                mPendingActions = new ArrayList&lt;Runnable&gt;();</div><div class="line">            &#125;</div><div class="line">            mPendingActions.add(action);</div><div class="line">            if (mPendingActions.size() == 1) &#123;</div><div class="line">                mHost.getHandler().removeCallbacks(mExecCommit);</div><div class="line">                mHost.getHandler().post(mExecCommit);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">Runnable mExecCommit = new Runnable() &#123;</div><div class="line">        @Override</div><div class="line">        public void run() &#123;</div><div class="line">            execPendingActions();</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>2.4 在 mPendingActions.add(action)中，mPendingActions为action的list，添加一个事件，如果是第一个，发送消息mHost.getHandler().post(mExecCommit)，继续看mExecCommit消息就走到了execPendingActions(),上代码看下</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Only call from main thread!</div><div class="line"> */</div><div class="line">public boolean execPendingActions() &#123;</div><div class="line">    if (mExecutingActions) &#123;</div><div class="line">        throw new IllegalStateException(&quot;Recursive entry to executePendingTransactions&quot;);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    if (Looper.myLooper() != mHost.getHandler().getLooper()) &#123;</div><div class="line">        throw new IllegalStateException(&quot;Must be called from main thread of process&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    boolean didSomething = false;</div><div class="line"></div><div class="line">    while (true) &#123;</div><div class="line">        int numActions;</div><div class="line">        </div><div class="line">        synchronized (this) &#123;</div><div class="line">            if (mPendingActions == null || mPendingActions.size() == 0) &#123;</div><div class="line">                break;</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            numActions = mPendingActions.size();</div><div class="line">            if (mTmpActions == null || mTmpActions.length &lt; numActions) &#123;</div><div class="line">                mTmpActions = new Runnable[numActions];</div><div class="line">            &#125;</div><div class="line">            mPendingActions.toArray(mTmpActions);</div><div class="line">            mPendingActions.clear();</div><div class="line">            mHost.getHandler().removeCallbacks(mExecCommit);</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        mExecutingActions = true;</div><div class="line">        for (int i=0; i&lt;numActions; i++) &#123;</div><div class="line">            mTmpActions[i].run();</div><div class="line">            mTmpActions[i] = null;</div><div class="line">        &#125;</div><div class="line">        mExecutingActions = false;</div><div class="line">        didSomething = true;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    if (mHavePendingDeferredStart) &#123;</div><div class="line">        boolean loadersRunning = false;</div><div class="line">        for (int i=0; i&lt;mActive.size(); i++) &#123;</div><div class="line">            Fragment f = mActive.get(i);</div><div class="line">            if (f != null &amp;&amp; f.mLoaderManager != null) &#123;</div><div class="line">                loadersRunning |= f.mLoaderManager.hasRunningLoaders();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        if (!loadersRunning) &#123;</div><div class="line">            mHavePendingDeferredStart = false;</div><div class="line">            startPendingDeferredFragments();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return didSomething;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>2.5 这里关注startPendingDeferredFragments()就可以了</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">void startPendingDeferredFragments() &#123;</div><div class="line">        if (mActive == null) return;</div><div class="line"></div><div class="line">        for (int i=0; i&lt;mActive.size(); i++) &#123;</div><div class="line">            Fragment f = mActive.get(i);</div><div class="line">            if (f != null) &#123;</div><div class="line">                performPendingDeferredStart(f);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">public void performPendingDeferredStart(Fragment f) &#123;</div><div class="line">        if (f.mDeferStart) &#123;</div><div class="line">            if (mExecutingActions) &#123;</div><div class="line">                // Wait until we&apos;re done executing our pending transactions</div><div class="line">                mHavePendingDeferredStart = true;</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">            f.mDeferStart = false;</div><div class="line">            moveToState(f, mCurState, 0, 0, false);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>2.6 重点来了，最后我们可以看到ragmentManager.beginTransaction().add(fragmet).commit()的操作，commit最终调用到了moveToState()。也走到了这里</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div></pre></td><td class="code"><pre><div class="line">void moveToState(Fragment f, int newState, int transit, int transitionStyle,</div><div class="line">            boolean keepActive) &#123;</div><div class="line">            </div><div class="line">    if (f.mState &lt; newState) &#123;</div><div class="line">        switch (f.mState) &#123;</div><div class="line">            case Fragment.INITIALIZING:</div><div class="line">                ...</div><div class="line">                f.mHost = mHost;</div><div class="line">                f.mParentFragment = mParent;</div><div class="line">                f.mFragmentManager = mParent != null</div><div class="line">                        ? mParent.mChildFragmentManager :mHost.getFragmentManagerImpl();</div><div class="line">                f.mCalled = false;</div><div class="line">                f.onAttach(mHost.getContext());</div><div class="line">                if (f.mParentFragment == null) &#123;</div><div class="line">                    mHost.onAttachFragment(f);</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                if (!f.mRetaining) &#123;    f.performCreate(f.mSavedFragmentState);</div><div class="line">                &#125;</div><div class="line">                f.mRetaining = false;</div><div class="line">                if (f.mFromLayout) &#123;</div><div class="line">                    // For fragments that are part of the content view</div><div class="line">                    // layout, we need to instantiate the view immediately</div><div class="line">                    // and the inflater will take care of adding it.</div><div class="line">                    f.mView = f.performCreateView(f.getLayoutInflater(</div><div class="line">                            f.mSavedFragmentState), null,f.mSavedFragmentState);</div><div class="line">                    if (f.mView != null) &#123;</div><div class="line">                        f.mInnerView = f.mView;</div><div class="line">                        </div><div class="line">                    if (f.mHidden) f.mView.setVisibility(View.GONE);</div><div class="line">                        f.onViewCreated(f.mView, f.mSavedFragmentState);</div><div class="line">                            ...</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            case Fragment.CREATED:</div><div class="line">                if (newState &gt; Fragment.CREATED) &#123;</div><div class="line">                    if (DEBUG) Log.v(TAG, &quot;moveto ACTIVITY_CREATED: &quot; + f);</div><div class="line">                        if (!f.mFromLayout) &#123;</div><div class="line">                            ViewGroup container = null;</div><div class="line">                            if (f.mContainerId != 0) &#123;</div><div class="line">                                container = (ViewGroup)mContainer.onFindViewById(f.mContainerId);</div><div class="line">                            &#125;</div><div class="line">                            f.mContainer = container;</div><div class="line">                            f.mView = f.performCreateView(f.getLayoutInflater(</div><div class="line">                            f.mSavedFragmentState), container, f.mSavedFragmentState);</div><div class="line">                            if (f.mView != null) &#123;</div><div class="line">                                f.mInnerView = f.mView;</div><div class="line">                                if (Build.VERSION.SDK_INT &gt;= 11) &#123;</div><div class="line">                                    ViewCompat.setSaveFromParentEnabled(f.mView, false);</div><div class="line">                                &#125; else &#123;</div><div class="line">                                    f.mView = NoSaveStateFrameLayout.wrap(f.mView);</div><div class="line">                                &#125;</div><div class="line">                            if (container != null) &#123;</div><div class="line">                                Animation anim = loadAnimation(f, transit, true,</div><div class="line">                                            transitionStyle);</div><div class="line">                                if (anim != null) &#123;</div><div class="line">                                    setHWLayerAnimListenerIfAlpha(f.mView, anim);</div><div class="line">                                    f.mView.startAnimation(anim);</div><div class="line">                                    &#125;</div><div class="line">                                    container.addView(f.mView);</div><div class="line">                                &#125;</div><div class="line">                                if (f.mHidden) f.mView.setVisibility(View.GONE);</div><div class="line">                                f.onViewCreated(f.mView, f.mSavedFragmentState);</div><div class="line">                            &#125; else &#123;</div><div class="line">                                f.mInnerView = null;</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line"></div><div class="line">                        f.performActivityCreated(f.mSavedFragmentState);</div><div class="line">                        if (f.mView != null) &#123;</div><div class="line">                            f.restoreViewState(f.mSavedFragmentState);</div><div class="line">                        &#125;</div><div class="line">                        f.mSavedFragmentState = null;</div><div class="line">                    &#125;</div><div class="line">                case Fragment.ACTIVITY_CREATED:</div><div class="line">                case Fragment.STOPPED:</div><div class="line">                    if (newState &gt; Fragment.STOPPED) &#123;</div><div class="line">                        if (DEBUG) Log.v(TAG, &quot;moveto STARTED: &quot; + f);</div><div class="line">                        f.performStart();</div><div class="line">                    &#125;</div><div class="line">                case Fragment.STARTED:</div><div class="line">                    if (newState &gt; Fragment.STARTED) &#123;</div><div class="line">                        if (DEBUG) Log.v(TAG, &quot;moveto RESUMED: &quot; + f);</div><div class="line">                        f.mResumed = true;</div><div class="line">                        f.performResume();</div><div class="line">                        f.mSavedFragmentState = null;</div><div class="line">                        f.mSavedViewState = null;</div><div class="line">                    &#125;</div><div class="line">            &#125;</div><div class="line">        &#125; else if (f.mState &gt; newState) &#123;</div><div class="line">            switch (f.mState) &#123;</div><div class="line">                case Fragment.RESUMED:</div><div class="line">                    if (newState &lt; Fragment.RESUMED) &#123;</div><div class="line">                        if (DEBUG) Log.v(TAG, &quot;movefrom RESUMED: &quot; + f);</div><div class="line">                        f.performPause();</div><div class="line">                        f.mResumed = false;</div><div class="line">                    &#125;</div><div class="line">                case Fragment.STARTED:</div><div class="line">                    if (newState &lt; Fragment.STARTED) &#123;</div><div class="line">                        if (DEBUG) Log.v(TAG, &quot;movefrom STARTED: &quot; + f);</div><div class="line">                        f.performStop();</div><div class="line">                    &#125;</div><div class="line">                case Fragment.STOPPED:</div><div class="line">                    if (newState &lt; Fragment.STOPPED) &#123;</div><div class="line">                        if (DEBUG) Log.v(TAG, &quot;movefrom STOPPED: &quot; + f);</div><div class="line">                        f.performReallyStop();</div><div class="line">                    &#125;</div><div class="line">                case Fragment.ACTIVITY_CREATED:</div><div class="line">                    if (newState &lt; Fragment.ACTIVITY_CREATED) &#123;</div><div class="line">                        if (DEBUG) Log.v(TAG, &quot;movefrom ACTIVITY_CREATED: &quot; + f);</div><div class="line">                        if (f.mView != null) &#123;</div><div class="line">                            // Need to save the current view state if not</div><div class="line">                            // done already.</div><div class="line">                            if (mHost.onShouldSaveFragmentState(f) &amp;&amp; f.mSavedViewState == null) &#123;</div><div class="line">                                saveFragmentViewState(f);</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                        f.performDestroyView();</div><div class="line">                        if (f.mView != null &amp;&amp; f.mContainer != null) &#123;</div><div class="line">                            Animation anim = null;</div><div class="line">                            if (mCurState &gt; Fragment.INITIALIZING &amp;&amp; !mDestroyed) &#123;</div><div class="line">                                anim = loadAnimation(f, transit, false,</div><div class="line">                                        transitionStyle);</div><div class="line">                            &#125;</div><div class="line">                            if (anim != null) &#123;</div><div class="line">                                final Fragment fragment = f;</div><div class="line">                                f.mAnimatingAway = f.mView;</div><div class="line">                                f.mStateAfterAnimating = newState;</div><div class="line">                                final View viewToAnimate = f.mView;</div><div class="line">                                anim.setAnimationListener(new AnimateOnHWLayerIfNeededListener(</div><div class="line">                                        viewToAnimate, anim) &#123;</div><div class="line">                                    @Override</div><div class="line">                                    public void onAnimationEnd(Animation animation) &#123;</div><div class="line">                                        super.onAnimationEnd(animation);</div><div class="line">                                        if (fragment.mAnimatingAway != null) &#123;</div><div class="line">                                            fragment.mAnimatingAway = null;</div><div class="line">                                            moveToState(fragment, fragment.mStateAfterAnimating,</div><div class="line">                                                    0, 0, false);</div><div class="line">                                        &#125;</div><div class="line">                                    &#125;</div><div class="line">                                &#125;);</div><div class="line">                                f.mView.startAnimation(anim);</div><div class="line">                            &#125;</div><div class="line">                            f.mContainer.removeView(f.mView);</div><div class="line">                        &#125;</div><div class="line">                        f.mContainer = null;</div><div class="line">                        f.mView = null;</div><div class="line">                        f.mInnerView = null;</div><div class="line">                    &#125;</div><div class="line">                case Fragment.CREATED:</div><div class="line">                    if (newState &lt; Fragment.CREATED) &#123;</div><div class="line">                        if (mDestroyed) &#123;</div><div class="line">                            if (f.mAnimatingAway != null) &#123;</div><div class="line">                                // The fragment&apos;s containing activity is</div><div class="line">                                // being destroyed, but this fragment is</div><div class="line">                                // currently animating away.  Stop the</div><div class="line">                                // animation right now -- it is not needed,</div><div class="line">                                // and we can&apos;t wait any more on destroying</div><div class="line">                                // the fragment.</div><div class="line">                                View v = f.mAnimatingAway;</div><div class="line">                                f.mAnimatingAway = null;</div><div class="line">                                v.clearAnimation();</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                        if (f.mAnimatingAway != null) &#123;</div><div class="line">                            // We are waiting for the fragment&apos;s view to finish</div><div class="line">                            // animating away.  Just make a note of the state</div><div class="line">                            // the fragment now should move to once the animation</div><div class="line">                            // is done.</div><div class="line">                            f.mStateAfterAnimating = newState;</div><div class="line">                            newState = Fragment.CREATED;</div><div class="line">                        &#125; else &#123;</div><div class="line">                            if (DEBUG) Log.v(TAG, &quot;movefrom CREATED: &quot; + f);</div><div class="line">                            if (!f.mRetaining) &#123;</div><div class="line">                                f.performDestroy();</div><div class="line">                            &#125;</div><div class="line"></div><div class="line">                            f.mCalled = false;</div><div class="line">                            f.onDetach();</div><div class="line">                            if (!f.mCalled) &#123;</div><div class="line">                                throw new SuperNotCalledException(&quot;Fragment &quot; + f</div><div class="line">                                        + &quot; did not call through to super.onDetach()&quot;);</div><div class="line">                            &#125;</div><div class="line">                            if (!keepActive) &#123;</div><div class="line">                                if (!f.mRetaining) &#123;</div><div class="line">                                    makeInactive(f);</div><div class="line">                                &#125; else &#123;</div><div class="line">                                    f.mHost = null;</div><div class="line">                                    f.mParentFragment = null;</div><div class="line">                                    f.mFragmentManager = null;</div><div class="line">                                    f.mChildFragmentManager = null;</div><div class="line">                                &#125;</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">            &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>3.moveToState()代码有点多，精简一下</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">void moveToState(Fragment f, int newState, int transit, int transitionStyle,</div><div class="line">                     boolean keepActive) &#123;</div><div class="line">        if ((!f.mAdded || f.mDetached) &amp;&amp; newState &gt; Fragment.CREATED) &#123;</div><div class="line">            newState = Fragment.CREATED;</div><div class="line">        &#125;</div><div class="line">        if (f.mRemoving &amp;&amp; newState &gt; f.mState) &#123;</div><div class="line">            newState = f.mState;</div><div class="line">        &#125;</div><div class="line">        if (f.mDeferStart &amp;&amp; f.mState &lt; Fragment.STARTED &amp;&amp; newState &gt; Fragment.STOPPED) &#123;</div><div class="line">            newState = Fragment.STOPPED;</div><div class="line">        &#125;</div><div class="line">        if (f.mState &lt; newState) &#123;</div><div class="line">            switch (f.mState) &#123;</div><div class="line">                case Fragment.INITIALIZING:</div><div class="line">                    f.onAttach(mHost.getContext());</div><div class="line">                    mHost.onAttachFragment(f);</div><div class="line">                    f.onViewCreated(f.mView, f.mSavedFragmentState);</div><div class="line">                case Fragment.CREATED:</div><div class="line">                    container.addView(f.mView);</div><div class="line">                    f.onViewCreated(f.mView, f.mSavedFragmentState);</div><div class="line">                    f.performActivityCreated(f.mSavedFragmentState);</div><div class="line">                    f.restoreViewState(f.mSavedFragmentState);</div><div class="line"></div><div class="line">                case Fragment.ACTIVITY_CREATED:</div><div class="line">                case Fragment.STOPPED:</div><div class="line">                    f.performStart();</div><div class="line">                case Fragment.STARTED:</div><div class="line">                    f.performResume();</div><div class="line">            &#125;</div><div class="line">        &#125; else if (f.mState &gt; newState) &#123;</div><div class="line">            switch (f.mState) &#123;</div><div class="line">                case Fragment.RESUMED:</div><div class="line">                    if (newState &lt; Fragment.RESUMED) &#123;</div><div class="line">                        f.performPause();</div><div class="line">                    &#125;</div><div class="line">                case Fragment.STARTED:</div><div class="line">                    if (newState &lt; Fragment.STARTED) &#123;</div><div class="line">                        f.performStop();</div><div class="line">                    &#125;</div><div class="line">                case Fragment.STOPPED:</div><div class="line">                    if (newState &lt; Fragment.STOPPED) &#123;</div><div class="line">                        f.performReallyStop();</div><div class="line">                    &#125;</div><div class="line">                case Fragment.ACTIVITY_CREATED:</div><div class="line">                    if (newState &lt; Fragment.ACTIVITY_CREATED) &#123;</div><div class="line">                        f.performDestroyView();</div><div class="line">                    &#125;</div><div class="line">                case Fragment.CREATED:</div><div class="line">                    if (newState &lt; Fragment.CREATED) &#123;</div><div class="line">                        if (f.mAnimatingAway != null) &#123;</div><div class="line">                            newState = Fragment.CREATED;</div><div class="line">                        &#125; else &#123;</div><div class="line">                            f.performDestroy();</div><div class="line">                            f.mCalled = false;</div><div class="line">                            f.onDetach();</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener &#123;</div><div class="line">    static final int INITIALIZING = 0;     // Not yet created.</div><div class="line">    static final int CREATED = 1;          // Created.</div><div class="line">    static final int ACTIVITY_CREATED = 2; // The activity has finished its creation.</div><div class="line">    static final int STOPPED = 3;          // Fully created, not started.</div><div class="line">    static final int STARTED = 4;          // Created and started, not resumed.</div><div class="line">    static final int RESUMED = 5;          // Created started and resumed.</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>3.1 当前switch的各个case并没有break;这里有个</p>
+<pre><code>mCurState = newState;对mCurState的赋值操作
+</code></pre><p>  当FragmentActivity启动后，newState已经是Fragment.RESUMED了。所以现在是f.mState = Fragment.INITIALIZING，newState = RESUMED；根据switch中的case依次走了Fragment的创建的生命周期。</p>
+</li>
+<li><p>4 销毁过程同理了，还是在moveToState()。依次来看</p>
+</li>
+<li>4.1 getFragmentManager().beginTransaction().remove(fragment()).commit();</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">FragmentTransaction&#123;</div><div class="line">    public abstract FragmentTransaction remove(Fragment var1)</div><div class="line">&#125;</div><div class="line"></div><div class="line">BackStackRecord&#123;</div><div class="line">    public FragmentTransaction remove(Fragment fragment) &#123;</div><div class="line">        Op op = new Op();</div><div class="line">        op.cmd = OP_REMOVE; </div><div class="line">        op.fragment = fragment;</div><div class="line">        addOp(op);</div><div class="line"></div><div class="line">        return this;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>4.2 这里op.cmd = OP_REMOVE下面会用到，还是开始的run()内，可以看到add()也是在这里进行操作。remove也一样:mManager.removeFragment();</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line">public void run() &#123;</div><div class="line">        ...</div><div class="line">        while (op != null) &#123;</div><div class="line">            int enterAnim = state != null ? 0 : op.enterAnim;</div><div class="line">            int exitAnim = state != null ? 0 : op.exitAnim;</div><div class="line">            switch (op.cmd) &#123;</div><div class="line">                case OP_ADD: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = enterAnim;</div><div class="line">                    mManager.addFragment(f, false);</div><div class="line">                &#125; break;</div><div class="line">                case OP_REPLACE: &#123;</div><div class="line">                    ...</div><div class="line">                    if (f != null) &#123;</div><div class="line">                        f.mNextAnim = enterAnim;</div><div class="line">                        mManager.addFragment(f, false);</div><div class="line">                    &#125;</div><div class="line">                &#125; break;</div><div class="line">                case OP_REMOVE: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = exitAnim;</div><div class="line">                    mManager.removeFragment(f, transition, transitionStyle);</div><div class="line">                &#125; break;</div><div class="line">                case OP_HIDE: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = exitAnim;</div><div class="line">                    mManager.hideFragment(f, transition, transitionStyle);</div><div class="line">                &#125; break;</div><div class="line">                case OP_SHOW: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = enterAnim;</div><div class="line">                    mManager.showFragment(f, transition, transitionStyle);</div><div class="line">                &#125; break;</div><div class="line">                case OP_DETACH: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = exitAnim;</div><div class="line">                    mManager.detachFragment(f, transition, transitionStyle);</div><div class="line">                &#125; break;</div><div class="line">                case OP_ATTACH: &#123;</div><div class="line">                    Fragment f = op.fragment;</div><div class="line">                    f.mNextAnim = enterAnim;</div><div class="line">                    mManager.attachFragment(f, transition, transitionStyle);</div><div class="line">                &#125; break;</div><div class="line">                default: &#123;</div><div class="line">                    throw new IllegalArgumentException(&quot;Unknown cmd: &quot; + op.cmd);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            op = op.next;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mManager.moveToState(mManager.mCurState, transition, transitionStyle, true);</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">     public void removeFragment(Fragment fragment, int transition, int transitionStyle) &#123;</div><div class="line">        if (DEBUG) Log.v(TAG, &quot;remove: &quot; + fragment + &quot; nesting=&quot; + fragment.mBackStackNesting);</div><div class="line">        final boolean inactive = !fragment.isInBackStack();</div><div class="line">        if (!fragment.mDetached || inactive) &#123;</div><div class="line">            if (mAdded != null) &#123;</div><div class="line">                mAdded.remove(fragment);</div><div class="line">            &#125;</div><div class="line">            if (fragment.mHasMenu &amp;&amp; fragment.mMenuVisible) &#123;</div><div class="line">                mNeedMenuInvalidate = true;</div><div class="line">            &#125;</div><div class="line">            fragment.mAdded = false;</div><div class="line">            fragment.mRemoving = true;</div><div class="line">            moveToState(fragment, inactive ? Fragment.INITIALIZING : Fragment.CREATED,</div><div class="line">                    transition, transitionStyle, false);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>走进moveToState，else if (f.mState &gt; newState) {}这里依次进行生命周期调用。</li>
+<li>所以你看。绑定最重要的看懂moveToState就好咯。</li>
+</ul>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2017/10/07/38-Glide-a/" data-toggle="tooltip" data-placement="top" title="Glide(一)生命周期管理">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/09/26/35-android-effect/" data-toggle="tooltip" data-placement="top" title="android 水波纹点击效果">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
