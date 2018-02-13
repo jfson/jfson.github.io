@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="慢慢来,比较快">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          你为什么努力(by 韩路) - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="https://jfson.github.io/2018/02/13/48-reprint -1/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#reprint" title="reprint">reprint</a>
+                        
+                    </div>
+                    <h1>你为什么努力(by 韩路)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2018-02-13
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="你为什么努力"><a href="#你为什么努力" class="headerlink" title="### 你为什么努力"></a>### 你为什么努力</h3><blockquote>
+<p>by 韩路  （转载 ）</p>
+</blockquote>
+<p>1<br>你结婚了，不和父母住一起，有了娃之后，你更体会到了父母当年的艰辛，你想好好爱爱父母，而你从来没语言表达过爱，付出物质和行动是你传递爱的手段。</p>
+<p>你也常问父母，反正你们也退休了，多出去玩玩啊！父母总是跟你说：哎呀，老胳膊老腿不爱动啦！怕出去没医院，慢性病加重不好治了啊！</p>
+<p>有一日，你开车带父母去了郊区的一个度假村住了一夜，突然，你会发现，原来看似古板的父亲也是那么爱用手机拍景色啊！母亲很兴奋的在脱了鞋光着脚踩着冬日里的室外温泉。</p>
+<h2 id="你突然明白了，原来父母也这么爱出去玩，这么爱跟着你和宝宝一起玩，之前说的各种担心只是一个借口，一个怕你费钱费精力的借口……再抬眼算算，你根本做不到每周回家看看父母，在父母有限的时间里，也许只能在见到父母几十面而已，再想想你自己，30多岁的年龄了，能不能有能力随时抬腿就带父母出发？不让他们把日子消磨在几十平米的屋子里？"><a href="#你突然明白了，原来父母也这么爱出去玩，这么爱跟着你和宝宝一起玩，之前说的各种担心只是一个借口，一个怕你费钱费精力的借口……再抬眼算算，你根本做不到每周回家看看父母，在父母有限的时间里，也许只能在见到父母几十面而已，再想想你自己，30多岁的年龄了，能不能有能力随时抬腿就带父母出发？不让他们把日子消磨在几十平米的屋子里？" class="headerlink" title="你突然明白了，原来父母也这么爱出去玩，这么爱跟着你和宝宝一起玩，之前说的各种担心只是一个借口，一个怕你费钱费精力的借口……再抬眼算算，你根本做不到每周回家看看父母，在父母有限的时间里，也许只能在见到父母几十面而已，再想想你自己，30多岁的年龄了，能不能有能力随时抬腿就带父母出发？不让他们把日子消磨在几十平米的屋子里？"></a>你突然明白了，原来父母也这么爱出去玩，这么爱跟着你和宝宝一起玩，之前说的各种担心只是一个借口，一个怕你费钱费精力的借口……再抬眼算算，你根本做不到每周回家看看父母，在父母有限的时间里，也许只能在见到父母几十面而已，再想想你自己，30多岁的年龄了，能不能有能力随时抬腿就带父母出发？不让他们把日子消磨在几十平米的屋子里？</h2><p>2<br>那天，哥们给你介绍个姑娘，你加了姑娘微信，看到姑娘朋友圈里生活挺丰富：自己努力装修房、年底还去了菲律宾潜水、偶尔日本买趟化妆品，生活有滋有味。聊了几天感觉不错，你问姑娘在哪见面，姑娘说了国贸三期顶楼的餐厅，见面吃饭的气氛融洽，姑娘也没过多问你车和房子的事情，更多的透出了不反感你外表，且对你生活范围及兴趣也挺有兴趣，你感觉聊得还不错。</p>
+<p>你知道第一印象的重要，所以特意洗干净了你的悦动，并且努力停在了国贸三期B3离餐厅电梯最近的车位，以便于姑娘少走几步，姑娘欣然的接受了你的邀请，你开着你的悦动一路有一搭无一搭的唠嗑就送她到了家。</p>
+<p>之后的日子，你知道了姑娘在一个设计公司做主管，她的爱好你也同好，人长得甜而不腻，尤其那个清汤挂面的直发总想想让你上去摸一摸，你幻想，这是我媳妇，也还不错，带得出手，有同样爱好，多好啊，但是总是感觉力不从心，你已经很久没自信的主张什么事了，你有些气馁，仔细想了想上次力拔山河的豪言壮语是什么时候来着，只记得去年夏天楼下和2个哥们吃串喝大了时候的宣泄。</p>
+<p>日子一天天过去，你和姑娘不近不远，你始终感觉不敢发力，总有一种如噎在喉的感觉，直到姑娘慢慢消失在你生活里。</p>
+<p>二年后的一日，你和给你介绍姑娘的朋友一起吃饭，朋友想了想说：当年，人家姑娘看了你朋友圈，知道你条件，但是人家还是想见一见聊聊看是否投缘，人家自己开奥迪S5，怕那天让你有些不舒服，特意打车去的赴宴，这样你送她回家，也不尴尬了，但是，你啊你啊！</p>
+<h2 id="饭后，你后悔的想抽了自己几个大嘴巴，为什么自己就不敢迈出明确关系这步？是什么让你这么没有勇气？又是什么让一个那么懂事的结婚对象就白白消耗在自己的自卑中？"><a href="#饭后，你后悔的想抽了自己几个大嘴巴，为什么自己就不敢迈出明确关系这步？是什么让你这么没有勇气？又是什么让一个那么懂事的结婚对象就白白消耗在自己的自卑中？" class="headerlink" title="饭后，你后悔的想抽了自己几个大嘴巴，为什么自己就不敢迈出明确关系这步？是什么让你这么没有勇气？又是什么让一个那么懂事的结婚对象就白白消耗在自己的自卑中？"></a>饭后，你后悔的想抽了自己几个大嘴巴，为什么自己就不敢迈出明确关系这步？是什么让你这么没有勇气？又是什么让一个那么懂事的结婚对象就白白消耗在自己的自卑中？</h2><p>3</p>
+<h2 id="你媳妇刚查出来怀孕，医生检查完，发现孕酮太低，要求每天都来打一针，这样保胎概率高。你带着夫人，每天早上8点就到医院排队打针，那是北京近些年最寒冷的冬天，你看着媳妇朦胧着睡眼蜷缩在塑料椅子上等待打针，你心疼，回家查了查私立妇幼医院，所有检查-最后生产，顺产10万剖宫产起码15万，你默默的关上了网页。"><a href="#你媳妇刚查出来怀孕，医生检查完，发现孕酮太低，要求每天都来打一针，这样保胎概率高。你带着夫人，每天早上8点就到医院排队打针，那是北京近些年最寒冷的冬天，你看着媳妇朦胧着睡眼蜷缩在塑料椅子上等待打针，你心疼，回家查了查私立妇幼医院，所有检查-最后生产，顺产10万剖宫产起码15万，你默默的关上了网页。" class="headerlink" title="你媳妇刚查出来怀孕，医生检查完，发现孕酮太低，要求每天都来打一针，这样保胎概率高。你带着夫人，每天早上8点就到医院排队打针，那是北京近些年最寒冷的冬天，你看着媳妇朦胧着睡眼蜷缩在塑料椅子上等待打针，你心疼，回家查了查私立妇幼医院，所有检查+最后生产，顺产10万剖宫产起码15万，你默默的关上了网页。"></a>你媳妇刚查出来怀孕，医生检查完，发现孕酮太低，要求每天都来打一针，这样保胎概率高。你带着夫人，每天早上8点就到医院排队打针，那是北京近些年最寒冷的冬天，你看着媳妇朦胧着睡眼蜷缩在塑料椅子上等待打针，你心疼，回家查了查私立妇幼医院，所有检查+最后生产，顺产10万剖宫产起码15万，你默默的关上了网页。</h2><p>4<br>有阵子，你最经常打开网站看汽车，你看上了新的3.5普拉多，幻想着带着一家老小出去玩的场景，你给自己立个小目标，要在35岁的时候买上它。</p>
+<p>时间过的飞快，自己的小目标早在日常的周而复始的混沌上下班中消磨殆尽，偶尔在和哥们撸串的时候，那3.5的普拉多仿佛才是你的车，嚼着油腻的大腰子时候，嘴里碎碎念着：3.5双喷射发动机、托森的全时四驱~。</p>
+<h2 id="去百花山玩的那天，你车里挤着媳妇、孩子和她爸妈，你手里这辆1-4自然吸气发动机的小车坚苦的在爬着坡，转过一个小山口，刚才好好的108国道修路改道，10轮大卡车压过的泥泞让你的1-4排量小车狼狈不烂，短短5公里，20分钟还没走完，因为车小儿童椅太占地，后排的你媳妇抱着娃，孩子不舒服的开始哭闹要尿尿，距离百花山还有20多公里，烂泥又没法下车，你苦恼的抓抓头，我的3-5双喷射、我的托森全时四驱。"><a href="#去百花山玩的那天，你车里挤着媳妇、孩子和她爸妈，你手里这辆1-4自然吸气发动机的小车坚苦的在爬着坡，转过一个小山口，刚才好好的108国道修路改道，10轮大卡车压过的泥泞让你的1-4排量小车狼狈不烂，短短5公里，20分钟还没走完，因为车小儿童椅太占地，后排的你媳妇抱着娃，孩子不舒服的开始哭闹要尿尿，距离百花山还有20多公里，烂泥又没法下车，你苦恼的抓抓头，我的3-5双喷射、我的托森全时四驱。" class="headerlink" title="去百花山玩的那天，你车里挤着媳妇、孩子和她爸妈，你手里这辆1.4自然吸气发动机的小车坚苦的在爬着坡，转过一个小山口，刚才好好的108国道修路改道，10轮大卡车压过的泥泞让你的1.4排量小车狼狈不烂，短短5公里，20分钟还没走完，因为车小儿童椅太占地，后排的你媳妇抱着娃，孩子不舒服的开始哭闹要尿尿，距离百花山还有20多公里，烂泥又没法下车，你苦恼的抓抓头，我的3.5双喷射、我的托森全时四驱。"></a>去百花山玩的那天，你车里挤着媳妇、孩子和她爸妈，你手里这辆1.4自然吸气发动机的小车坚苦的在爬着坡，转过一个小山口，刚才好好的108国道修路改道，10轮大卡车压过的泥泞让你的1.4排量小车狼狈不烂，短短5公里，20分钟还没走完，因为车小儿童椅太占地，后排的你媳妇抱着娃，孩子不舒服的开始哭闹要尿尿，距离百花山还有20多公里，烂泥又没法下车，你苦恼的抓抓头，我的3.5双喷射、我的托森全时四驱。</h2><p>5<br>家里宝贝顺利出生了，你心想，其实私立医院也就那么回事，都是生嘛！媳妇这不哭不闹也没跟我念叨私立医院的好，想着，你心里舒坦了些。</p>
+<p>孩子转眼就3个月了，你突然感到你已经好久没好好休息了，双方父母身体都不好，不能帮忙看孩子，家里多了个娃，每个月多支出好几千，真没钱可周转再请个保姆了，每天你就是在两点一线中奔波，忙的上个月还晚还了3天房子贷款，电话被银行口气从您好，变成了：请立刻还款。</p>
+<h2 id="有时候，你就在想，这刚是婴儿，这要是小学、初中、高中……"><a href="#有时候，你就在想，这刚是婴儿，这要是小学、初中、高中……" class="headerlink" title="有时候，你就在想，这刚是婴儿，这要是小学、初中、高中……"></a>有时候，你就在想，这刚是婴儿，这要是小学、初中、高中……</h2><p>6<br>家里媳妇是个不太爱奢侈品的女孩，你总是天真的以为是真不爱奢侈品，你觉得你真是取了天底下很贤惠的媳妇。</p>
+<h2 id="有一天，洗完澡上床，你偶尔瞅见媳妇正在看她们公司一个大波浪女同事朋友圈，那个女同事你也偶尔听说，老公是富二代，舍得给她花钱，你媳妇仔细瞅着那个女同事在朋友圈发的新买的包，虽然你俩之间没有话语，但是你心里已经有了苦涩的滋味，别说巴黎圣诞节去买奢侈品了，结婚时候答应带她去的马尔代夫还没成行，工作忙成了借口，你也知道媳妇明白你心里省钱的小99。"><a href="#有一天，洗完澡上床，你偶尔瞅见媳妇正在看她们公司一个大波浪女同事朋友圈，那个女同事你也偶尔听说，老公是富二代，舍得给她花钱，你媳妇仔细瞅着那个女同事在朋友圈发的新买的包，虽然你俩之间没有话语，但是你心里已经有了苦涩的滋味，别说巴黎圣诞节去买奢侈品了，结婚时候答应带她去的马尔代夫还没成行，工作忙成了借口，你也知道媳妇明白你心里省钱的小99。" class="headerlink" title="有一天，洗完澡上床，你偶尔瞅见媳妇正在看她们公司一个大波浪女同事朋友圈，那个女同事你也偶尔听说，老公是富二代，舍得给她花钱，你媳妇仔细瞅着那个女同事在朋友圈发的新买的包，虽然你俩之间没有话语，但是你心里已经有了苦涩的滋味，别说巴黎圣诞节去买奢侈品了，结婚时候答应带她去的马尔代夫还没成行，工作忙成了借口，你也知道媳妇明白你心里省钱的小99。"></a>有一天，洗完澡上床，你偶尔瞅见媳妇正在看她们公司一个大波浪女同事朋友圈，那个女同事你也偶尔听说，老公是富二代，舍得给她花钱，你媳妇仔细瞅着那个女同事在朋友圈发的新买的包，虽然你俩之间没有话语，但是你心里已经有了苦涩的滋味，别说巴黎圣诞节去买奢侈品了，结婚时候答应带她去的马尔代夫还没成行，工作忙成了借口，你也知道媳妇明白你心里省钱的小99。</h2><p>7<br>有一天，你妈妈电话里淡淡的跟你说了句：让你来父母家一趟，你心里感觉有些异样。进了门，爸妈都在餐桌附近坐着，你妈先开口了，跟你说了，你爸前几天的瘤子穿刺有了结果，是癌，也不是早期了，你瞬间感觉一阵眩晕，因为你爸妈怕你担心，没跟你瘤子穿刺活检的事。</p>
+<p>中晚期癌症，也扩散了，医生说没必要手术了，化疗吧。</p>
+<p>化疗治疗中有种非医保药物，叫做：贝伐珠单抗，2万多一针，副作用小，掉发少，呕吐感轻微，病人少受罪。</p>
+<p>你是孝顺的人，你走出病房来到厕所单间，狠狠的抽了自己的嘴巴。</p>
+<h2 id="往病房走的路上，你哭红了眼睛，床边，你爸安慰你，没事，我这年纪，不怕掉发，也不怕疼。"><a href="#往病房走的路上，你哭红了眼睛，床边，你爸安慰你，没事，我这年纪，不怕掉发，也不怕疼。" class="headerlink" title="往病房走的路上，你哭红了眼睛，床边，你爸安慰你，没事，我这年纪，不怕掉发，也不怕疼。"></a>往病房走的路上，你哭红了眼睛，床边，你爸安慰你，没事，我这年纪，不怕掉发，也不怕疼。</h2><p>我们活在这个社会，很多人各种豪言壮语，最终全都随着烤串的炊烟灰飞烟灭，这个社会上，钱不是万能的、没有钱是万万不能的，我们不是低俗的只看物质，但是我们努力的每一分每一秒，都是为了在父母还能走的时候，多带他们出去转转；为了遇到心意的姑娘能有自信的随时拿下；为了有温暖的不用排队的孕检环境；为了随时想买你能买的汽车；为了哪怕有了宝宝依然不会改变生活的品质；为了不再让媳妇看到自己喜欢的东西而惆怅；更是为了在哪怕遇到死，起码也能死的舒服一点。</p>
+<p>生活是公平的，你选择了在自己轻松，那你身边的家人一定会为你的选择付出成本和代价。</p>
+<p>有些事，你尝试了不一定成功，但是你不尝试肯定是一丝可能都没有。</p>
+<p>一生时间不多，没什么机会停下来惆怅怨天尤人，抓紧眼下的时间和机会，人脑的潜能是无限的。只有努力，才能对得起陪你一起的那些人，那些真正爱你及你爱的人。</p>
+<p>韩路</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/02/02/43-decoupling/" data-toggle="tooltip" data-placement="top" title="Android 解耦框架(自定义View)">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#reprint" title="reprint">reprint</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Jfson">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jfson.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="to be or not !">
+    <meta name="description" content="慢慢来,比较快">
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
@@ -17,7 +17,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://yoursite.com/2017/06/01/01-Application启动流程/">
+    <link rel="canonical" href="https://jfson.github.io/2017/06/01/01-Application启动流程/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -139,7 +139,7 @@
     <!-- Main Content -->
     
 <!-- Image to hack wechat -->
-<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
 <!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
 
 <!-- Post Header -->
@@ -183,7 +183,7 @@
 <p>每个Application Linux进程中，Android操作系统会启动这个进程当这个Android组件需要执行的时候，当其不在长时间使用或者系统必须回收内存为其他App时，这个进程会被干掉。</p>
 </blockquote>
 <ul>
-<li>回顾：上篇blog中，<a href="https://jfson.github.io/2017/06/01/Android%E6%A1%8C%E9%9D%A2Launcher%E5%90%AF%E5%8A%A8/" target="_blank" rel="external">介绍了Launcher启动流程</a>，最后点击桌面图标启动应用</li>
+<li>回顾：上篇blog中，<a href="https://jfson.github.io/2017/06/01/Android%E6%A1%8C%E9%9D%A2Launcher%E5%90%AF%E5%8A%A8/">介绍了Launcher启动流程</a>，最后点击桌面图标启动应用</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">protected void onListItemClick(ListView l, View v, int position, long id) &#123;</div><div class="line">        Intent intent = intentForPosition(position);</div><div class="line">        startActivity(intent);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">public void startActivity(Intent intent, @Nullable Bundle options) &#123;</div><div class="line">        if (options != null) &#123;</div><div class="line">            startActivityForResult(intent, -1, options);</div><div class="line">        &#125; else &#123;</div><div class="line">            // Note we want to go through this call for compatibility with</div><div class="line">            // applications that may have overridden the method.</div><div class="line">            startActivityForResult(intent, -1);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    // 这里 options 为null，继续走satrtActivityForResult();</div><div class="line">    </div><div class="line">    public void startActivityForResult(Intent intent, int requestCode) &#123;</div><div class="line">        startActivityForResult(intent, requestCode, null);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    public void startActivityForResult(Intent intent, int requestCode, @Nullable Bundle options) &#123;</div><div class="line">        if (mParent == null) &#123;</div><div class="line">            Instrumentation.ActivityResult ar =</div><div class="line">                mInstrumentation.execStartActivity(</div><div class="line">                    this, mMainThread.getApplicationThread(), mToken, this,</div><div class="line">                    intent, requestCode, options);</div><div class="line">            if (ar != null) &#123;</div><div class="line">                mMainThread.sendActivityResult(</div><div class="line">                    mToken, mEmbeddedID, requestCode, ar.getResultCode(),</div><div class="line">                    ar.getResultData());</div><div class="line">            &#125;</div><div class="line">            if (requestCode &gt;= 0) &#123;</div><div class="line">                mStartedActivity = true;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            cancelInputsAndStartExitTransition(options);</div><div class="line">            // TODO Consider clearing/flushing other event sources and events for child windows.</div><div class="line">        &#125; else &#123;</div><div class="line">            if (options != null) &#123;</div><div class="line">                mParent.startActivityFromChild(this, intent, requestCode, options);</div><div class="line">            &#125; else &#123;</div><div class="line">                // Note we want to go through this method for compatibility with</div><div class="line">                // existing applications that may have overridden it.</div><div class="line">                mParent.startActivityFromChild(this, intent, requestCode);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
@@ -254,6 +254,14 @@
 
                 <!-- Featured Tags -->
                 
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
 
                 <!-- Friends Blog -->
                 
@@ -286,6 +294,15 @@
 
                 
 
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Jfson">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
                 
 
                 
@@ -355,7 +372,7 @@
 <script>
     // only load tagcloud.js in tag.html
     if($('#tag_cloud').length !== 0){
-        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+        async("https://jfson.github.io/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 //size: {start: 1, end: 1, unit: 'em'},
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -397,7 +414,7 @@
 
 
 <!-- Image to hack wechat -->
-<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>
