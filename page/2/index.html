@@ -174,6 +174,215 @@
 
 <div class="post-preview">
 
+    <a href="/2017/09/08/02-master/">
+        <h2 class="post-title">
+            劝君惜取少年时
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            惜取少年时
+看过 byvoid 的博文，确认，自己的前二十年过的跟玩笑似的，阴差阳错学了计算机专业，从事程序员行业.却带来了前所未有的成就感。当然我也进入了瓶颈期。
+
+困惑
+
+普通玩家指的是，循规蹈矩，按照大多数人的生活轨迹来生活的人，5岁上学，20岁大学毕业参加工作，25岁结婚，30岁生孩子，50岁退休，这不是大多数人的一生吗，这就是普通玩家。高端玩家，不会拘泥于大家眼中该怎样怎样的生活，......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-09-08
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/08/07/26-launch-optimize/">
+        <h2 class="post-title">
+            Android 启动速度优化
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            启动优化
+随着项目越来越大，App的启动时间愈来愈长，有必要对给初始化进行梳理，并预留初始化接口。经过一番折腾后，并对比优化前，成果还不错：优化35%-50%。
+
+Google文档：https://developer.android.com/topic/performance/launch-time.html1.启动时间统计
+a.第一种方式查看Logcat日志，搜索关键字：Displayed......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-08-07
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/08/05/25-binder-c/">
+        <h2 class="post-title">
+            Binder (4) - ServiceManager 启动流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+纵观Binder通讯过程，无不在跟ServiceManager打交道，了解ServiceManager 交互流程就显得很有必要了。ServiceManager分为启动和、获取、添加、注册服务。首先从启动过程来了解,ServiceManager如何成为Binder守护进程。
+
+123456源码路径android/system/core/rootdir/init.rcandroid/frame......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-08-05
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/08/03/24-binder-b/">
+        <h2 class="post-title">
+            Binder (3) - AIDL使用
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+要想了解Binder的原理，结合使用方便我们更简单的去理解调用逻辑。AIDL :Android Interface definition language 我们可以理解为Android 接口定义语言。通过它可以实现进程间的通讯（IPC），如何实现AIDL呢? 进程间通讯需要两个进场，体现在Android中就需要两个App（一个作为Server,一个作为Client）.接下来看如何使用AID......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-08-03
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/08/01/23-binder-a/">
+        <h2 class="post-title">
+            Binder (2) - 序列化
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+Android 开发的时候，在对数据进行持久化的时候，或者数据传递的时候会用到序列化，这时候可以对当前数据类实现Serializable或者Parcelable接口。尤其是进程间通信时，传递数据需要对对象进行序列化。
+
+序列化
+序列化指的是将一个实例对象编码成字节流，并从字节流编码中重新构建对象实例的能力。将一个对象编码成字节流，称为序列化；从一个字节流中读出一个对象实例，称为反序列化。
+......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-08-01
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/07/28/22-builder-pattern/">
+        <h2 class="post-title">
+            构造者模式(Builder Pattern)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+构造者模式（Builder Pattern）
+
+建造者模式是及其常用的一种设计模式，经常提现在一些开源的三方库中来进行return 当前对象进行链式调用，如果你要开源一个niubility 的库，那么学习一下建造者模式是非常有必要的。
+
+
+介绍：将一个复杂对象的构建与它的表示分离，用于属性参数很多时。
+
+很多流行框架用到它，举个最典型的Retrofit的使用。
+
+
+1234567// 忽略......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-07-28
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/07/24/21-abstract-factory-pattern/">
+        <h2 class="post-title">
+            抽象工厂模式(Abstract Factory Pattern)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+抽象工厂模式相对于工厂模式来说，最大的不同是：将工厂的共同特征抽取出来，提供一个生成工厂类。
+
+
+1.举例制作果汁，首先提供两个接口类，果汁的种类和加冰多少。
+
+1234567public interface MakeIce &#123;    void putIce();&#125;public interface MakeJuice &#123;    void juicing();&......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-07-24
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/07/20/20-factory-pattern/">
+        <h2 class="post-title">
+            工厂模式(Factory Pattern)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。在工厂模式中，我们在创建对象时不会对客户端暴露创建逻辑，并且是通过使用一个共同的接口来指向新创建的对象。
+
+
+1.举例制作果汁，首先提供两个接口类，果汁的种类和加冰多少。
+
+1234567public interface MakeIce &#123;    void putIce();&#125;public interfa......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-07-20
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2017/07/16/18-single-pattern/">
         <h2 class="post-title">
             单例模式
@@ -494,186 +703,6 @@ IPC(InterProcess Communication)进程间通讯，我们都知道Android内核其
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2017/05/03/15-plan-a/">
-        <h2 class="post-title">
-            2017 Plan
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            framework 源码
-打包流程，Apk安装流程
-Android 进程启动流程
-Activity 启动流程
-应用进程Content创建流程 
-View 的绘制流程
-setContentView,DecorView
-measure
-layout
-draw
-
-
-ViewTree
-遍历时机和流程
-
-
-自定义View
-canas
-事件分发
-事件冲突
-
-
-UI 性能优化
-ViewGrop
-merge......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-05-03
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/05/03/16-plan-b/">
-        <h2 class="post-title">
-            TODO
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-刚刚看了一个技术型的面试文章，发现很多知识点容易被遗漏。也有很多不会的东西。梳理一下点。加油！
-
-书
-1.《深入Java虚拟机》
-2.《剑指offer》算法
-3.《Android 艺术探索》
-
-练习
-1.LeetCode or lintcode 刷题查缺补漏1.设计模式2.多线程,线程池3.锁。同步。volatie4.Http 网络编程5.开源框架学习（volley,glide,fresc......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-05-03
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/03/22/05-order-use/">
-        <h2 class="post-title">
-            常用命令
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-好记性不如小笔记，命令一段时间不用就忘记了，索性还是记下好了
-
-Git 常用命令
-查看远程分支git branch -r
-
-提交代码1.git status2.git diff3.git commit -m “commit内容注释”4.git status5.git merger –no-ff (有冲突的时候用，冲突解决完重复1,2,3,4)6 git push origin featur......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-03-22
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/03/07/06-ae-work/">
-        <h2 class="post-title">
-            AE 制作一个简单的动画
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            创建一个简单的动画
-常用快捷键：command + 3 打开预览界面；空格键 直接预览
-
-1、 command + N  创建一个工作空间，尺寸选择 720 x 1280或者如图在当前工作空间右键 New Composition 
-
-2、在下方工作空间中右键New –&gt; Solid –&gt; ok,新建一个正方形于工作区间。如图
-
-3、打开刚刚新建图层的选项，直至最后一级，我们可以看......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-03-07
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/03/06/07-AE-Bodymovin-environment/">
-        <h2 class="post-title">
-            AE & Bodymovin 安装配置
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            AE安装（mac）AE 下载及安装地址
- 下载完成后，打开dmg 文件,找到 Build/After Effects CC 2017_Install.pkg文件，双击安装，具体参考下载地址内容
-安装 Bodymovin 插件 （mac）AE 插件 &amp; Bodymovin 百度云盘下载地址
-密码: zdsh
- 打开 ZXP Installer并安装,ZXP是一个AE的插件安装器，随后将......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-03-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/03/06/13-Lottie/">
-        <h2 class="post-title">
-            Lottie
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Lottie - Android 动画详解
-Lottie 是 Airbnb 开源的火热动画库，让程序员告别痛苦的动画。对于曾经写一个大动画两三千行代码的我来说，无疑是一个巨大的福利。接下来我将逐步介绍Lottie的使用及源码，以及 Adobe After Effects 和 Bodymovin 的安装和使用（mac）。 俗话说，不会做动画的设计不是好程序员，让我们开始吧。
-
-相关文章
-AE ......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-03-06
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -684,6 +713,10 @@ AE ......
             <a href="/">&larr; Newer Posts</a>
         </li>
     
+    
+        <li class="next">
+            <a href="/page/3/">Older Posts &rarr;</a>
+        </li>
     
 </ul>
 
@@ -764,7 +797,7 @@ AE ......
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Jfson‘s blog 2017 
+                    Copyright &copy; Jfson‘s blog 2018 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">

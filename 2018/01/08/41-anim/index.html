@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="to be or not !">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Android 动画库对比(Lottie 和 SVGA) - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2018/01/08/41-anim/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#sound code" title="sound code">sound code</a>
+                        
+                    </div>
+                    <h1>Android 动画库对比(Lottie 和 SVGA)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2018-01-08
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>Lottie 和 SVGA 对比</p>
+<h3 id="现有方案"><a href="#现有方案" class="headerlink" title="现有方案"></a>现有方案</h3><ul>
+<li>方案一: Gif / 帧动画</li>
+<li>方案二: Native动画（属性动画/补间动画）</li>
+<li>方案三：动画库<ul>
+<li>Lottie </li>
+<li>SVGA </li>
+<li>Keyframes </li>
+<li>Squall </li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="Gif"><a href="#Gif" class="headerlink" title="Gif"></a>Gif</h3><p><img src="https://github.com/jfson/ImgResource/blob/master/33.png?raw=true=200x300" alt="image"></p>
+<ul>
+<li>1.思路：一般Gif或者帧动画 的性能差是由于图过多，每秒种几十帧，每一帧都是一张图。一个小动画往往需要几十张图。如果变成资源下载，资源包体积难以控制。</li>
+<li><p>2.Gif / 帧动画缺点：</p>
+<ul>
+<li>资源文件包比较大</li>
+<li>效果不是很好(只支持8位颜色)</li>
+</ul>
+</li>
+<li><p>3.使用场景：以上来看gif &amp; 序列帧 只适合做小的动画，例如下拉刷新，小的动态logo,或者直播中的小礼物场景。</p>
+</li>
+</ul>
+<h4 id="原生-Native-动画"><a href="#原生-Native-动画" class="headerlink" title="原生 Native 动画"></a>原生 Native 动画</h4><ul>
+<li>1.思路：Native 动画实则是属性动画或者补间动画。性能相比较gif而言性能比较好，但是有大量动画的需求时，往往生产力是不够的，一开始手动码动画，一个动画最多时写了3000多行code。项目最多的动画达4000行。生产力成了瓶颈。 总结：</li>
+<li>2.Native 动画优缺点：<ul>
+<li>开发成本高</li>
+<li>必须发版</li>
+<li>不能完全100%还原复杂动画，调参数比较繁琐</li>
+<li>图片资源大,影响apk包大小</li>
+</ul>
+</li>
+<li>3.场景： 适合转场，固定的场景。不适合大量、快速迭代的需求。</li>
+</ul>
+<h3 id="动画库对比"><a href="#动画库对比" class="headerlink" title="动画库对比"></a>动画库对比</h3><ul>
+<li><p>动画库的流程<br><img src="https://github.com/jfson/ImgResource/blob/master/36.png?raw=true" alt="image"></p>
+</li>
+<li><p>一套引擎库，三端共用</p>
+</li>
+<li>一套协议，三端各自实现</li>
+<li>对比</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>动画库</th>
+<th>Lottie</th>
+<th>SVGA</th>
+<th>Keyframes</th>
+<th>Squall</th>
+<th>Spine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>支持平台</td>
+<td>Android/iOS/Web</td>
+<td>Android/iOS/Web</td>
+<td>Android/iOS</td>
+<td>iOS</td>
+<td>Android/iOS/Web</td>
+</tr>
+<tr>
+<td>设计工具支持</td>
+<td>After Effects</td>
+<td>AE &amp; Flash</td>
+<td>AE</td>
+<td>AE</td>
+<td>AE</td>
+</tr>
+<tr>
+<td>功能边界</td>
+<td>所有</td>
+<td>部分</td>
+<td>矢量图</td>
+<td>矢量图</td>
+<td>大部分</td>
+</tr>
+<tr>
+<td>导出工具</td>
+<td>插件</td>
+<td>插件</td>
+<td>脚本</td>
+<td>插件</td>
+<td>单独的设计工具</td>
+</tr>
+<tr>
+<td>设计成本</td>
+<td>需要命名规范</td>
+<td>无</td>
+<td>需要脚本</td>
+<td>插件</td>
+<td>单独的设计工具</td>
+</tr>
+<tr>
+<td>资源包大小zip</td>
+<td>2.6M</td>
+<td>767k</td>
+<td></td>
+<td></td>
+<td>2M</td>
+</tr>
+<tr>
+<td>收费</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>官网</td>
+<td><a href="http://svga.io/" target="_blank" rel="external">地址</a></td>
+<td><a href="https://airbnb.design/lottie/" target="_blank" rel="external">地址</a></td>
+<td><a href="https://facebookincubator.github.io/Keyframes/" target="_blank" rel="external">地址</a></td>
+<td><a href="http://www.marcuseckert.com/squall/documentation/" target="_blank" rel="external">地址</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>以上基本排除了Keyframes 和 Squall。</p>
+<h3 id="Dragonbones-Spine-动画库"><a href="#Dragonbones-Spine-动画库" class="headerlink" title="Dragonbones / Spine 动画库"></a>Dragonbones / Spine 动画库</h3><p><img src="https://github.com/jfson/ImgResource/blob/master/32.png?raw=true=200x300" alt="image"></p>
+</li>
+<li><p>这两个可能市面上见的不多，由于不是开源库，所以简单介绍一下该设计工具的思路。</p>
+</li>
+<li><p>1.思路：如上图，Dragonbones /Spine设计工具的思路是将一张图进行骨骼化拆分，如果需要做动画时，对胳膊/腿等零部件图进行位置的变更即可，不需要对原图进行重新构建。实现了对图片极大的进行复用。</p>
+</li>
+<li><p>2.Dragonbones / Spine缺点：</p>
+<ul>
+<li>图片可以复用，性能较好</li>
+<li>不需要发版</li>
+<li>研发成本比较大。</li>
+<li>需要一整套的解放生产力的工具：<ul>
+<li>a.设计输出工具(插件的二次开发)</li>
+<li>b.礼物播放引擎(cocos等，三端可用)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>3.场景：需要快速迭代的需求。</p>
+<h3 id="SVG-概念"><a href="#SVG-概念" class="headerlink" title="SVG 概念"></a>SVG 概念</h3></li>
+<li><p>SVG 实际上指的是设计软件中的概念：SVG图片格式，一种矢量图形。</p>
+</li>
+<li><p>另一个角度来讲一张图或者一个动画，是由很多上下层级的图层构成。<br>比如当前的简单的图，看到的是一张图，但在设计工具中是三个图层构成，有着不同的上下层级顺序。</p>
+</li>
+</ul>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/31.png?raw=true=200x300" alt="image"></p>
+<h3 id="SVGA-动画库源码思路"><a href="#SVGA-动画库源码思路" class="headerlink" title="SVGA 动画库源码思路"></a>SVGA 动画库源码思路</h3><ul>
+<li>一帧一帧</li>
+<li>通过设置帧率，来生成一个配置文件，使得每一帧都有一个配置，每一帧都是关键帧，通过帧率去刷每一帧的画面，这个思路跟gif很像，但是通过配置使得动画过程中图片都可以得到复用。性能就提升上来了。并且不用解析高阶插值（二次线性方程，贝塞尔曲线方程）</li>
+</ul>
+<h3 id="Lottie-动画库源码思路"><a href="#Lottie-动画库源码思路" class="headerlink" title="Lottie 动画库源码思路"></a>Lottie 动画库源码思路</h3><ul>
+<li>一层一层</li>
+<li>完全按照设计工具的设计思路来进行还原，将动画脚本导出并解析。动画脚本非常的轻量。</li>
+<li>将所有的动画拆成多个层级,每个层级layer都有一个动画配置，播放时解析多个layer的配置，并给每个layer做相应的动画。也达到了图片可以复用。当需要解析高阶插值（二次线性方程，贝塞尔曲线方程）时，性能相对而言差一点。</li>
+</ul>
+<h3 id="SVGA"><a href="#SVGA" class="headerlink" title="SVGA"></a>SVGA</h3><h5 id="设计成本"><a href="#设计成本" class="headerlink" title="设计成本"></a>设计成本</h5><ul>
+<li>SVGA目不支持种类：<ul>
+<li>不支持复杂的矢量形状图层</li>
+<li>AE自带的渐变、生成、描边、擦除…</li>
+<li>对设计工具原生动画不友好，对图片动画友好(适合映客礼物场景)</li>
+</ul>
+</li>
+<li>导出工具<a href="https://github.com/yyued/SVGA-FLConverter" target="_blank" rel="external">开源</a><h5 id="开发成本"><a href="#开发成本" class="headerlink" title="开发成本"></a>开发成本</h5></li>
+<li>1.优点<ul>
+<li>资源包小</li>
+<li>测试工具齐全</li>
+<li>三端可用</li>
+<li>回调完整</li>
+<li>Protobuf 序列化结构数据格式，序列化的数据体更小，传递效率比xml,json 更高。</li>
+</ul>
+</li>
+<li><p>2.缺点</p>
+<ul>
+<li>每个礼物播放时都去新解压，需要改一套缓存策略</li>
+<li>svga 用zlib打包(字节流数据压缩程序库)，不方便解压和追踪包内容。</li>
+</ul>
+</li>
+<li><p>4.插入动画头像功能</p>
+<ul>
+<li>支持，需定义一套专属的头像配置的协议。<h3 id="Lottie"><a href="#Lottie" class="headerlink" title="Lottie"></a>Lottie</h3><h5 id="设计成本-1"><a href="#设计成本-1" class="headerlink" title="设计成本"></a>设计成本</h5></li>
+</ul>
+</li>
+<li>1.Lottie 不支持的设计：<ul>
+<li>基本满足所有种类的矢量动画和图片动画。</li>
+<li>有导出插件<h4 id="开发成本-1"><a href="#开发成本-1" class="headerlink" title="开发成本"></a>开发成本</h4></li>
+</ul>
+</li>
+<li>1.优点<ul>
+<li>三端可用</li>
+<li>回调完整</li>
+<li>项目已经存在一套缓存逻辑</li>
+<li>当前的库可以满足业务需求，不需要二次开发</li>
+</ul>
+</li>
+<li><p>2.缺点</p>
+<ul>
+<li>资源包相较SVGA而言会大一倍多</li>
+<li>图片需要重命名 &amp; 偶先播不出来动效。</li>
+</ul>
+</li>
+<li><p>4.插入动画头像功能</p>
+<ul>
+<li>已经支持</li>
+</ul>
+</li>
+</ul>
+<h3 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h3><ul>
+<li>同一礼物对比</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>SVGA</th>
+<th>Lottie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内存占用</td>
+<td>350</td>
+<td>339</td>
+</tr>
+<tr>
+<td>graphics</td>
+<td>116-117</td>
+<td>113 -103</td>
+</tr>
+<tr>
+<td>cpu 占用</td>
+<td>平均5.6,最高15</td>
+<td>平均5.18,最高13.75</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>SVGA</th>
+<th>Lottie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内存占用</td>
+<td>390</td>
+<td>362</td>
+</tr>
+<tr>
+<td>graphics</td>
+<td>144-138</td>
+<td>114-114</td>
+</tr>
+<tr>
+<td>cpu 占用</td>
+<td>平均6.8,最高17</td>
+<td>平均7.4,最高23</td>
+</tr>
+</tbody>
+</table>
+<p>​    </p>
+<p>​    </p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/01/10/47-view-window/" data-toggle="tooltip" data-placement="top" title="Android Window">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/12/22/40-lru/" data-toggle="tooltip" data-placement="top" title="LruCache (Lru 算法)">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
