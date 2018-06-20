@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="慢慢来,比较快">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          SVGA 小解 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="https://jfson.github.io/2018/06/21/49-svga/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#reprint" title="reprint">reprint</a>
+                        
+                    </div>
+                    <h1>SVGA 小解</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2018-06-21
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="SVG-概念"><a href="#SVG-概念" class="headerlink" title="SVG 概念"></a>SVG 概念</h3><ul>
+<li><p>SVG 实际上指的是设计软件中的概念：SVG图片格式，一种矢量图形。</p>
+</li>
+<li><p>另一个角度来讲一张图或者一个动画，是由很多上下层级的图层构成。<br>比如当前的简单的图，看到的是一张图，但在设计工具中是三个图层构成，有着不同的上下层级顺序。</p>
+</li>
+</ul>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/31.png?raw=true=200x300" alt="image"></p>
+<h3 id="SVGA成本"><a href="#SVGA成本" class="headerlink" title="SVGA成本"></a>SVGA成本</h3><ul>
+<li>SVGA目不支持种类：<ul>
+<li>不支持复杂的矢量形状图层</li>
+<li>AE自带的渐变、生成、描边、擦除…</li>
+<li>对设计工具原生动画不友好，对图片动画友好(适合映客礼物场景)</li>
+</ul>
+</li>
+<li>导出工具<a href="https://github.com/yyued/SVGA-FLConverter" target="_blank" rel="external">开源</a><h5 id="开发成本"><a href="#开发成本" class="headerlink" title="开发成本"></a>开发成本</h5></li>
+<li>1.优点<ul>
+<li>资源包小</li>
+<li>测试工具齐全</li>
+<li>三端可用</li>
+<li>回调完整</li>
+<li>Protobuf 序列化结构数据格式，序列化的数据体更小，传递效率比xml,json 更高。</li>
+</ul>
+</li>
+<li><p>2.缺点</p>
+<ul>
+<li>每个礼物播放时都去重新解压，需要改一套缓存策略</li>
+<li>svga 用zlib打包(字节流数据压缩程序库)，不方便解压和追踪包内容。</li>
+</ul>
+</li>
+<li><p>4.插入动画头像功能</p>
+<ul>
+<li>支持，需定义一套专属的头像配置的协议。</li>
+</ul>
+</li>
+</ul>
+<h3 id="SVGA-动画库源码思路"><a href="#SVGA-动画库源码思路" class="headerlink" title="SVGA 动画库源码思路"></a>SVGA 动画库源码思路</h3><ul>
+<li>通过设置帧率，来生成一个配置文件，使得每一帧都有一个配置，每一帧都是关键帧，</li>
+<li>通过帧率去刷每一帧的画面，这个思路跟gif很像，但是通过配置使得动画过程中图片都可以得到复用。性能就提升上来了。并且不用解析高阶插值（二次线性方程，贝塞尔曲线方程）</li>
+</ul>
+<ul>
+<li>源码类图<br><img src="https://github.com/jfson/ImgResource/blob/master/35.png?raw=true" alt="image"></li>
+<li>版本2.1.2(应该是这个版本…)</li>
+<li>小解</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">SVGAImageView imageView = new SVGAImageView(this);</div><div class="line">parser = new SVGAParser(this);</div><div class="line">parser.parse(new URL(&quot;http://legox.yy.com/svga/svga-me/angel.svga&quot;), new SVGAParser.ParseCompletion() &#123; // -----&gt; 下文 1</div><div class="line">    @Override</div><div class="line">    public void onComplete(@NotNull SVGAVideoEntity videoItem) &#123;</div><div class="line">        SVGADrawable drawable = new SVGADrawable(videoItem);</div><div class="line">        imageView.setImageDrawable(drawable); // -----&gt; 下文 2</div><div class="line">        imageView.startAnimation();// -----&gt; 下文 3</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void onError() &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<ul>
+<li>1.解析 SVGAParser<ul>
+<li>a. AE导出动画文件，在解析出的SVGAVideoEntity为动画数据源，在使用时调用 SVGAParser(this).parse(url) 最后返回SVGAVideoEntity。</li>
+<li>b.parse中是一整套的网络下载，根据下载url作为缓存KEY值，缓存动画文件，如果已经下载过的文件，直接去读取文件流并解析。可以看到关键源码如下。PS:这里引申出一个问题，数据源SVGAVideoEntity并没有做缓存，所以每次播放之时，即便是动画文件已经download下来，还是要重新去解析，这是可以跟需要改进的地方。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">open fun parse(url: URL, callback: ParseCompletion) &#123;</div><div class="line">        if (cacheDir(cacheKey(url)).exists()) &#123;</div><div class="line">            parseWithCacheKey(cacheKey(url))?.let &#123;</div><div class="line">                Handler(context.mainLooper).post &#123;</div><div class="line">                    callback.onComplete(it)</div><div class="line">                &#125;</div><div class="line">                return</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        fileDownloader.resume(url, &#123;</div><div class="line">            val videoItem = parse(it, cacheKey(url)) ?: return@resume (Handler(context.mainLooper).post &#123; callback.onError() &#125; as? Unit ?: Unit)</div><div class="line">            Handler(context.mainLooper).post &#123;</div><div class="line">                callback.onComplete(videoItem)</div><div class="line">            &#125;</div><div class="line">        &#125;, &#123;</div><div class="line">            Handler(context.mainLooper).post &#123;</div><div class="line">                callback.onError()</div><div class="line">            &#125;</div><div class="line">        &#125;)</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">open fun parseWithCacheKey(cacheKey: String): SVGAVideoEntity? &#123;</div><div class="line">        synchronized(sharedLock, &#123;</div><div class="line">            try &#123;</div><div class="line">                val cacheDir = File(context.cacheDir.absolutePath + File.separator + SVGA_RESOURCE + &quot;/&quot; + cacheKey + &quot;/&quot;)</div><div class="line">                File(cacheDir, &quot;movie.binary&quot;).takeIf &#123; it.isFile &#125;?.let &#123; binaryFile -&gt;</div><div class="line">                    try &#123;</div><div class="line">                        FileInputStream(binaryFile).let &#123;</div><div class="line">                            val videoItem = SVGAVideoEntity(MovieEntity.ADAPTER.decode(it), cacheDir)</div><div class="line">                            it.close()</div><div class="line">                            return videoItem</div><div class="line">                        &#125;</div><div class="line">                    &#125; catch (e: Exception) &#123;</div><div class="line">                        cacheDir.delete()</div><div class="line">                        binaryFile.delete()</div><div class="line">                        throw e</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                File(cacheDir, &quot;movie.spec&quot;).takeIf &#123; it.isFile &#125;?.let &#123; jsonFile -&gt;</div><div class="line">                    try &#123;</div><div class="line">                        FileInputStream(jsonFile).let &#123; fileInputStream -&gt;</div><div class="line">                            val byteArrayOutputStream = ByteArrayOutputStream()</div><div class="line">                            val buffer = ByteArray(2048)</div><div class="line">                            while (true) &#123;</div><div class="line">                                val size = fileInputStream.read(buffer, 0, buffer.size)</div><div class="line">                                if (size == -1) &#123;</div><div class="line">                                    break</div><div class="line">                                &#125;</div><div class="line">                                byteArrayOutputStream.write(buffer, 0, size)</div><div class="line">                            &#125;</div><div class="line">                            byteArrayOutputStream.toString().let &#123;</div><div class="line">                                JSONObject(it).let &#123;</div><div class="line">                                    fileInputStream.close()</div><div class="line">                                    return SVGAVideoEntity(it, cacheDir)</div><div class="line">                                &#125;</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125; catch (e: Exception) &#123;</div><div class="line">                        cacheDir.delete()</div><div class="line">                        jsonFile.delete()</div><div class="line">                        throw e</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125; catch (e: Exception) &#123;</div><div class="line">                e.printStackTrace()</div><div class="line">            &#125;</div><div class="line">        &#125;)</div><div class="line">        return null</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><ol>
+<li>数据源包装类 SVGADrawable<ul>
+<li>a. 将SVGAVideoEntity数据源 设置到SVGADrawable<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">imageView.setImageDrawable(drawable)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>3.startAnimation()</p>
+<ul>
+<li>a. 开始播放动画后，拿到已经解析后SVGADrawable的drawable,关键参数动画的时长：animator.duration(根据配置的帧数，时长计算)，动画的帧率。数值动画会变更SVGADrawable中的currentFrame，这是重点。</li>
+<li>b.currentFrame 设置后会触发invalidateSelf()</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">imageView.startAnimation();</div><div class="line"></div><div class="line">fun startAnimation(range: SVGARange?, reverse: Boolean = false) &#123;</div><div class="line">        stopAnimation(false)</div><div class="line">        val drawable = drawable as? SVGADrawable ?: return</div><div class="line">        drawable.cleared = false</div><div class="line">        drawable.scaleType = scaleType</div><div class="line">        drawable.videoItem?.let &#123;</div><div class="line">            var durationScale = 1.0</div><div class="line">            val startFrame = Math.max(0, range?.location ?: 0)</div><div class="line">            val endFrame = Math.min(it.frames - 1, ((range?.location ?: 0) + (range?.length ?: Int.MAX_VALUE) - 1))</div><div class="line">            val animator = ValueAnimator.ofInt(startFrame, endFrame)</div><div class="line">            ...</div><div class="line">            animator.interpolator = LinearInterpolator()</div><div class="line">            animator.duration = ((endFrame - startFrame + 1) * (1000 / it.FPS) / durationScale).toLong()</div><div class="line">            animator.repeatCount = if (loops &lt;= 0) 99999 else loops - 1</div><div class="line">            animator.addUpdateListener &#123;</div><div class="line">                drawable.currentFrame = animator.animatedValue as Int</div><div class="line">                callback?.onStep(drawable.currentFrame, ((drawable.currentFrame + 1).toDouble() / drawable.videoItem.frames.toDouble()))</div><div class="line">            &#125;</div><div class="line">            animator.addListener(object : Animator.AnimatorListener &#123;</div><div class="line">               ...</div><div class="line">            &#125;)</div><div class="line">            if (reverse) &#123;</div><div class="line">                animator.reverse()</div><div class="line">            &#125;</div><div class="line">            else &#123;</div><div class="line">                animator.start()</div><div class="line">            &#125;</div><div class="line">            this.animator = animator</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var currentFrame = 0</div><div class="line">      internal set (value) &#123;</div><div class="line">          if (field == value) &#123;</div><div class="line">              return</div><div class="line">          &#125;</div><div class="line">          field = value</div><div class="line">          invalidateSelf()</div><div class="line">      &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>4.SVGADrawable</p>
+<ul>
+<li>a.SVGADrawable的invalidateSelf()会触发自身的draw()</li>
+<li>b. SVGACanvasDrawer(videoItem: SVGAVideoEntity, val dynamicItem: SVGADynamicEntity) 可以看到数据源已经被传到这里</li>
+<li>可以理解为不断的通过触发drawFrame() 来刷新，看到这里基本看出来SVGA的原理来了，也是上面总结的：通过帧率去刷每一帧的画面，这个思路跟gif很像，但是通过配置使得动画过程中图片都可以得到复用。性能就提升上来了。并且不用解析高阶插值（二次线性方程，贝塞尔曲线方程）<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">override fun draw(canvas: Canvas?) &#123;</div><div class="line">       if (cleared) &#123;</div><div class="line">           return</div><div class="line">       &#125;</div><div class="line">       canvas?.let &#123;</div><div class="line">           //drawer --&gt; SVGACanvasDrawer</div><div class="line">           drawer.drawFrame(it,currentFrame, scaleType)</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">override fun drawFrame(canvas :Canvas, frameIndex: Int, scaleType: ImageView.ScaleType) &#123;</div><div class="line">       super.drawFrame(canvas,frameIndex, scaleType)</div><div class="line">       resetCachePath(canvas)</div><div class="line">       val sprites = requestFrameSprites(frameIndex)</div><div class="line">       sprites.forEach &#123;</div><div class="line">           drawSprite(it,canvas)</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>5.分类：矢量元素动画 or 图片动画</p>
+<ul>
+<li>看上方总结的类图</li>
+<li>如果是矢量动画会取List<svgadrawersprite>中的对应每一帧的数据list,而如果有图片的话，会跟图片imageKey进行一一映射，并返回</svgadrawersprite></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">internal fun requestFrameSprites(frameIndex: Int): List&lt;SVGADrawerSprite&gt; &#123;</div><div class="line">        return videoItem.sprites.mapNotNull &#123;</div><div class="line">            if (frameIndex &lt; it.frames.size) &#123;</div><div class="line">                if (it.frames[frameIndex].alpha &lt;= 0.0) &#123;</div><div class="line">                    return@mapNotNull null</div><div class="line">                &#125;</div><div class="line">                return@mapNotNull SVGADrawerSprite(it.imageKey, it.frames[frameIndex])</div><div class="line">            &#125;</div><div class="line">            return@mapNotNull null</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>6.draw </p>
+<ul>
+<li>最后.. 图片有了，对应图片显示的参数也有了，剩下的就是canvas.drawBitmap，canvas.drawPath…</li>
+</ul>
+</li>
+<li><p>7.图挺乱的…已经凌晨了，就这样咯~。。。2333睡觉</p>
+</li>
+<li>最后，贴上绘制的代码，感兴趣的筒子们请看。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div></pre></td><td class="code"><pre><div class="line">private fun drawSprite(sprite: SVGADrawerSprite,canvas :Canvas) &#123;</div><div class="line">        drawImage(sprite, canvas)</div><div class="line">        drawShape(sprite, canvas)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private fun drawImage(sprite: SVGADrawerSprite, canvas :Canvas) &#123;</div><div class="line">        val imageKey = sprite.imageKey ?: return</div><div class="line">        dynamicItem.dynamicHidden[imageKey]?.takeIf &#123; it &#125;?.let &#123; return &#125;</div><div class="line">        (dynamicItem.dynamicImage[imageKey] ?: videoItem.images[imageKey])?.let &#123;</div><div class="line">            resetShareMatrix(sprite.frameEntity.transform)</div><div class="line">            sharedPaint.reset()</div><div class="line">            sharedPaint.isAntiAlias = videoItem.antiAlias</div><div class="line">            sharedPaint.isFilterBitmap = videoItem.antiAlias</div><div class="line">            sharedPaint.alpha = (sprite.frameEntity.alpha * 255).toInt()</div><div class="line">            if (sprite.frameEntity.maskPath != null) &#123;</div><div class="line">                val maskPath = sprite.frameEntity.maskPath ?: return@let</div><div class="line">                canvas.save()</div><div class="line">                sharedPath.reset()</div><div class="line">                maskPath.buildPath(sharedPath)</div><div class="line">                sharedPath.transform(sharedFrameMatrix)</div><div class="line">                canvas.clipPath(sharedPath)</div><div class="line">                sharedFrameMatrix.preScale((sprite.frameEntity.layout.width / it.width).toFloat(), (sprite.frameEntity.layout.width / it.width).toFloat())</div><div class="line">                canvas.drawBitmap(it, sharedFrameMatrix, sharedPaint)</div><div class="line">                canvas.restore()</div><div class="line">            &#125;</div><div class="line">            else &#123;</div><div class="line">                sharedFrameMatrix.preScale((sprite.frameEntity.layout.width / it.width).toFloat(), (sprite.frameEntity.layout.width / it.width).toFloat())</div><div class="line">                canvas.drawBitmap(it, sharedFrameMatrix, sharedPaint)</div><div class="line">            &#125;</div><div class="line">            drawText(canvas,it, sprite)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private fun drawText(canvas :Canvas, drawingBitmap: Bitmap, sprite: SVGADrawerSprite) &#123;</div><div class="line">        if (dynamicItem.isTextDirty) &#123;</div><div class="line">            this.drawTextCache.clear()</div><div class="line">            dynamicItem.isTextDirty = false</div><div class="line">        &#125;</div><div class="line">        val imageKey = sprite.imageKey ?: return</div><div class="line">        var textBitmap: Bitmap? = null</div><div class="line">        dynamicItem.dynamicText[imageKey]?.let &#123; drawingText -&gt;</div><div class="line">            dynamicItem.dynamicTextPaint[imageKey]?.let &#123; drawingTextPaint -&gt;</div><div class="line">                drawTextCache[imageKey]?.let &#123;</div><div class="line">                    textBitmap = it</div><div class="line">                &#125; ?: kotlin.run &#123;</div><div class="line">                    textBitmap = Bitmap.createBitmap(drawingBitmap.width, drawingBitmap.height, Bitmap.Config.ARGB_8888)</div><div class="line">                    val textCanvas = Canvas(textBitmap)</div><div class="line">                    drawingTextPaint.isAntiAlias = true</div><div class="line">                    val bounds = Rect()</div><div class="line">                    drawingTextPaint.getTextBounds(drawingText, 0, drawingText.length, bounds)</div><div class="line">                    val x = (drawingBitmap.width - bounds.width()) / 2.0</div><div class="line">                    val targetRectTop = 0</div><div class="line">                    val targetRectBottom = drawingBitmap.height</div><div class="line">                    val y = (targetRectBottom + targetRectTop - drawingTextPaint.fontMetrics.bottom - drawingTextPaint.fontMetrics.top) / 2</div><div class="line">                    textCanvas.drawText(drawingText, x.toFloat(), y, drawingTextPaint)</div><div class="line">                    drawTextCache.put(imageKey, textBitmap as Bitmap)</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        dynamicItem.dynamicLayoutText[imageKey]?.let &#123;</div><div class="line">            drawTextCache[imageKey]?.let &#123;</div><div class="line">                textBitmap = it</div><div class="line">            &#125; ?: kotlin.run &#123;</div><div class="line">                it.paint.isAntiAlias = true</div><div class="line">                var layout = StaticLayout(it.text, 0, it.text.length, it.paint, drawingBitmap.width, it.alignment, it.spacingMultiplier, it.spacingAdd, false)</div><div class="line">                textBitmap = Bitmap.createBitmap(drawingBitmap.width, drawingBitmap.height, Bitmap.Config.ARGB_8888)</div><div class="line">                val textCanvas = Canvas(textBitmap)</div><div class="line">                textCanvas.translate(0f, ((drawingBitmap.height - layout.height) / 2).toFloat())</div><div class="line">                layout.draw(textCanvas)</div><div class="line">                drawTextCache.put(imageKey, textBitmap as Bitmap)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        textBitmap?.let &#123; textBitmap -&gt;</div><div class="line">            sharedPaint.reset()</div><div class="line">            sharedPaint.isAntiAlias = videoItem.antiAlias</div><div class="line">            if (sprite.frameEntity.maskPath != null) &#123;</div><div class="line">                val maskPath = sprite.frameEntity.maskPath ?: return@let</div><div class="line">                canvas.save()</div><div class="line">                canvas.concat(sharedFrameMatrix)</div><div class="line">                canvas.clipRect(0, 0, drawingBitmap.width, drawingBitmap.height)</div><div class="line">                val bitmapShader = BitmapShader(textBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT)</div><div class="line">                sharedPaint.shader = bitmapShader</div><div class="line">                sharedPath.reset()</div><div class="line">                maskPath.buildPath(sharedPath)</div><div class="line">                canvas.drawPath(sharedPath, sharedPaint)</div><div class="line">                canvas.restore()</div><div class="line">            &#125;</div><div class="line">            else &#123;</div><div class="line">                sharedPaint.isFilterBitmap = videoItem.antiAlias</div><div class="line">                canvas.drawBitmap(textBitmap, sharedFrameMatrix, sharedPaint)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private fun drawShape(sprite: SVGADrawerSprite, canvas :Canvas) &#123;</div><div class="line">        resetShareMatrix(sprite.frameEntity.transform)</div><div class="line">        sprite.frameEntity.shapes.forEach &#123; shape -&gt;</div><div class="line">            shape.buildPath()</div><div class="line">            shape.shapePath?.let &#123;</div><div class="line">                sharedPaint.reset()</div><div class="line">                sharedPaint.isAntiAlias = videoItem.antiAlias</div><div class="line">                sharedPaint.alpha = (sprite.frameEntity.alpha * 255).toInt()</div><div class="line">                if(!drawPathCache.containsKey(shape))&#123;</div><div class="line">                    sharedShapeMatrix.reset()</div><div class="line">                    shape.transform?.let &#123;</div><div class="line">                        sharedShapeMatrix.postConcat(it)</div><div class="line">                    &#125;</div><div class="line">                    sharedShapeMatrix.postConcat(sharedFrameMatrix)</div><div class="line">                    val path = Path()</div><div class="line">                    path.set(shape.shapePath)</div><div class="line">                    path.transform(sharedShapeMatrix)</div><div class="line">                    drawPathCache.put(shape,path)</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                shape.styles?.fill?.let &#123;</div><div class="line">                    if (it != 0x00000000) &#123;</div><div class="line">                        sharedPaint.color = it</div><div class="line">                        if (sprite.frameEntity.maskPath !== null) canvas.save()</div><div class="line">                        sprite.frameEntity.maskPath?.let &#123; maskPath -&gt;</div><div class="line">                            sharedPath2.reset()</div><div class="line">                            maskPath.buildPath(sharedPath2)</div><div class="line">                            sharedPath2.transform(this.sharedFrameMatrix)</div><div class="line">                            canvas.clipPath(sharedPath2)</div><div class="line">                        &#125;</div><div class="line">                        canvas.drawPath(drawPathCache.get(shape), sharedPaint)</div><div class="line">                        if (sprite.frameEntity.maskPath !== null) canvas.restore()</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                shape.styles?.strokeWidth?.let &#123;</div><div class="line">                    if (it &gt; 0) &#123;</div><div class="line">                        resetShapeStrokePaint(shape)</div><div class="line">                        if (sprite.frameEntity.maskPath !== null) canvas.save()</div><div class="line">                        sprite.frameEntity.maskPath?.let &#123; maskPath -&gt;</div><div class="line">                            sharedPath2.reset()</div><div class="line">                            maskPath.buildPath(sharedPath2)</div><div class="line">                            sharedPath2.transform(this.sharedFrameMatrix)</div><div class="line">                            canvas.clipPath(sharedPath2)</div><div class="line">                        &#125;</div><div class="line">                        canvas.drawPath(drawPathCache.get(shape), sharedPaint)</div><div class="line">                        if (sprite.frameEntity.maskPath !== null) canvas.restore()</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>其实就一句话：通过帧率去刷每一帧的画面，这个思路跟gif很像，但是通过配置使得动画过程中图片都可以得到复用。性能就提升上来了。并且不用解析高阶插值（二次线性方程，贝塞尔曲线方程），这种思路真是清奇呀，赞赞赞。</li>
+</ul>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/02/13/48-reprint -1/" data-toggle="tooltip" data-placement="top" title="你为什么努力(by 韩路)">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#reprint" title="reprint">reprint</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Jfson">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jfson.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
