@@ -13,11 +13,11 @@
 
     <title>
         
-          常用命令 - Jfson的博客 | Jfson
+          Daily 2018-12-8 - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="https://jfson.github.io/2017/03/22/05-order-use/">
+    <link rel="canonical" href="https://jfson.github.io/2018/12/08/50-daily/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -156,11 +156,11 @@
                     <div class="tags">
                         
                     </div>
-                    <h1>常用命令</h1>
+                    <h1>Daily 2018-12-8</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Jfson on
-                        2017-03-22
+                        2018-12-08
                     </span>
                 </div>
             </div>
@@ -179,124 +179,15 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <blockquote>
-<p>好记性不如小笔记，命令一段时间不用就忘记了，索性还是记下好了</p>
-</blockquote>
-<h3 id="Git-常用命令"><a href="#Git-常用命令" class="headerlink" title="Git 常用命令"></a>Git 常用命令</h3><ul>
-<li><p>查看远程分支<br>git branch -r</p>
-</li>
-<li><p>提交代码<br>1.git status<br>2.git diff<br>3.git commit -m “commit内容注释”<br>4.git status<br>5.git merger –no-ff (有冲突的时候用，冲突解决完重复1,2,3,4)<br>6 git push origin feature-name （远程分支名）</p>
-</li>
-<li><p>远程分支库的建立<br>1.git checkout -b feature-name（分支名）<br>2.git status<br>3.git push origin feature-name（分支名）<br>4.git branch –set-upstream-to=origin/feature-name  （本地分支关联远程分支）</p>
-</li>
-<li><p>删除远程分支<br> git push origin :feature-name</p>
-</li>
-<li><p>放弃本地修改,强制更新（回滚）<br>1.git fetch –all<br>2.git reset –hard origin/master<br>（注：git fetch 只是下载远程的库的内容，不做任何的合并 git reset 把HEAD指向刚刚下载的最新的版本）</p>
-</li>
-<li><p>merge 代码<br>git merge –no–ff develop  （–no–ff 保留merge之前的提交记录） </p>
-<ul>
-<li>合并代码（rebase 分之之间）<br>1.git fetch origin<br>2.git rebase 分支名，适用于 (1 本地的4.40 和远程的origin/4.40  &amp;&amp;  2 本地的4.40 和 自己为了写4.40开的临时小分支)<br>3.解决代码冲突<br>4.顺利解决完冲突，运行代码无误<pre><code>git add .
-git rebase --continue   (此处千万注意，不是commit） 解决代码碰到困难
-git rebase --abort            (自动回到了fetch 之前）
-</code></pre>5.git push origin 分支名</li>
-</ul>
-</li>
-<li><p>合并代码 （merge Pr之间）<br>  1.git fetch origin<br>  2.git merger –no-ff<br>  3.解决冲突<br>  4.顺利解决完冲突，运行代码无误</p>
-<pre><code>git add .
-git commit
-解决代码碰到困难
-git add .
-git merge --abort   (自动回到了fetch 之前）
-</code></pre><p>  5.git push origin 远程分支名</p>
-</li>
-<li><p>本地分支提交到远程分支（feature-2）<br>git checkout feature-1<br>git push origin feature-1:feature-2</p>
-</li>
-<li><p>Git 合并N个提交</p>
-<ol>
-<li>git rebase -i HEAD~N(N代表具体合并几个，比如git rebase -i HEAD~2)</li>
-<li>在弹出的vim框中把第二行以后的每个 pick 改成 s</li>
-<li>git处理完后，会再次弹出vim框，把上面的注释整理一下就ok</li>
-</ol>
-</li>
-<li><p>本地代码commit 后，回滚代码commit丢失，找回（！！！贼好用）<br>git reflog    （查看本地所有commit &amp; 操作记录）<br>git reset –hard xxxxx （找到commit 的版本进行回滚）</p>
-</li>
-<li><p>创建tag<br> git tag -a release-ysdk-3.4.10 -m “Relase version 1.01”<br>  注解：git tag 是打标签的命令，-a 是添加标签，其后要跟新标签号，-m 及后面的字符串是对该标签的注释。</p>
-</li>
-<li><p>提交tag到远程仓库<br>  git push origin –tags<br>  注解：就像git push origin master 把本地修改提交到远程仓库一样，–tags可以把本地的打的标签全部提交到远程仓库。</p>
-</li>
-<li><p>删除远程tag<br> git tag -d <tagname><br> git push origin :refs/tags/<tagname><br> 注解：就像git push origin :branch_1 可以删除远程仓库的分支branch_1一样， 冒号前为空表示删除远程仓库的tag。</tagname></tagname></p>
-</li>
-<li><p>切换tag<br>git tag 查看所有tag<br>  git checkout tag-name</p>
-</li>
-<li><p>git 多远程分支merge</p>
-<ul>
-<li>git remote -v 查看关联远程分支</li>
-<li>git remote add client [url]  (增加client 的远程url仓库)</li>
-<li>pr 之前先拉去代码…  git pull –rebase client develop  (拉去client develop 分支代码)</li>
-</ul>
-</li>
-<li><p>git 多远程分支PR</p>
-<ul>
-<li><ol>
-<li>配置多个远程仓库：<br>git remote add xxx(自定义别名) [url]<br>git fetch –all (抓取仓库所有分支信息)<br>git remote -v (查看远程分支)</li>
-</ol>
-</li>
-<li><ol>
-<li>checkout 主干远程分支到本地<br>git checkout -b xxx(自定义分支名) xxx(自定义的远程仓库别名)/develop</li>
-</ol>
-</li>
-<li><ol>
-<li>同步主干分支到当前开发分支<br>git merge –no-ff develop(本地主干分支名)</li>
-</ol>
-</li>
-<li><ol>
-<li>提PR</li>
-</ol>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="adb-命令"><a href="#adb-命令" class="headerlink" title="adb 命令"></a>adb 命令</h3><ul>
-<li><p>adb 导入并安装apk<br>adb install -r app\build\outputs\apk\debug\inkeguanwang.apk  (-r 是强制导入)</p>
-</li>
-<li><p>adb 查看log<br>adb logcat</p>
-</li>
-<li><p>anr 导出trace日志</p>
-<blockquote>
-<p>将所有anr产生的文件都导出来到/Users/sun/Downloads/anr,一般只看trace.txt</p>
-</blockquote>
-<ul>
-<li>adb pull /data/anr/ /Users/sun/Downloads/anr</li>
-</ul>
-</li>
-</ul>
-<h3 id="gradle-命令"><a href="#gradle-命令" class="headerlink" title="gradle 命令"></a>gradle 命令</h3><ul>
-<li><p>清除clear<br>gradle –stop<br>gradle clean<br>gradle –refresh-dependencies</p>
-</li>
-<li><p>打包<br>gradle assembleRelease<br>gradlew assembleRelease</p>
-</li>
-</ul>
-<h3 id="hexo-命令"><a href="#hexo-命令" class="headerlink" title="hexo 命令"></a>hexo 命令</h3><ul>
-<li><p>新建<br>hexo new “file-name”</p>
-</li>
-<li><p>本地服务预览部署<br>hexo s (hexo server)</p>
-</li>
-<li><p>提交部署远程<br>hexo g<br>hexo c (hexo clear)<br>hexo d (hexo deploy)</p>
-</li>
-<li><p>生成aboutme<br>hexo new page aboutme(新建一个标题为 aboutme 的页面，默认链接地址为 主页地址/aboutme/)</p>
-</li>
-<li><p>hexo 没有权限<br>发布前加sudo hexo </p>
-</li>
-</ul>
-<h3 id="vim-命令"><a href="#vim-命令" class="headerlink" title="vim 命令"></a>vim 命令</h3><ul>
-<li><p>教程<br>vimtutor  （vim 教程）</p>
-</li>
-<li><p>退出<br>：q! + 回车</p>
-</li>
-</ul>
-<h3 id="Homebrew-mac-软件安装工具"><a href="#Homebrew-mac-软件安装工具" class="headerlink" title="Homebrew mac 软件安装工具"></a>Homebrew mac 软件安装工具</h3><ul>
-<li>brew install </li>
-</ul>
+                <p>​    今年诸多事导致太懒惰，从提交记录来看，差了很多，尽管自己也很讨厌，可心态还是又老了一点,做很多无用的事，屯不喝的酒和茶。</p>
+<p>​    压力大的时候总想去趁周末爬爬山，浪一浪，以为可以放松，回来后还是老样子。解决焦虑的唯一途径就是实现目标。可时间浪费在规划上，言多行少，目前来看，也算有点成效，两个月时间 Rank 100000+ 到现在排名上升6000+。可远远不够…下班到家很累啊，还尼玛要学个锤子的习。</p>
+<p>​    每次放弃之后又总是悔不当初。越来越喜欢熬夜。12点是睡觉的最早点。越来越喜欢咖啡，真是个好东西，特别是不加糖不加奶的贼苦的时候。又到周末，夜深人初静，又来忏悔,被浪费的时间，空白的提交。</p>
+<p>​    个人网站的上一篇是6月份…是时候回顾一下了。总之坚持有点难，不坚持是sb。我也想去加拿大滑雪。实现目标之后!。欲望太多活着真累，没有欲望跟咸鱼有啥区别。还想录算法题解视频。哦，还有大学数据结构挂了科，所以下个月我要给公司大哥们分享的是算法，也不知道为什么给自己挖这个坑。</p>
+<p>​    碎碎念完结。滚去写总结。哦，还有个特别火的是：你这个年级怎么能睡得着觉的!。时间为什么不够用…</p>
+<p>u can do like this:</p>
+<p>​    Don’t talk to strangers, don’t do new things, continue to live a normal life. Be timid, don’t be curious, just play with you,play the tik tok all the time , far from adventure, something think about it and not do it, no need to change. Stay in a familiar place, it is best to stay at home, listen to the same music, see the same people. Repeat the same topic. Don’t be too alive, dreams are practical, don’t try anything. Just live like this！</p>
+<p>​    I knew with absolute clarity that this was not what I wanted！</p>
+<p>December 08nd, 2018 at 23:25pm </p>
 
 
                 <hr>
@@ -305,13 +196,9 @@ git merge --abort   (自动回到了fetch 之前）
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2017/05/03/16-plan-b/" data-toggle="tooltip" data-placement="top" title="TODO">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2017/03/07/06-ae-work/" data-toggle="tooltip" data-placement="top" title="AE 制作一个简单的动画">Next Post &rarr;</a>
+                            <a href="/2018/06/21/49-svga/" data-toggle="tooltip" data-placement="top" title="SVGA 源码">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
