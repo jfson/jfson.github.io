@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="慢慢来,比较快">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Android 总结2-线程 2019-01-05 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="https://jfson.github.io/2019/01/05/52-Android-summary-thread/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>Android 总结2-线程 2019-01-05</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2019-01-05
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h4 id="1-Android-中的多线程"><a href="#1-Android-中的多线程" class="headerlink" title="1.Android 中的多线程"></a>1.Android 中的多线程</h4><ul>
+<li>1.继承Thread</li>
+<li>2.实现Runnable</li>
+<li>3.Handler</li>
+<li>4.AnsyTask</li>
+<li>5.HandlerThread</li>
+</ul>
+<p>ActivityThread 为 Android 主线程</p>
+<h4 id="2-AnsyTask"><a href="#2-AnsyTask" class="headerlink" title="2.AnsyTask"></a>2.AnsyTask</h4><ul>
+<li><p>AsyncTask 最好在主线程中初始化。因为AsyncTask需要Handler来将执行结果回调切回主线程，Handler 中Looper.getMainLooper()。所以异步线程初始化也没关系</p>
+</li>
+<li><p>excute()最好在主线程中初始化。并且一个AsyncTask只能执行一次excute()，否则会报错。其内部有一个枚举类型的Status用于维护执行状态：PENDING、RUNNING、FINISHED。默认情况下是PENDING，表示可以执行，当调用execute方法之后，会检查其状态是否是PENDING，如果不是的话就会抛出异常。</p>
+</li>
+<li><p>经过测试。AsyncTask 可以在子线程初始化 和 excute() 可以在子线程中进执行</p>
+</li>
+<li><p>Android 1.6之前为串行，之后改为并行，3.0由改为串行。 </p>
+<ul>
+<li><p>execute()串行执行 —&gt;调用executeOnExecutor(),并传入一个sDefaultExecutor(串行线程池)</p>
+</li>
+<li><p>sDefaultExecutor是SerialExecutor的一个实例，而且它是个静态变量。也就是说，一个进程里面所有AsyncTask对象都共享同一个SerialExecutor对象。</p>
+</li>
+<li><p>asyncTestThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,””); 并行执行最大5个线程。（固定线程数量的线程池）</p>
+<p>AsyncTask.THREAD_POOL_EXECUTOR。也可以使用自己的线程池。</p>
+</li>
+</ul>
+</li>
+<li><p>AsyncTask 中有两个线程池，SerialExecutor 和用于任务排队的线程池。</p>
+</li>
+</ul>
+<h4 id="3-HandlerThread"><a href="#3-HandlerThread" class="headerlink" title="3.HandlerThread"></a>3.HandlerThread</h4><ul>
+<li>继承自Thread，是一个子线程中创建了Handler</li>
+<li>HandlerThread 中run是无限循环,不需要时可以挂起，</li>
+</ul>
+<ul>
+<li>在getLooper 中会try catch,避免looper为空</li>
+<li>获取子线程创建Handler</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//创建HandlerThread实例</div><div class="line">HandlerThread mHandlerThread = new HandlerThread(&quot;handler_thread&quot;);</div><div class="line">//开始运行线程</div><div class="line">mHandlerThread.start();</div><div class="line">//获取HandlerThread线程中的Looper实例</div><div class="line">Looper loop = mHandlerThread.getLooper();</div><div class="line">//创建Handler与该线程绑定。</div><div class="line">mSubThreadHandler = new Handler(loop)&#123;</div><div class="line">public void handleMessage(Message msg) &#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="4-ThreadLocal"><a href="#4-ThreadLocal" class="headerlink" title="4.ThreadLocal"></a>4.ThreadLocal</h4><p>ThreadLocal 存储器，做到只有该线程自己能够访问。就是多个线程访问同一份数据，每个线程得到数据不一致。理解为一个 Map，它的 set 和 get 方法都有一个“隐形的” key，那就是当前的线程对象，所以它才可以为每个线程保存一个数据副本。</p>
+<h4 id="5-IntentService"><a href="#5-IntentService" class="headerlink" title="5.IntentService"></a>5.IntentService</h4><p>IntentService 继承自Service，并且是一个抽象类。IntentService封装了Handler和HandlerThread，所以这个Handler是子线程中的，适合执行耗时后台任务。</p>
+<p>stopSelf(int startId) 会等任务执行结束后停掉服务，而stopSelf()会立即结束。</p>
+<h4 id="6-Handler"><a href="#6-Handler" class="headerlink" title="6.Handler"></a>6.Handler</h4><ul>
+<li>主线程创建  <ul>
+<li>Handler uiHandler = new Handler();</li>
+<li>Handler uiHandler = new Handler(Looper.getMainLooper());</li>
+</ul>
+</li>
+<li>创建子线程Handler<ul>
+<li>Handler threadHandler = new Handler(mHandlerThread.getLooper());获取子线程Looper</li>
+</ul>
+</li>
+<li>原理，根据Looper找到关联的消息队列<br><img src="https://github.com/jfson/ImgResource/blob/master/12.png?raw=true" alt="image"></li>
+</ul>
+<p>子线程创建Handler，需要先进行 Looper.prepare()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">new Thread()&#123;   </div><div class="line">       @Override    </div><div class="line">       public void run() &#123;        </div><div class="line">           Looper.prepare();  //获取当前线程的Looper，并prepare();</div><div class="line">           Handler handler = new Handler() &#123;           </div><div class="line">               @Override          </div><div class="line">               public void handleMessage(Message msg) &#123;                </div><div class="line">                   Toast.makeText(MainActivity.this, &quot;handler msg&quot;, Toast.LENGTH_SHORT).show();            </div><div class="line">               &#125;        </div><div class="line">           &#125;;        </div><div class="line">           handler.sendEmptyMessage(0);   </div><div class="line">           Looper.loop();  //looper开始处理消息。</div><div class="line">       &#125;</div><div class="line">&#125;.start();</div></pre></td></tr></table></figure>
+<h4 id="7-继承Thread"><a href="#7-继承Thread" class="headerlink" title="7.继承Thread"></a>7.继承Thread</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">TestThread testThread = new TestThread();</div><div class="line">testThread.start();</div><div class="line"></div><div class="line"></div><div class="line">class TestThread extends Thread &#123;</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        super.run();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="8-Runnable"><a href="#8-Runnable" class="headerlink" title="8.Runnable"></a>8.Runnable</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">TestRunnable run = new TestRunnable();</div><div class="line">Thread tt = new Thread(run);</div><div class="line">tt.start();</div><div class="line"></div><div class="line">class TestRunnable implements Runnable&#123;</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="9-AsyncTask-示例"><a href="#9-AsyncTask-示例" class="headerlink" title="9. AsyncTask 示例"></a>9. AsyncTask 示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">AsyncTestThread asyncTestThread = new AsyncTestThread();</div><div class="line">asyncTestThread.execute();// 串行</div><div class="line">asyncTestThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,&quot;&quot;);//并行</div><div class="line"></div><div class="line">class AsyncTestThread extends AsyncTask&lt;String, String, String&gt; &#123;</div><div class="line">       // 1作用：执行 线程任务前的操作</div><div class="line">       @Override</div><div class="line">       protected void onPreExecute() &#123;</div><div class="line">           Log.e(&quot;jfson&quot;, &quot;pre 0&quot;);</div><div class="line">           super.onPreExecute();</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       // 2作用：接收输入参数、执行任务中的耗时操作、返回 线程任务执行的结果</div><div class="line">       @Override</div><div class="line">       protected String doInBackground(String... strings) &#123;</div><div class="line">           for (int i = 0; i &lt; 100; i++) &#123;</div><div class="line">               try &#123;</div><div class="line">                   Thread.sleep(100);</div><div class="line">                   //进度条每次更新10%,执行中创建新线程处理onProgressUpdate()</div><div class="line">                   publishProgress(String.valueOf(i));</div><div class="line">               &#125; catch (InterruptedException e) &#123;</div><div class="line">                   e.printStackTrace();</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">           Log.e(&quot;jfson&quot;, &quot;doInBackground finish :&quot;);</div><div class="line">           return &quot;下载完成!&quot;;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       // 3作用：在主线程 显示线程任务执行的进度</div><div class="line">       @Override</div><div class="line">       protected void onProgressUpdate(String... values) &#123;</div><div class="line">           Log.e(&quot;jfson&quot;, &quot;onProgressUpdate :&quot; + values[0]);</div><div class="line">           super.onProgressUpdate(values);</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       // 4作用：接收线程任务执行结果..UI线程</div><div class="line">       @Override</div><div class="line">       protected void onPostExecute(String s) &#123;</div><div class="line">           Log.e(&quot;jfson&quot;, &quot;onPostExecute :&quot; + s);</div><div class="line">           super.onPostExecute(s);</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       // 5任务执行完成、UI线程</div><div class="line">       @Override</div><div class="line">       protected void onCancelled() &#123;</div><div class="line">           Log.e(&quot;jfson&quot;, &quot;onCancelled :&quot;);</div><div class="line">           super.onCancelled();</div><div class="line">       &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h4 id="10-多线程的实现-or-api-实现"><a href="#10-多线程的实现-or-api-实现" class="headerlink" title="10.多线程的实现 or api 实现"></a>10.多线程的实现 or api 实现</h4><h4 id="线程池API分析"><a href="#线程池API分析" class="headerlink" title="线程池API分析"></a>线程池API分析</h4><ul>
+<li>1.创建<ul>
+<li>a.ThreadPoolExecutor.newFixedThreadPool();创建线程数量固定的线程池</li>
+<li>b.ThreadPoolExecutor.newSingleThreadExecutor();线程数固定为1的线程池</li>
+<li>c.ThreadPoolExecutor.newCachedThreadPool();会缓存的线程池，线程数量可以从0到Integer.MAX_VALUE，超时时间为1分钟。线程池用起来的效果是：如果有空闲线程，会复用线程；如果没有空闲线程，会新建线程；如果线程空闲超过1分钟，将会被回收。</li>
+<li>d. ThreadPoolExecutor.newScheduledThreadPool();将会创建一个可定时执行任务的线程池。</li>
+</ul>
+</li>
+<li>2.BlockingQueue<ul>
+<li>newCachedThreadPool的线程上限几乎等同于无限，但系统资源是有限的，任务的处理速度总有可能比不上任务的提交速度。因此，可以为ThreadPoolExecutor提供一个阻塞队列来保存因线程不足而等待的Runnable任务，这就是BlockingQueue。</li>
+</ul>
+</li>
+<li>3.SynchronousQueue<ul>
+<li>newCachedThreadPool使用的SynchronousQueue十分有趣，看名称是个队列，但它却不能存储元素。要将一个任务放进队列，必须有另一个线程去接收这个任务，一个进就有一个出，队列不会存储任何东西。因此，SynchronousQueue是一种移交机制，不能算是队列。newCachedThreadPool生成的是一个没有上限的线程池，理论上提交多少任务都可以，使用SynchronousQueue作为等待队列正合适。</li>
+</ul>
+</li>
+<li>4.饱和策略<ul>
+<li>当有界的等待队列满了之后，就需要用到饱和策略去处理，ThreadPoolExecutor的饱和策略通过传入RejectedExecutionHandler来实现。如果没有为构造函数传入，将会使用默认的defaultHandler。</li>
+<li>a.AbortPolicy是默认的实现，直接抛出一个RejectedExecutionException异常，让调用者自己处理。</li>
+<li>b.DiscardPolicy的rejectedExecution直接是空方法，什么也不干。如果队列满了，后续的任务都抛弃掉。</li>
+<li>c.DiscardOldestPolicy会将等待队列里最旧的任务踢走，让新任务得以执行。</li>
+<li>d.CallerRunsPolicy，它既不抛弃新任务，也不抛弃旧任务，而是直接在当前线程运行这个任务。当前线程一般就是主线程啊，让主线程运行任务，说不定就阻塞了。如果不是想清楚了整套方案，还是少用这种策略为妙。</li>
+</ul>
+</li>
+<li>5.线程池的执行<ul>
+<li>线程池是由Worker类负责执行任务，Worker继承了AbstractQueuedSynchronizer，引出了Java并发框架的核心AQS。</li>
+<li>worker在线程池里的四种可能（Worker在构造函数里采用ThreadFactory创建Thread，在run方法里调用了runWorker，看来是真正执行任务的地方。） <img src="https://github.com/jfson/ImgResource/blob/master/42.png?raw=true" alt="worker在线程池里的四种可能"></li>
+</ul>
+</li>
+<li>6.线程池的关闭<ul>
+<li>shutdown：不能再提交任务，已经提交的任务可继续运行；</li>
+<li>shutdownNow：不能再提交任务，已经提交但未执行的任务不能运行，在运行的任务可继续运行，但会被中断，返回已经提交但未执行的任务。</li>
+</ul>
+</li>
+<li>7.Join、wait、notify、notifyAll、run()和start()<ul>
+<li>Join()将改线程优先级提升，执行完后才可以执行其他线程。底层是利用wait()实现，主线程先获得了t对象的锁，t执行完成后，主线程继续执行，其他线程开始执行。 </li>
+<li>在 Java 中，可以通过配合调用 Object 对象的 wait() 方法和 notify()方法或 notifyAll() 方法来实现线程间的通信。在线程中调用 wait() 方法，将阻塞等待其他线程的通知（其他线程调用 notify() 方法或 notifyAll() 方法），在线程中调用 notify() 方法或 notifyAll() 方法，将通知其他线程从 wait() 方法处返回。</li>
+<li>run()和start()<ul>
+<li>1） start()<br>用start方法来启动线程，真正实现了多线程运行，这时无需等待run方法体代码执行完毕而直接继续执行下面的代码。通过调用Thread类的start()方法来启动一个线程，这时此线程处于就绪（可运行）状态，并没有运行，一旦得到cpu时间片，就开始执行run()方法，这里方法 run()称为线程体，它包含了要执行的这个线程的内容，Run方法运行结束，此线程随即终止。</li>
+<li>2）run()方法只是类的一个普通方法而已，如果直接调用Run方法，程序中依然只有主线程这一个线程，其程序执行路径还是只有一条，还是要顺序执行，还是要等待run方法体执行完毕后才可继续执行下面的代码，这样就没有达到写线程的目的。总结：调用start方法方可启动线程，而run方法只是thread的一个普通方法调用，还是在主线程里执行。这两个方法应该都比较熟悉，把需要并行处理的代码放在run()方法中，start()方法启动线程将自动调用 run()方法，这是由jvm的内存机制规定的。并且run()方法必须是public访问权限，返回值类型为void。 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="10-手写一个线程池"><a href="#10-手写一个线程池" class="headerlink" title="10.手写一个线程池"></a>10.手写一个线程池</h4><ul>
+<li>主要用    private BlockingQueue<runnable> taskQueue=new LinkedBlockingDeque<runnable>();  存储任务Runnable。</runnable></runnable></li>
+<li>//线程工作组，WorkerThread[] workThreads;存储初始化的线程</li>
+<li>taskQueue.take();// 获取并移除第一个元素  没有则扔进</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"> public void execute(Runnable task) &#123;    </div><div class="line">        synchronized (taskQueue) &#123;    </div><div class="line">            taskQueue.add(task);    </div><div class="line">            taskQueue.notifyAll();  //当调用execute()方法的时候，执行notiry()，只会唤醒线程池中的一个线程，注意与notoryAll()的区别    </div><div class="line">        &#125;    </div><div class="line">    &#125;  </div><div class="line">    </div><div class="line">/*内部类 即一个线程池对象*/  </div><div class="line">    private class WorkThread extends Thread&#123;  </div><div class="line">        //该工作线程是否有效，用来接收该工作线程  </div><div class="line">        private boolean isRunnable=true;  </div><div class="line">        /*  </div><div class="line">         * 关键所在，如果任务队列不空，则求出任务执行，若任务队列为空，则等待  </div><div class="line">        */  </div><div class="line">        @Override  </div><div class="line">        public void run() &#123;  </div><div class="line">            //接收队列当中的任务对象 任务对象Runnable类型  </div><div class="line">            Runnable r=null;  </div><div class="line">            while(isRunnable)&#123;  </div><div class="line">                //队列同步机制  </div><div class="line">                synchronized(taskQueue)&#123;  </div><div class="line">                    while(isRunnable &amp;&amp; taskQueue.isEmpty())&#123;//队列为空  </div><div class="line">                        try &#123;  </div><div class="line">                            taskQueue.wait(20);  </div><div class="line">                        &#125; catch (InterruptedException e) &#123;  </div><div class="line">                            // TODO Auto-generated catch block  </div><div class="line">                            e.printStackTrace();  </div><div class="line">                        &#125;  </div><div class="line">                    &#125;  </div><div class="line">                    if(!taskQueue.isEmpty())&#123;  </div><div class="line">                        try &#123;  </div><div class="line">                            r=taskQueue.take();// 获取并移除第一个元素  </div><div class="line">                        &#125; catch (InterruptedException e) &#123;  </div><div class="line">                            // TODO Auto-generated catch block  </div><div class="line">                            e.printStackTrace();  </div><div class="line">                        &#125;  </div><div class="line">                    &#125;  </div><div class="line">                    if(r!=null)&#123;  </div><div class="line">                        r.run();//执行任务  </div><div class="line">                    &#125;  </div><div class="line">                    executeTaskNumber++;  </div><div class="line">                    r=null;  </div><div class="line">                &#125;  </div><div class="line">            &#125;  </div><div class="line">        &#125;  </div><div class="line">        public void stopWorker()&#123;  </div><div class="line">            isRunnable=false;  </div><div class="line">        &#125;  </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h4 id="HttpURLConnection"><a href="#HttpURLConnection" class="headerlink" title="HttpURLConnection"></a>HttpURLConnection</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">public static String get(IRequest request) &#123;</div><div class="line">        InputStream inputStream = null;</div><div class="line">        HttpURLConnection httpURLConnection = null;</div><div class="line">        try &#123;</div><div class="line">            URL url = new URL(buildGetUrl(request.getBaseUrl(), request.getParam(), request.getEncrypt()));</div><div class="line">            openUrlConnection(url,httpURLConnection);</div><div class="line">            normalSetting(httpURLConnection, Method.GET, request.getHeaders());</div><div class="line">            if (httpURLConnection == null) &#123;</div><div class="line">                return null;</div><div class="line">            &#125;</div><div class="line">            int responseCode = httpURLConnection.getResponseCode();</div><div class="line">            if (responseCode == HttpURLConnection.HTTP_OK) &#123;</div><div class="line">                inputStream = httpURLConnection.getInputStream();</div><div class="line">                String contentEncoding = httpURLConnection.getContentEncoding();</div><div class="line">                InputStream stream = null;</div><div class="line">                try &#123;</div><div class="line">                    stream = wrapStream(contentEncoding, inputStream);</div><div class="line">                    String data = convertStreamToString(stream);</div><div class="line">                    return data;</div><div class="line">                &#125; catch (IOException e) &#123;</div><div class="line">                    return &quot;&quot;;</div><div class="line">                &#125; finally &#123;</div><div class="line">                    closeQuietly(stream);</div><div class="line">                &#125;</div><div class="line"></div><div class="line">            &#125;</div><div class="line">            return null;</div><div class="line">        &#125; catch (MalformedURLException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; catch (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        return &quot;&quot;;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id=""><a href="#" class="headerlink" title=" "></a> </h3>
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2019/01/10/53-Android-summary-animation/" data-toggle="tooltip" data-placement="top" title="Android 总结3-动画 2019-01-10">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/25/51-Android-summary-View/" data-toggle="tooltip" data-placement="top" title="Android总结1-View 2018-12-25">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Jfson">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2019 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jfson.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

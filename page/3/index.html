@@ -174,6 +174,130 @@
 
 <div class="post-preview">
 
+    <a href="/2017/06/02/14-parse-mainfest/">
+        <h2 class="post-title">
+            系统 Mainfest 文件解析流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            系统 Mainfest 文件解析流程
+为什么要看 Mainfest 文件解析流程呢，因为解析来分析apk的安装流程需要用到，而且 AndroidMainfest 文件是程序的配置文件，了解其解析流程还是非常有必要哒~ 之前的分析中，系统会在启动时读取所有app的Mainfest以便于启动某个应用。
+
+
+1.入口
+在PackageManagerService 中，系统去解析app文件。那么从构......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-06-02
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/06/01/01-Application启动流程/">
+        <h2 class="post-title">
+            Application 启动流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            应用启动流程
+每个Application Linux进程中，Android操作系统会启动这个进程当这个Android组件需要执行的时候，当其不在长时间使用或者系统必须回收内存为其他App时，这个进程会被干掉。
+
+
+回顾：上篇blog中，介绍了Launcher启动流程，最后点击桌面图标启动应用
+
+1234protected void onListItemClick(ListView l, Vi......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-06-01
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/06/01/09-Android桌面Launcher启动/">
+        <h2 class="post-title">
+            Launcher 启动流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Launcher 启动流程
+1 启动Launcher
+在之前分析了一下SystemServer源码，最后启动boot/core/other … Service,在startOtherService 中，有调用到 mActivityManagerService.systemReady();
+
+123456789101112131415161718192021222324252627282930......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-06-01
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/05/23/03-SystemServer/">
+        <h2 class="post-title">
+            SystemServer 进程启动流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            SystemServer 进程
+1.1 SystemServer进程是由Zygote进程fork 出来的。上篇介绍了fork过程
+1.2 SystemServer进程 是用来启动各种系统服务的进程，例如ActivityManagerService,WindowManagerService,PowerManagerService，PackageManagerService等等，当应用需要系统服......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-05-23
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/05/23/04-Zygote/">
+        <h2 class="post-title">
+            Android Zygote进程启动流程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Zygote进程简介什么是Zygote进程？ Zygote进程 是整个Android系统的根进程，包括SystemServer进程和所有应用进程在内都是通过Zygote进程 fork 出来的。Zygote进程则是通过Linux系统init进程启动。
+
+启动顺序： Linux系统init进程 –&gt; Zygote进程 –&gt; SystemServer进程 –&gt; Applicati......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2017-05-23
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2017/05/16/08-Android-source/">
         <h2 class="post-title">
             Android Studio 编译系统源码
@@ -481,11 +605,11 @@ AE ......
                             
                         
                             
-                            <a href="/tags/#arithmetic" title="arithmetic" rel="5">arithmetic</a>
+                            <a href="/tags/#sound code" title="sound code" rel="6">sound code</a>
                             
                         
                             
-                            <a href="/tags/#sound code" title="sound code" rel="6">sound code</a>
+                            <a href="/tags/#arithmetic" title="arithmetic" rel="5">arithmetic</a>
                             
                         
                             
@@ -574,7 +698,7 @@ AE ......
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Jfson‘s blog 2018 
+                    Copyright &copy; Jfson‘s blog 2019 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">

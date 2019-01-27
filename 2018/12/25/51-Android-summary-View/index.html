@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="慢慢来,比较快">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Android总结1-View 2018-12-25 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="https://jfson.github.io/2018/12/25/51-Android-summary-View/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>Android总结1-View 2018-12-25</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2018-12-25
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>​    </p>
+<p><a href="https://jfson.github.io/2018/02/02/43-decoupling/">附上大量自定义View出现的时候，如何解耦</a></p>
+<h4 id="1-View"><a href="#1-View" class="headerlink" title="1.View"></a>1.View</h4><ul>
+<li>什么是View</li>
+</ul>
+<p>a. 所有View控件：TextView,Button等等</p>
+<p>b. 所有ViewGroup(容器)：RelativeLayout，LinearLayout。是容器也是View</p>
+<ul>
+<li>View 事件</li>
+</ul>
+<p>MotionEvent：ACTION_DOWN、ACTION_UP、ACTION_MOVE ;手势的落下，抬起，移动</p>
+<p>但其中有两个比较特殊的事件: <code>ACTION_CANCEL</code> 和 <code>ACTION_OUTSIDE</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public boolean onTouchEvent(MotionEvent event) &#123;</div><div class="line">    switch (event.getAction())&#123;&#125;  &#125;</div></pre></td></tr></table></figure>
+<p>TouchSlop 可以识别出的滑动最小距离;判断此时是否属于滑动事件</p>
+<p>VelocityTracker 滑动速度</p>
+<p>GestureDetector 手势检测，常用于负责手势场景：比如双击；滑动调节进度；音量。OnGestureListener</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">public boolean onTouchEvent(MotionEvent event) &#123;</div><div class="line">    return gestureDetector.onTouchEvent(event);</div><div class="line">&#125;</div><div class="line"></div><div class="line">GestureDetector gestureDetector = new GestureDetector(this.getBaseContext(), new GestureDetector.OnGestureListener() &#123;</div><div class="line">            @Override</div><div class="line">            public boolean onDown(MotionEvent motionEvent) &#123;</div><div class="line">                return false;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            @Override</div><div class="line">            public void onShowPress(MotionEvent motionEvent) &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line"></div><div class="line">            @Override</div><div class="line">            public boolean onSingleTapUp(MotionEvent motionEvent) &#123;</div><div class="line">                return false;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            @Override</div><div class="line">            public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) &#123;</div><div class="line">                return false;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            @Override</div><div class="line">            public void onLongPress(MotionEvent motionEvent) &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line"></div><div class="line">            @Override</div><div class="line">            public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) &#123;</div><div class="line">                return false;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
+<p>Scroller 带过度的弹性滑动</p>
+<h4 id="2-View滑动"><a href="#2-View滑动" class="headerlink" title="2.View滑动"></a>2.View滑动</h4><p>实现View滑动</p>
+<p>a.scrollTo/scrollBy  只能改变View 中内容的位置，而不能改变View的位置</p>
+<p>b.改变布局参数LayoutParam</p>
+<p>c.使用动画</p>
+<p>d.使用延时策略，Handler 计时，慢慢改变属性，达到动画效果</p>
+<h4 id="3-View-事件分发"><a href="#3-View-事件分发" class="headerlink" title="3.View 事件分发"></a>3.View 事件分发</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">相关方法</th>
+<th style="text-align:center">Activity</th>
+<th style="text-align:center">ViewGroup</th>
+<th style="text-align:center">View</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">事件分发</td>
+<td style="text-align:center">dispatchTouchEvent</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td style="text-align:center">事件拦截</td>
+<td style="text-align:center">onInterceptTouchEvent</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">X</td>
+</tr>
+<tr>
+<td style="text-align:center">事件消费</td>
+<td style="text-align:center">onTouchEvent</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>dispatchTouchEvent 最下层View 如果没有消费，则onTouchEvent逐个返回给上层逐步去消费<ul>
+<li>当返回为true时，顺序下发会中断</li>
+<li>false ，顺序下发</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">MainActivity [老板]: dispatchTouchEvent     经理,我准备发展一下电商业务,下周之前做一个淘宝出来.</div><div class="line">RootView     [经理]: dispatchTouchEvent     呼叫技术部,老板要做淘宝,下周上线.</div><div class="line">RootView     [经理]: onInterceptTouchEvent  (老板可能疯了,但又不是我做.)</div><div class="line">ViewGroupA   [组长]: dispatchTouchEvent     老板要做淘宝,下周上线?</div><div class="line">ViewGroupA   [组长]: onInterceptTouchEvent  (看着不太靠谱,先问问小王怎么看)</div><div class="line">View1        [码农]: dispatchTouchEvent     做淘宝???</div><div class="line">View1        [码农]: onTouchEvent           这个真心做不了啊.</div><div class="line">ViewGroupA   [组长]: onTouchEvent           小王说做不了.</div><div class="line">RootView     [经理]: onTouchEvent           报告老板, 技术部说做不了.</div><div class="line">MainActivity [老板]: onTouchEvent           这么简单都做不了,你们都是干啥的(愤怒).</div></pre></td></tr></table></figure>
+<ul>
+<li>onTouchEvent 最下层View如果消费了，所有回调到此为止<ul>
+<li>如果返回值是true，表示消费(consume)了这个事件。以ACTION_DOWN为例，如果某个控件的onTouchEvent返回值为true，则后续的n个ACTION_MOVE与1个ACTION_UP都会逐层传递到这个控件的onTouchEvent进行处理。</li>
+<li>如果返回值是false，则会将ACTION_DOWN传递给其父ViewGroup的onTouchEvent进行处理，直到由哪一层ViewGroup消费了ACTION_DOWN事件为止。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">MainActivity [老板]: dispatchTouchEvent     把按钮做的好看一点,要有光泽,给人一种点击的欲望.</div><div class="line">RootView     [经理]: dispatchTouchEvent     技术部,老板说按钮不好看,要加一道光.</div><div class="line">RootView     [经理]: onInterceptTouchEvent  </div><div class="line">ViewGroupA   [组长]: dispatchTouchEvent     给按钮加上一道光.</div><div class="line">ViewGroupA   [组长]: onInterceptTouchEvent  </div><div class="line">View1        [码农]: dispatchTouchEvent     加一道光.</div><div class="line">View1        [码农]: onTouchEvent           做好了.</div></pre></td></tr></table></figure>
+<ul>
+<li>onInterceptTouchEvent 如果ViewGroup拦截，则View1无事件;<ul>
+<li>如果返回值是true，代表事件在当前的viewGroup中会被处理，向下传递之路被截断（所有子控件将没有机会参与Touch事件），同时把事件传递给当前的控件的onTouchEvent()继续进行传递或处理。</li>
+<li>如果返回值是false，即不拦截当前传递来的事件，会继续向下传递，把事件交给子控件的onInterceptTouchEvent()。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">MainActivity [老板]: dispatchTouchEvent     现在项目做到什么程度了?</div><div class="line">RootView     [经理]: dispatchTouchEvent     技术部,你们的app快做完了么?</div><div class="line">RootView     [经理]: onInterceptTouchEvent  </div><div class="line">ViewGroupA   [组长]: dispatchTouchEvent     项目进度?</div><div class="line">ViewGroupA   [组长]: onInterceptTouchEvent  </div><div class="line">ViewGroupA   [组长]: onTouchEvent           正在测试,明天就测试完了</div></pre></td></tr></table></figure>
+<ul>
+<li>补充：<ul>
+<li>水平滑动置为true.则父布局不响应（比如竖直RecyclerView嵌套横向RecyclerView,横向滑动时屏蔽父布局）</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">getParent().requestDisallowInterceptTouchEvent(true); </div><div class="line">- true 不要拦截，即不处理</div><div class="line">- false 正常处理</div></pre></td></tr></table></figure>
+<ul>
+<li>滑动冲突解决    <ul>
+<li>外部拦截：onInterceptTouchEvent() </li>
+<li>内部拦截：dispathTouchEvent() 配合requestDisallowInterceptTouchEvent()</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-View-原理"><a href="#4-View-原理" class="headerlink" title="4.View 原理"></a>4.View 原理</h4><p>ViewRoot/DecorView</p>
+<p>ViewRoot对应<strong>ViewRootImpl类，它是连接WindowManagerService和DecorView的纽带</strong>，View的三大流程(测量（measure），布局（layout），绘制（draw）)均通过ViewRoot来完成。</p>
+<p>DecorView是FrameLayout的子类，它可以被认为是Android视图树的根节点视图。DecorView作为顶级View，一般情况下它内部包含一个竖直方向的LinearLayout，<strong>在这个LinearLayout里面有上下三个部分，上面是个ViewStub,延迟加载的视图（应该是设置ActionBar,根据Theme设置），中间的是标题栏(根据Theme设置，有的布局没有)，下面的是内容栏。</strong></p>
+<p>MeasureSpec: 32进制，高2位代表SpecMode(测量模式),低30位代表SpecSize(规格大小)</p>
+<p>SpecModel:UNSPECIFIED 父容器不限制；EXACTLY 精确大小对应match_parent；AT_MOST 父容器指定大小，对应wrap_content</p>
+<p>LayoutParams</p>
+<p>DecorView,其MeasureSpec由窗口尺寸和其自身的LayoutParams来共同决定</p>
+<p>普通View,其MeasureSpec由父容器的MeasureSpec 和 自身的LayoutParams决定</p>
+<h4 id="5-View-Tree绘制流程"><a href="#5-View-Tree绘制流程" class="headerlink" title="5.View Tree绘制流程"></a>5.View Tree绘制流程</h4><ul>
+<li>整个 View 树的绘图流程在ViewRoot.java类的performTraversals()函数展开，该函数所做 的工作可简单概况为是否需要重新计算视图大小(measure)、是否需要重新安置视图的位置(layout)、以及是否需要重绘(draw)，流程图如下：</li>
+<li>Measure<ul>
+<li>View的measure 方法会去调用View的onMeasure(),这里面调用getDefaultSize(),里面根据MeasureSpec返回View大小。</li>
+<li>如果是ViewGroup,遍历子元素的measure方法，子元素在递归执行;ViewGroup是一个抽象类，没有重写View的onMeasure()方法，而是提供一个measureChildren()的方法。为什么会这样呢？因为不同的ViewGroup测量方式不一致</li>
+<li>总结：自上而下的进行比measure，根据子View的MeasureSpec测量其尺寸，返回上一级</li>
+<li>一般可以在measure结束后获取宽高，measure就是和layout 一直的结果。如果不确定View有没有measure,可以强行在获取之前调用 view.measure(0,0);</li>
+</ul>
+</li>
+</ul>
+<p>LinearLayout</p>
+<p>上述Measure过程显示ViewGroup是一个抽象类并无onMeasure()方法，而是不同的ViewGroup有不同的测量方式</p>
+<p>根据orientation去measureVertical()或者measureHorizontal(),在单个方向上存储高度或者宽度和，没测量一个就会增加。</p>
+<p>RelativeLayout会measure两遍；measureChildHorizontal()和measureChild(),其子View会measure 4遍</p>
+<p>FrameLayout会measure两遍,其子View会measure 2遍</p>
+<p>LinearLayout会measure 1遍,必要时(View MatchParent)会measure2遍,其子View会measure 2遍</p>
+<p>ConstraintLayout会measure两遍,其子View会measure 2遍</p>
+<ul>
+<li>Layout<ul>
+<li>自上而下进行遍历。在onLayout()中遍历其子元素layout,在onLayout根据Measure结果进行布局，确定其位置</li>
+<li>获取View的宽高最好是在onLayout中获取，这是View的最终宽高</li>
+</ul>
+</li>
+<li>draw<ul>
+<li>1.绘制背景 background.draw(canvas)</li>
+<li>2.绘制自己 （onDraw）</li>
+<li>3.绘制children （dispatchDraw）</li>
+<li>4.绘制装饰 (onDrawScrollBars)</li>
+<li>当我们自定义View不具备draw功能时;可以使用View.setWillNotDraw()开启标记位。便于后续优化</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>自定义View<ul>
+<li>继承自View,自我实现onDraw()等，onLayout,onMeasure(),全靠canvas来draw出所有的View来</li>
+<li>继承现有的View(TextView,ReleativeView等)，infalte相应的layout,处理相应的业务</li>
+<li>集成ViewGroup,</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>View 常用接口<ul>
+<li>Activity/View # onWindowFocusChanged 失去焦点和获取焦点会各调用一次</li>
+<li>view.post(runnable)   发个消息队列，View 初始化好了之后，runnable被调用。常用于init时机不对</li>
+<li>ViewTreeObserver()  onGlobalLayout()是获取宽高的好时机</li>
+<li>view.measure() 手动measure;常用 view.measure(0,0);</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-RemoteView"><a href="#6-RemoteView" class="headerlink" title="6.RemoteView"></a>6.RemoteView</h4><p>在其他进程中更新View</p>
+<ul>
+<li>自定义通知栏View</li>
+<li>桌面小部件</li>
+</ul>
+<h3 id="Android-更新UI的两种方法"><a href="#Android-更新UI的两种方法" class="headerlink" title="Android 更新UI的两种方法"></a>Android 更新UI的两种方法</h3><ul>
+<li><p>Handler</p>
+</li>
+<li><p>Activity.runOnUiThread()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class TestThread extends Thread &#123;</div><div class="line">       @Override</div><div class="line">       public void run() &#123;</div><div class="line">           super.run();</div><div class="line">           // Activity 内部类Thread</div><div class="line">           runOnUiThread(new Runnable() &#123;</div><div class="line">               @Override</div><div class="line">               public void run() &#123;</div><div class="line"></div><div class="line">               &#125;</div><div class="line">           &#125;);</div><div class="line">     &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"> // 或者</div><div class="line">this.runOnUiThread(new Runnable() &#123; //this = Activity</div><div class="line">           @Override</div><div class="line">           public void run() &#123;</div><div class="line"></div><div class="line">           &#125;</div><div class="line">       &#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 源码还是Handler</div><div class="line">public final void runOnUiThread(Runnable action) &#123;</div><div class="line">        if (Thread.currentThread() != mUiThread) &#123;</div><div class="line">            mHandler.post(action);</div><div class="line">        &#125; else &#123;</div><div class="line">            action.run();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>View.post()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Runnable testR = new Runnable() &#123;</div><div class="line">            @Override</div><div class="line">            public void run() &#123;</div><div class="line">                view.post(new Runnable() &#123;</div><div class="line">                    @Override</div><div class="line">                    public void run() &#123;</div><div class="line">                        view.setText(&quot;post&quot;);</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">Thread t = new Thread(testR);</div><div class="line">t.start();</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public boolean post(Runnable action) &#123;</div><div class="line">    final AttachInfo attachInfo = mAttachInfo;</div><div class="line">    if (attachInfo != null) &#123;</div><div class="line">        // 如果当前View加入到了window中，直接调用UI线程的Handler发送消息</div><div class="line">        return attachInfo.mHandler.post(action);</div><div class="line">    &#125;</div><div class="line">    // Assume that post will succeed later</div><div class="line">    // View未加入到window，放入ViewRootImpl的RunQueue中</div><div class="line">    ViewRootImpl.getRunQueue().post(action);</div><div class="line">    return true;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当View已经attach到了window，两者是没有区别的，都是调用UI线程的Handler发送runnable到MessageQueue，最后都是由<strong>handler进行消息的分发处理</strong>。</p>
+<p>但是如果View尚未attach到window的话，runnable被放到了ViewRootImpl#RunQueue中，最终也会被处理，但不是通过MessageQueue。</p>
+<p>总结</p>
+<ol>
+<li>当View已经attach到window，不管什么线程， 调用View#post 和 调用Handler#post效果一致</li>
+<li>当View尚未attach到window，主线程调用View#post发送的runnable将在下一次performTraversals到来时执行，而非主线程调用View#post发送的runnable将无法被执行。sRunQueues 是一个ThreadLocal 类型,也就是说你上面加入的mActions跟主线程中的mActions 不是同一个.</li>
+<li>可以通过在主线程调用View#post发送runnable来获取下一次performTraversals时视图树中View的布局信息，如宽高。</li>
+<li>如果调用View#post方法的线程对象被GC-Root引用，则发送的runnable将会造成内存泄漏。</li>
+</ol>
+</li>
+</ul>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2019/01/05/52-Android-summary-thread/" data-toggle="tooltip" data-placement="top" title="Android 总结2-线程 2019-01-05">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/08/50-daily/" data-toggle="tooltip" data-placement="top" title="Daily 2018-12-8">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Jfson">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2019 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jfson.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

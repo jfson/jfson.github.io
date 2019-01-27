@@ -174,6 +174,143 @@
 
 <div class="post-preview">
 
+    <a href="/2019/01/20/54-Android-summary-ipc/">
+        <h2 class="post-title">
+            Android 总结5-IPC 2019-01-20
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+              IPC
+
+Android 的进程间通信就是 Binder. 
+
+Android 中一个应用中的多进程： android:process 属性，给四大组件在AndroidMenifest中指定process即可。一般不这么干，在push中使用较多。
+多进程带来很多问题：
+a.静态成员和单例模式完全失效
+b.线程同步失效
+c.SharedPreferences失效:不支持多进程同时执行写操作......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2019-01-20
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/15/54-Android-summary-activity/">
+        <h2 class="post-title">
+            Android 总结4-四大组件 2019-01-15
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+             Activity
+1.Activity生命周期(A)onPause→(B)onCreate→(B)onStart→(B)onResume→(A)onStop
+
+（1）一个Activity或多或少会占有系统资源，而在官方的建议中，onPause方法将会释放掉很多系统资源，为切换Activity提供流畅性的保障，而不需要再等多两个阶段，这样做切换更快。
+如果如果Activity(A) 切回桌面......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2019-01-15
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/10/53-Android-summary-animation/">
+        <h2 class="post-title">
+            Android 总结3-动画 2019-01-10
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            View动画View动画定义了渐变Alpha、旋转Rotate、缩放Scale、平移Translate四种基本动画，并且通过这四种基本动画的组合使用，可以实现多种交互效果。View动画使用非常简单，不仅可以通过XML文件来定义动画，同样可以通过Java代码来实现动画过程。
+1234567891011121314151617//xml实现&lt;?xml version=&quot;1.0&q......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2019-01-10
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/05/52-Android-summary-thread/">
+        <h2 class="post-title">
+            Android 总结2-线程 2019-01-05
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1.Android 中的多线程
+1.继承Thread
+2.实现Runnable
+3.Handler
+4.AnsyTask
+5.HandlerThread
+
+ActivityThread 为 Android 主线程
+2.AnsyTask
+AsyncTask 最好在主线程中初始化。因为AsyncTask需要Handler来将执行结果回调切回主线程，Handler 中Looper.getMainL......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2019-01-05
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/25/51-Android-summary-View/">
+        <h2 class="post-title">
+            Android总结1-View 2018-12-25
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            ​    
+附上大量自定义View出现的时候，如何解耦
+1.View
+什么是View
+
+a. 所有View控件：TextView,Button等等
+b. 所有ViewGroup(容器)：RelativeLayout，LinearLayout。是容器也是View
+
+View 事件
+
+MotionEvent：ACTION_DOWN、ACTION_UP、ACTION_MOVE ;手势的落下，抬起，......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-12-25
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/12/08/50-daily/">
         <h2 class="post-title">
             Daily 2018-12-8
@@ -580,150 +717,6 @@ FragmentActivity
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2017/09/25/34-android-pic/">
-        <h2 class="post-title">
-            android 中资源图片被系统相册扫描显示问题
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            问题 android .nomedia
-打开相册，发现应用下载的图片被显示在其中，往往这时候我们不希望把其暴露给用户。
-
- 比如：视频、图片、音频都不需要暴露给用户。
-解决方案
-1.修改资源文件名
-
-比如图片为img/png的格式修改为ing 等等,系统不认的格式
-
-
-2.添加忽略文件”.nomedia”,在需要呗忽略的文件夹下创建一个名为”.nomedia”的空文件即可，系统应用即不扫描其......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-09-25
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/09/24/33-Builder-Design-Patterns/">
-        <h2 class="post-title">
-            构造者模式(Builder Pattern)
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-构造者模式（Builder Pattern）
-
-建造者模式是及其常用的一种设计模式，经常提现在一些开源的三方库中来进行return 当前对象进行链式调用，如果你要开源一个niubility 的库，那么学习一下建造者模式是非常有必要的。
-
-
-介绍：将一个复杂对象的构建与它的表示分离，用于属性参数很多时。
-
-很多流行框架用到它，举个最典型的Retrofit的使用。
-
-
-1234567// 忽略......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-09-24
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/09/23/32-Proxy-Design-Patterns/">
-        <h2 class="post-title">
-            代理模式(Proxy Pattern)
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-代理模式在java 中的使用很常见，在Android中使用更为常见，类似代理一些生命周期，或者AOP编程以及业务解耦等等使用场景。
-
-
-代理模式分为静态代理和动态代理。
-
-静态代理1234567891011121314151617181920212223242526272829303132interface BaseView &#123;    void showText();&#125;......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-09-23
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/09/21/31-Abstract-Factory-Design-Patterns/">
-        <h2 class="post-title">
-            抽象工厂模式(Abstract Factory Pattern)
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-抽象工厂模式相对于工厂模式来说，最大的不同是：将工厂的共同特征抽取出来，提供一个生成工厂类。
-
-
-1.举例制作果汁，首先提供两个接口类，果汁的种类和加冰多少。
-
-1234567public interface MakeIce &#123;    void putIce();&#125;public interface MakeJuice &#123;    void juicing();&......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-09-21
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/09/21/30-Factory Pattern-Design-Patterns/">
-        <h2 class="post-title">
-            工厂模式(Factory Pattern)
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。在工厂模式中，我们在创建对象时不会对客户端暴露创建逻辑，并且是通过使用一个共同的接口来指向新创建的对象。
-
-
-1.举例制作果汁，首先提供两个接口类，果汁的种类和加冰多少。
-
-1234567public interface MakeIce &#123;    void putIce();&#125;public interfa......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-09-21
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -773,11 +766,11 @@ FragmentActivity
                             
                         
                             
-                            <a href="/tags/#arithmetic" title="arithmetic" rel="5">arithmetic</a>
+                            <a href="/tags/#sound code" title="sound code" rel="6">sound code</a>
                             
                         
                             
-                            <a href="/tags/#sound code" title="sound code" rel="6">sound code</a>
+                            <a href="/tags/#arithmetic" title="arithmetic" rel="5">arithmetic</a>
                             
                         
                             
@@ -866,7 +859,7 @@ FragmentActivity
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Jfson‘s blog 2018 
+                    Copyright &copy; Jfson‘s blog 2019 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">
