@@ -13,11 +13,11 @@
 
     <title>
         
-          构造者模式(Builder Pattern) - Jfson的博客 | Jfson
+          《开篇》1. 从何入手开始刷题的？ - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="https://jfson.github.io/2017/09/24/33-Builder-Design-Patterns/">
+    <link rel="canonical" href="https://jfson.github.io/2019/01/30/55-lc-start1/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -155,14 +155,12 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#Design Patterns" title="Design Patterns">Design Patterns</a>
-                        
                     </div>
-                    <h1>构造者模式(Builder Pattern)</h1>
+                    <h1>《开篇》1. 从何入手开始刷题的？</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Jfson on
-                        2017-09-24
+                        2019-01-30
                     </span>
                 </div>
             </div>
@@ -181,29 +179,32 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <ul>
-<li><p>构造者模式（Builder Pattern）</p>
+                <h4 id="万事开头难"><a href="#万事开头难" class="headerlink" title="万事开头难"></a>万事开头难</h4><p>开始之前捋一捋我的收获跟思路。</p>
+<p>万事开头难，一开始着手做算法的时候，想必大家跟我的困惑是一样：我的算法不好，我怎么来开始？在大量的search 之后结果告诉我，大概有这么几种：</p>
+<ul>
+<li><p>a. 不用怂，就是干，按着推荐的顺序来做就ok</p>
+<p>*b. 按照 分类 tag 来进行</p>
+<p>*c. 按照难度先做 Easy 难度的，再去做 Medium 、 Hard 等</p>
+</li>
+</ul>
+<p>那么看完这些，还是纠结拿不定。于是又一两个月过去了。是不是很有同感 o.0</p>
+<h4 id="我的过程"><a href="#我的过程" class="headerlink" title="我的过程"></a>我的过程</h4><p>痛定思痛之后，决定不管怎样先做起来。</p>
+<p>从 Easy 开始刷，慢慢刷了70道题之后，对题目中遇到不熟悉的数据结构 ，先去熟悉学习数据结构。在完成几十道题目之后，发现偶尔做一些 Medium 难度的题也ok了，像是打开了一扇门，这时候我决定做出改变。</p>
+<p>于是开始分 Tag 来刷题，就这样 Easy、Medium、Hard 分布比例为 7：2：1来刷题，效果出奇的好，对于各种Tag 题型体会也更深。</p>
+<p>就这样在做完200道题的时候，发现很多题型其实大都差不多，方法也差不多，于是开始着手总结每种Tag的做题思路，在 经过3天，回顾了150道题之后，又有了新的收获。于是决定开了这个专栏来督促自己，也与大家共同分享共同进步。</p>
+<h3 id="我的专栏规划"><a href="#我的专栏规划" class="headerlink" title="我的专栏规划"></a>我的专栏规划</h3><p>在经过小半年的刷题小小有所收获，分享一下，避免少走弯路。更高效的去学习算法。我以自身的经验规划了一下即将分享的东西，希望可以帮到大家。</p>
+<p>由于大多数人的blog，简单记录一个思路，就直接上代码，我在刚入门的时候，真的看得很痛苦，所以尽量分享的每道题都会有一个简短的解说视频。</p>
+<ul>
+<li>第一阶段 ： 【开篇】10道题，带你了解一下，算法题到底是个什么东西。以及通过算法题来了解一些算法类型，比如：动态规划，深度优先搜索，广度优先搜索，贪心等等… 绝大多数概念是晦涩难懂的，通过算法来记忆，经久难忘。</li>
+<li>第二阶段:  【Easy】50 道Easy</li>
+<li>第三阶段:  【Tag】分 Tag 刷题</li>
+<li>不定期插更</li>
+</ul>
+<p>最后还有一个很重要的东西，就是时间复杂度和空间复杂度的计算。先给大家一个科普的介绍，这部分不用过于关心，在做完100道题后，在回过头来介绍，相信我，你一定会理解它。</p>
+<p>By the way ~ 黑五的时候牙一咬，买了个LeetCode 会员，不定期跟大家分享热门公司的面试题~ </p>
 <blockquote>
-<p>建造者模式是及其常用的一种设计模式，经常提现在一些开源的三方库中来进行return 当前对象进行链式调用，如果你要开源一个niubility 的库，那么学习一下建造者模式是非常有必要的。</p>
+<p>预计会每周3更左右！过年期间开始。哈哈哈哈~</p>
 </blockquote>
-</li>
-<li><p>介绍：将一个复杂对象的构建与它的表示分离，用于属性参数很多时。</p>
-</li>
-<li><p>很多流行框架用到它，举个最典型的Retrofit的使用。</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 忽略参数，看下如何使用</div><div class="line">Retrofit retrofit = new Retrofit.Builder()</div><div class="line">                .client(null)</div><div class="line">                .baseUrl(null)</div><div class="line">                .addConverterFactory(null)</div><div class="line">                .addCallAdapterFactory(null)</div><div class="line">                .build();</div></pre></td></tr></table></figure>
-<ul>
-<li>创建一个自己的builder 模式类,制作咖啡，需要水，咖啡，加冰多少，加糖多少等变量</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Author: jfson</div><div class="line"> * Create on:  2017/9/20</div><div class="line"> * Description:</div><div class="line"> */</div><div class="line">public class Coffee &#123;</div><div class="line">    public String water;  //放多少水</div><div class="line">    public String coffee; // 放多少咖啡</div><div class="line">    public String ice;  // 多少冰</div><div class="line">    public String suger; // 多少糖</div><div class="line"></div><div class="line">    public Coffee() &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Coffee(Coffee coffee) &#123;</div><div class="line">        if (coffee == null) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        this.water = coffee.water;</div><div class="line">        this.coffee = coffee.coffee;</div><div class="line">        this.ice = coffee.ice;</div><div class="line">        this.suger = coffee.suger;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    public static final class Builder &#123;</div><div class="line">        private Coffee mCoffee;</div><div class="line"></div><div class="line">        public Builder() &#123;</div><div class="line">            mCoffee = new Coffee();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public Coffee.Builder setWater(String water)&#123;</div><div class="line">            mCoffee.water = water;</div><div class="line">            return Builder.this;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public Coffee.Builder setCoffee(String coffee)&#123;</div><div class="line">            mCoffee.coffee = coffee;</div><div class="line">            return Builder.this;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public Coffee.Builder setIce(String ice)&#123;</div><div class="line">            mCoffee.ice = ice;</div><div class="line">            return Builder.this;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public Coffee.Builder setSuger(String suger)&#123;</div><div class="line">            mCoffee.suger = suger;</div><div class="line">            return Builder.this;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public Coffee build()&#123;</div><div class="line">            return new Coffee(mCoffee);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>使用跟Retrofit方式一样</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Coffee coffee = new Coffee.Builder()</div><div class="line">                .setCoffee(&quot;more&quot;)</div><div class="line">                .setIce(&quot;no&quot;)</div><div class="line">                .setSuger(&quot;no&quot;)</div><div class="line">                .setWater(&quot;little&quot;)</div><div class="line">                .build();</div></pre></td></tr></table></figure>
-<ul>
-<li>so,是不是很简单，很酸爽。</li>
-</ul>
 
 
                 <hr>
@@ -212,13 +213,9 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2017/09/25/34-android-pic/" data-toggle="tooltip" data-placement="top" title="android 中资源图片被系统相册扫描显示问题">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2017/09/23/32-Proxy-Design-Patterns/" data-toggle="tooltip" data-placement="top" title="代理模式(Proxy Pattern)">Next Post &rarr;</a>
+                            <a href="/2019/01/20/54-Android-summary-ipc/" data-toggle="tooltip" data-placement="top" title="Android 总结5-IPC">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -245,8 +242,6 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Design Patterns" title="Design Patterns">Design Patterns</a>
-                        
                     </div>
                 </section>
                 
