@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="慢慢来,比较快">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Kotlin 相关 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="https://jfson.github.io/2019/02/01/56-android-kotlin/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>Kotlin 相关</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2019-02-01
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h4 id="为什么要用？"><a href="#为什么要用？" class="headerlink" title="为什么要用？"></a>为什么要用？</h4><ul>
+<li>官方的Demo 基本都是kotlin,可以相互转换，相互调用</li>
+<li>Java 替代语言，更简洁，清晰</li>
+<li>null 安全检测，延时初始化</li>
+<li>避免了findViewbyid()</li>
+<li>协程 ？原理</li>
+<li>扩展函数和属性。譬如对String进行扩展</li>
+<li>数据data类，自动生成get,set</li>
+<li>用类委托来快速实现装饰器模式，不用接口类实现所有的方法();类似Animator.Listener </li>
+<li>Lambda表达式简化OnClickListener，with，apply，let</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>语法糖导致方法数增多。</li>
+<li>表达式好用，可读性降低</li>
+</ul>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><h4 id="kotlin-如何做到延时初始化？"><a href="#kotlin-如何做到延时初始化？" class="headerlink" title="kotlin 如何做到延时初始化？"></a>kotlin 如何做到延时初始化？</h4><p>by lazy 和 lateinit 的区别<br>by lazy 修饰val的变量<br>lateinit 修饰var的变量，且变量是非空的类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">生成一个该属性的附加属性:name$$delegate；</div><div class="line">在构造器中，将使用lazy(()-&gt;T)创建的Lazy实例对象赋值给name$$delegate；</div><div class="line">当该属性被调用，即其getter方法被调用时返回name$$delegate.getVaule()，</div><div class="line">而name$$delegate.getVaule()方法的返回结果是对象name$$delegate内部的_value属性值，</div><div class="line">在getVaule()第一次被调用时会将_value进行初始化，</div><div class="line">往后都是直接将_value的值返回，从而实现属性值的唯一一次初始化。</div><div class="line"></div><div class="line">那么，再总结一下，lateinit var和by lazy哪个更好用?</div><div class="line">首先两者的应用场景是略有不同的。</div><div class="line"></div><div class="line">然后，虽然两者都可以推迟属性初始化的时间，但是lateinit var只是让编译期忽略对属性未初始化的检查，</div><div class="line">后续在哪里以及何时初始化还需要开发者自己决定。</div><div class="line">而by lazy真正做到了声明的同时也指定了延迟初始化时的行为，</div><div class="line">在属性被第一次被使用的时候能自动初始化。但这些功能是要为此付出一丢丢代价的。</div></pre></td></tr></table></figure>
+<h4 id="Kotlin-如何避免使用findViewByid-？"><a href="#Kotlin-如何避免使用findViewByid-？" class="headerlink" title="Kotlin 如何避免使用findViewByid()？"></a>Kotlin 如何避免使用findViewByid()？</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">反编译后可知，这种用法的原理是 Kotlin 会自动生成类似 findViewById() 的方法</div><div class="line">：findCachedViewById()，</div><div class="line">在这个方法里面创建一个 HashMap 缓存每次查找到的 View，</div><div class="line">避免每次调用 View 的属性或方法时都会重新调用findCachedViewById()进行查找。</div><div class="line">具体查找流程是这样的：在findCachedViewById()中，</div><div class="line">会先通过缓存 HashMap 的 get 方法来获取控件，</div><div class="line">get() 中传入的 key 即控件 ID，由于第一次 get 的值为 null ，</div><div class="line">因此会调用findViewById() ，</div><div class="line">并把控件 ID作为 key 和 找到的控件 View 作为 value put 进缓存 Map 中，这样，</div><div class="line">第二次再使用该控件 ID 的时候，就直接可以从 Map 中获取到了。还是挺好理解的吧。</div></pre></td></tr></table></figure>
+<h4 id="数据data类如何实现的"><a href="#数据data类如何实现的" class="headerlink" title="数据data类如何实现的"></a>数据data类如何实现的</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">1.编译成java代码后自动生成了变量的get、set方法</div><div class="line">，equals方法，copy方法，component1(),component2(),</div><div class="line">hashCode()方法</div><div class="line">2.如果变量是val修饰，如data class People(var name:String,val age:Int)，</div><div class="line">则只会为age变量生成get方法。</div><div class="line"></div><div class="line">3.如果data类中需要定义常量，</div><div class="line">则常量的实际初始化阶段是在构造方法中，这点与java是不一样的</div></pre></td></tr></table></figure>
+<h4 id="Lambda-表达式是什么？"><a href="#Lambda-表达式是什么？" class="headerlink" title="Lambda 表达式是什么？"></a>Lambda 表达式是什么？</h4><ul>
+<li>匿名表达式:其实就是匿名函数的演进（类似的OnClickListener）<ul>
+<li>看起来Lambda表达式只是简化了匿名内部类的书写</li>
+<li>事实上Lambda并非匿名内部类的语法糖</li>
+<li>Lambda的效率比匿名内部类要高.</li>
+<li>Lambda表达式其实被翻译成了本类的一个静态方法</li>
+</ul>
+</li>
+</ul>
+<p>特征：</p>
+<ul>
+<li>可选类型声明：不需要声明参数类型，编译器可以统一识别参数值。</li>
+<li>可选的参数圆括号：一个参数无需定义圆括号，但多个参数需要定义圆括号。</li>
+<li>可选的大括号：如果主体包含了一个语句，就不需要使用大括号。</li>
+<li>可选的返回关键字：如果主体只有一个表达式返回值则编译器会自动返回值，大括号需要指定明表达式返回了一个数值。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">new Thread(new Runnable() &#123;  </div><div class="line">    @Override  </div><div class="line">    public void run() &#123;  </div><div class="line">        System.out.println(&quot;Hello Lambda!&quot;);  </div><div class="line">    &#125;  </div><div class="line">&#125;).start();  </div><div class="line"></div><div class="line">//Lambda -&gt;</div><div class="line">new Thread(() -&gt; System.out.println(&quot;Hello Lambda!&quot;)).start();</div></pre></td></tr></table></figure>
+<ul>
+<li>尝试去定义一个Lambda表达式</li>
+</ul>
+<h3 id="装饰器模式"><a href="#装饰器模式" class="headerlink" title="装饰器模式"></a>装饰器模式</h3><ul>
+<li>用类委托来快速实现装饰器模式(就是类委托)，不用接口类实现所有的方法();类似Animator.Listener(装饰器模式?)</li>
+<li>类的委托即一个类中定义的方法实际是调用另一个类的对象的方法来实现的。 </li>
+<li>Kotlin 直接支持委托模式，更加优雅，简洁。Kotlin 通过关键字 by 实现委托。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">// 创建接口</div><div class="line">interface Base &#123;   </div><div class="line">    fun print()</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 实现此接口的被委托的类</div><div class="line">class BaseImpl(val x: Int) : Base &#123;</div><div class="line">    override fun print() &#123; print(x) &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 通过关键字 by 建立委托类</div><div class="line">class Derived(b: Base) : Base by b</div><div class="line"></div><div class="line">fun main(args: Array&lt;String&gt;) &#123;</div><div class="line">    val b = BaseImpl(10)</div><div class="line">    Derived(b).print() // 输出 10</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h3><h5 id="1-好处"><a href="#1-好处" class="headerlink" title="1.好处"></a>1.好处</h5><ul>
+<li>避免回调地狱，类似RxJava.Zip</li>
+<li>关键词：同步</li>
+<li>避免创建大量线程而爆掉：譬如华为手机超过500个线程会爆掉</li>
+</ul>
+<p>示例</p>
+<ul>
+<li>理解</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">suspend fun requestToken(): Token &#123; ... &#125;   // 挂起函数</div><div class="line">suspend fun createPost(token: Token, item: Item): Post &#123; ... &#125;  // 挂起函数</div><div class="line">fun processPost(post: Post) &#123; ... &#125;</div><div class="line">fun postItem(item: Item) &#123;</div><div class="line">    GlobalScope.launch &#123;</div><div class="line">        val token = requestToken()</div><div class="line">        val post = createPost(token, item)</div><div class="line">        processPost(post)</div><div class="line">        // 需要异常处理，直接加上 try/catch 语句即可</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>使用协程后的代码非常简洁，以顺序的方式书写异步代码，不会阻塞当前 UI 线程，错误处理也和平常代码一样简单。</p>
+</li>
+<li><p>首先，需要通过构造器来启动协程。官方目前提供的基础构造器有两个：</p>
+<ul>
+<li>launch</li>
+<li>runBlocking</li>
+</ul>
+</li>
+</ul>
+<p>它们都会启动一个协程，区别在于前者不会阻塞当前线程，并且会返回一个协程的引用，而后者会等待协程的代码执行结束，再执行剩下的代码。</p>
+<p>其次，关于协程，Kotlin 新增了一个关键字：suspend ，被该关键字修饰的函数/方法/代码块只能由协程代码（也就是上述构造器的代码块参数内部）或者被 suspend 修饰的函数/方法/代码块调用。说简单一点，suspend fun 只能被 suspend fun 调用（协程构造器的最后一个参数的类型声明就是 suspend CoroutineScope.() -&gt; Unit）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">fun main(args: Array&lt;String&gt;) &#123;</div><div class="line">    repeat(100_000) &#123; // 启动十万个协程试试</div><div class="line">        launch &#123; suspendPrint() &#125;</div><div class="line">    &#125;</div><div class="line">    Thread.sleep(1200) // 等待协程代码的结束</div><div class="line">&#125;</div><div class="line"></div><div class="line">suspend fun suspendPrint() &#123;</div><div class="line">    delay(1000)</div><div class="line">    println(&quot;.&quot;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中的 delay 就是一个 suspend fun。</p>
+<p>除了以上两点，另一个很重要的概念就是上下文（context）。协程虽然是依赖于线程的，但一个协程并非就绑死在一个线程上。启动协程的时候可以指定上下文，在协程内部也可以通过 withContext 切换上下文。而这个上下文，也就是一个 CoroutineDispatcher 类的对象，从名字可以看出，就是由它去进行协程调度。比如，如果你需要新建一个线程去跑协程的代码，可以这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">launch(context = newSingleThreadContext(&quot;new-thread&quot;)) &#123; delay(1000) &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>async 与 await</li>
+</ul>
+<p>在这里， async 代码块会新启动一个协程后立即执行，并且返回一个 Deferred 类型的值，调用它的 await 方法后会暂停当前协程，直到获取到 async 代码块执行结果，当前协程才会继续执行。</p>
+<p>参考文章：</p>
+<p><a href="https://juejin.im/post/5abe031af265da238059c18c#heading-17" target="_blank" rel="external">Kotlin好处</a></p>
+<p><a href="https://saplf.github.io/2018/02/22/kotlinx-coroutines-intro/" target="_blank" rel="external">Kotlin协程</a></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/01/30/55-lc-start1/" data-toggle="tooltip" data-placement="top" title="《开篇》1. 从何入手开始刷题的？">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Jfson">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2019 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jfson.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
