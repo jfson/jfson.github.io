@@ -13,11 +13,11 @@
 
     <title>
         
-          Daily 2018-12-8 - Jfson的博客 | Jfson
+          LeetCode  20.  Valid Parentheses (Easy) - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="https://jfson.github.io/2018/12/08/50-daily/">
+    <link rel="canonical" href="https://jfson.github.io/2018/12/21/65-arithmetic-n3/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -156,11 +156,11 @@
                     <div class="tags">
                         
                     </div>
-                    <h1>Daily 2018-12-8</h1>
+                    <h1>LeetCode  20.  Valid Parentheses (Easy)</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Jfson on
-                        2018-12-08
+                        2018-12-21
                     </span>
                 </div>
             </div>
@@ -179,16 +179,21 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>​    今年诸多事导致太懒惰，从提交记录来看，差了很多，尽管自己也很讨厌，可心态还是又老了一点,做很多无用的事，屯不喝的酒和茶。</p>
-<p>​    压力大的时候总想去趁周末爬爬山，浪一浪，以为可以放松，回来后还是老样子。解决焦虑的唯一途径就是实现目标。可时间浪费在规划上，言多行少，目前来看，也算有点成效，两个月时间 Rank 100000+ 到现在排名上升6000+。可远远不够…下班到家很累啊，还尼玛要学个锤子的习。</p>
-<p>​    每次放弃之后又总是悔不当初。越来越喜欢熬夜。12点是睡觉的最早点。越来越喜欢咖啡，真是个好东西，特别是不加糖不加奶的贼苦的时候。又到周末，夜深人初静，又来忏悔,被浪费的时间，空白的提交。</p>
-<p>​    个人网站的上一篇是6月份…是时候回顾一下了。总之坚持有点难，不坚持是sb。我也想去加拿大滑雪。实现目标之后!。欲望太多活着真累，没有欲望跟咸鱼有啥区别。还想录算法题解视频。哦，还有大学数据结构挂了科，所以下个月我要给公司大哥们分享的是算法，也不知道为什么给自己挖这个坑。</p>
-<p>​    碎碎念完结。滚去写总结。哦，还有个特别火的是：你这个年级怎么能睡得着觉的!。时间为什么不够用…</p>
-<p>u can do like this:</p>
-<p>​    Don’t talk to strangers, don’t do new things, continue to live a normal life. Be timid, don’t be curious, just play with you,play the tik tok all the time , far from adventure, something think about it and not do it, no need to change. Stay in a familiar place, it is best to stay at home, listen to the same music, see the same people. Repeat the same topic. Don’t be too alive, dreams are practical, don’t try anything. Just live like this！</p>
-<p>​    I knew with absolute clarity that this was not what I wanted！</p>
-<p>December 08nd, 2018 at 23:25pm </p>
-
+                <p> Stack</p>
+<p><a href="https://www.bilibili.com/video/av44016180/" target="_blank" rel="external">视频讲解地址</a></p>
+<h3 id="LeetCode-20-Valid-Parentheses-Easy"><a href="#LeetCode-20-Valid-Parentheses-Easy" class="headerlink" title="LeetCode  20.  Valid Parentheses (Easy)"></a>LeetCode  20.  Valid Parentheses (Easy)</h3><blockquote>
+<p>Given a string containing just the characters ‘(’,’)’,’{’,’}’,’[’ and ’]’,determine if the input string is valid.<br>An input string is valid if:</p>
+<p>1.Open brackets must be closed by the same type of brackets.<br>2.Open brackets must be closed in correct order.</p>
+<p>题意：判断输入是否合法，类似于代码中括号合法检测。需要满足以下的test类型。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Note that an empty string is also considered valid.</div><div class="line">Example 1:        Input: “()”          Output:  true</div><div class="line">Example 2:        Input: “()[]&#123;&#125;”      Output:  true</div><div class="line">Example 3:        Input: “(]”          Output:  false</div><div class="line">Example 4:        Input: “()[)]”       Output:  false</div><div class="line">Example 5:        Input: “&#123;[]&#125;”        Output:  true</div></pre></td></tr></table></figure>
+<ul>
+<li>Solution 1:四个if  (error不可行)     </li>
+<li>Solution 2:计数 (error不可行)   ()()()[(]) </li>
+<li>Solution 3:Stack  () ,利用栈，后进先出的特性，对需入栈的元素跟栈顶元素比较，相匹配的进行移除栈操作，最后栈为空，则合法。</li>
+<li>题解： <img src="https://github.com/jfson/ImgResource/blob/master/lc2.png?raw=true" alt="image"></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isValid</span><span class="params">(String s)</span> </span>&#123;</div><div class="line">    	HashMap&lt;Character, Character&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">        map.put(<span class="string">')'</span>, <span class="string">'('</span>);</div><div class="line">        map.put(<span class="string">'&#125;'</span>, <span class="string">'&#123;'</span>);</div><div class="line">        map.put(<span class="string">']'</span>, <span class="string">'['</span>);</div><div class="line">        Stack stack = <span class="keyword">new</span> Stack();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;s.length;i++) &#123;</div><div class="line">            <span class="keyword">if</span>(map.containtsKey(s.charAt(i)))&#123; <span class="comment">//  end with</span></div><div class="line">            	Character top = stack.empty() ? <span class="string">"*"</span> : statck.pop(); <span class="comment">//remove</span></div><div class="line">            	<span class="keyword">if</span>(top != map.get(s.charAt(i)))&#123;</div><div class="line">                     <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">            	&#125;</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">               	stack.push(s.charAt(i));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">     	<span class="keyword">return</span> stack.empty();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
                 <hr>
 
@@ -197,12 +202,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2018/12/12/63-arithmetic-n1.md/" data-toggle="tooltip" data-placement="top" title="LeetCode 《开篇》">&larr; Previous Post</a>
+                            <a href="/2018/12/25/51-Android-summary-View/" data-toggle="tooltip" data-placement="top" title="Android总结1-View">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2018/06/21/49-svga/" data-toggle="tooltip" data-placement="top" title="SVGA 源码">Next Post &rarr;</a>
+                            <a href="/2018/12/15/64-arithmetic-n2/" data-toggle="tooltip" data-placement="top" title="《开篇》Array - LeetCode 283.Move Zeroes">Next Post &rarr;</a>
                         </li>
                     
                 </ul>

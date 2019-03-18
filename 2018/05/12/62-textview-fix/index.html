@@ -13,11 +13,11 @@
 
     <title>
         
-          Daily 2018-12-8 - Jfson的博客 | Jfson
+          TextView如何优化 - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="https://jfson.github.io/2018/12/08/50-daily/">
+    <link rel="canonical" href="https://jfson.github.io/2018/05/12/62-textview-fix/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -156,11 +156,11 @@
                     <div class="tags">
                         
                     </div>
-                    <h1>Daily 2018-12-8</h1>
+                    <h1>TextView如何优化</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Jfson on
-                        2018-12-08
+                        2018-05-12
                     </span>
                 </div>
             </div>
@@ -179,15 +179,20 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>​    今年诸多事导致太懒惰，从提交记录来看，差了很多，尽管自己也很讨厌，可心态还是又老了一点,做很多无用的事，屯不喝的酒和茶。</p>
-<p>​    压力大的时候总想去趁周末爬爬山，浪一浪，以为可以放松，回来后还是老样子。解决焦虑的唯一途径就是实现目标。可时间浪费在规划上，言多行少，目前来看，也算有点成效，两个月时间 Rank 100000+ 到现在排名上升6000+。可远远不够…下班到家很累啊，还尼玛要学个锤子的习。</p>
-<p>​    每次放弃之后又总是悔不当初。越来越喜欢熬夜。12点是睡觉的最早点。越来越喜欢咖啡，真是个好东西，特别是不加糖不加奶的贼苦的时候。又到周末，夜深人初静，又来忏悔,被浪费的时间，空白的提交。</p>
-<p>​    个人网站的上一篇是6月份…是时候回顾一下了。总之坚持有点难，不坚持是sb。我也想去加拿大滑雪。实现目标之后!。欲望太多活着真累，没有欲望跟咸鱼有啥区别。还想录算法题解视频。哦，还有大学数据结构挂了科，所以下个月我要给公司大哥们分享的是算法，也不知道为什么给自己挖这个坑。</p>
-<p>​    碎碎念完结。滚去写总结。哦，还有个特别火的是：你这个年级怎么能睡得着觉的!。时间为什么不够用…</p>
-<p>u can do like this:</p>
-<p>​    Don’t talk to strangers, don’t do new things, continue to live a normal life. Be timid, don’t be curious, just play with you,play the tik tok all the time , far from adventure, something think about it and not do it, no need to change. Stay in a familiar place, it is best to stay at home, listen to the same music, see the same people. Repeat the same topic. Don’t be too alive, dreams are practical, don’t try anything. Just live like this！</p>
-<p>​    I knew with absolute clarity that this was not what I wanted！</p>
-<p>December 08nd, 2018 at 23:25pm </p>
+                <p>大量文本刷新时，性能出现瓶颈，譬如：直播中的聊天</p>
+<p>绘制 和 measure 时间比较长</p>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><ul>
+<li><p>1.节省 measure 时间，Android有很多用于文字展示的控件，但实际上，他们都用text.Layout进行渲染。例如，TextView会将String转化为一个text.Layout对象，并通过canvas API将它绘制到屏幕上。<br>由于text.Layout需要在构造函数中测量文本的高度，因此它的创建效率不高。缓存text.Layout和复用text.Layout实例可以节省这部分时间</p>
+</li>
+<li><p>2.在可以设置text.Layout缓存后，我们的到来常数级的测量（measure）和绑定（binding）时间。但是初次绘制的时间仍然很长。50ms的绘制时间可能会导致明显的卡顿。<br>这50ms中的大部分被用于测量文本高度以及产生文字符号。这些都是CPU操作。为了提升文本渲染速度，Android在ICS中引入了TextLayoutCache用于缓存这些中间结果。TextLayoutCache是一个LRU缓存，缓存的key是文本。如果查询缓存时命中，文本的绘制速度会有很大提升</p>
+</li>
+<li><p>3.强制使用Staticlayout</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">TextView包含了3种布局:</div><div class="line">a. BoringLayout (单行纯文字文本)</div><div class="line">b. Staticlayout (多行复杂文本）</div><div class="line">c. DynamicLayout (多行可编辑复杂文本）</div><div class="line">强制使用Staticlayout</div><div class="line"></div><div class="line">4 StaticLayout的用途</div><div class="line">a.文中高频度大量textview刷新优化。</div><div class="line">b.一个textview显示大量的文本，比如一些阅读app。</div><div class="line">c. 在控件上画文本，比如一个ImageView中心画文本。</div><div class="line">d. 一些排版效果,比如多行文本文字居中对齐等。</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>参考</p>
+<p><a href="http://codethink.me/2015/04/23/improving-comment-rendering-on-android/" target="_blank" rel="external">Instagram是如何提升TextView渲染性能的</a></p>
+<p><a href="https://www.jianshu.com/p/9f7f9213bff8" target="_blank" rel="external">StaticLayout</a></p>
 
 
                 <hr>
@@ -197,12 +202,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2018/12/12/63-arithmetic-n1.md/" data-toggle="tooltip" data-placement="top" title="LeetCode 《开篇》">&larr; Previous Post</a>
+                            <a href="/2018/06/21/49-svga/" data-toggle="tooltip" data-placement="top" title="SVGA 源码">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2018/06/21/49-svga/" data-toggle="tooltip" data-placement="top" title="SVGA 源码">Next Post &rarr;</a>
+                            <a href="/2018/05/02/61-builder-observer/" data-toggle="tooltip" data-placement="top" title="观察者模式">Next Post &rarr;</a>
                         </li>
                     
                 </ul>

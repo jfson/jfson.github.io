@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="慢慢来,比较快">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          RecyclerView分析 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="https://jfson.github.io/2018/03/12/59-Recycler-code/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>RecyclerView分析</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2018-03-12
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="Adapter"><a href="#Adapter" class="headerlink" title="Adapter"></a>Adapter</h3><ul>
+<li>RecyclerView</li>
+<li>LayoutManager</li>
+<li>ViewHolder</li>
+<li>RecyclerView.Adapter</li>
+<li>Datas</li>
+</ul>
+<p>ItemAnimator 、LayoutManager 等等这些模块都当内部类写在了一块</p>
+<p>RecyclerView是一个ViewGroup,Adapter已经将Datas转换为RecyclerView所熟知的View</p>
+<h3 id="ItemDecoration"><a href="#ItemDecoration" class="headerlink" title="ItemDecoration"></a>ItemDecoration</h3><p>在 measureChild 方法里，将分割线 ItemDecoration 的尺寸加入到 itemView 的 padding 中。利用Rect 绘制</p>
+<h3 id="ItemAnimator"><a href="#ItemAnimator" class="headerlink" title="ItemAnimator"></a>ItemAnimator</h3><p>当ViewHolder状态改变时，先调用动画</p>
+<ul>
+<li>animateDisappearance,当 ViewHolder 从 RecyclerView 的 layout 中移除时，调用</li>
+<li>animateAppearance当,ViewHolder 添加进 RecyclerView 时，调用</li>
+<li>animatePersistence,<br>当 ViewHolder 已经添加进 layout 还未移除时，调用</li>
+<li>animateChange ,当 ViewHolder 已经添加进 layout 还未移除，并且调用了 notifyDataSetChanged 时，调用。</li>
+</ul>
+<h3 id="LayoutManager"><a href="#LayoutManager" class="headerlink" title="LayoutManager"></a>LayoutManager</h3><p>当之前设置过 LayoutManager 时，移除之前的视图，并缓存视图在 Recycler 中，将新的 mLayout 对象与 RecyclerView 绑定，更新缓存 View 的数量。最后去调用 requestLayout ，重新请求 measure、layout、draw。</p>
+<ul>
+<li>协助 RecyclerView 完成 onMeasure 过程</li>
+<li>通过 onLayoutChildren 完成对子 view 的布局</li>
+<li>滚动子视图</li>
+<li>滚动过程中判断何时添加 view ，何时回收</li>
+<li>view，也就是对缓存时机的判断。</li>
+</ul>
+<h3 id="Recycler"><a href="#Recycler" class="headerlink" title="Recycler"></a>Recycler</h3><p>Recycler 就是控制 RecyclerView 缓存的核心类,ayoutManager 其实就是 Recycler 的控制者，由 LayoutManager 来决定调用 Recycler 关键方法的时机</p>
+<p>RecyclerView 其实可以算作是四级缓存、mAttachedScrap 、mCachedViews 、mViewCacheExtension、mRecyclerPool 这四个对象就是作为每一级缓存的结构的。</p>
+<p> RecycledViewPool 中取根据 type 取 ViewHolder，RecycledViewPool 其实是一个 SparseArray 保存 ScrapData 对象的结构。根据 type 缓存 ViewHolder，每个 type，默认最多保存5个 ViewHolder。上面提到的 mCachedViews 这个集合默认最大值是 2 。RecycledViewPool 可以由多个 ReyclerView 共用。四级缓存都没有ViewHolder的话，需要去创建一个 ViewHolder 了。</p>
+<h3 id="复用机制"><a href="#复用机制" class="headerlink" title="复用机制"></a>复用机制</h3><p> 首先，去 mAttachedScrap 中寻找 position 一致的 viewHolder，需要匹配一些条件，大致是这个 viewHolder 没有被移除，是有效的之类的条件，满足就返回这个 viewHolder。所以，这里的关键就是要理解这个 mAttachedScrap 到底是什么，存的是哪些 ViewHolder。一次遥控器按键的操作，不管有没有发生滑动，都会导致 RecyclerView 的重新 onLayout，那要 layout 的话，RecyclerView 会先把所有 children 先 remove 掉，然后再重新 add 上去，完成一次 layout 的过程。那么这暂时性的 remove 掉的 viewHolder 要存放在哪呢，就是放在这个 mAttachedScrap 中了，这就是我的理解了。所以，感觉这个 mAttachedScrap 中存放的 viewHolder 跟回收和复用关系不大。</p>
+<p>网上一些分析的文章有说，RecyclerView 在复用时会按顺序去 mChangedScrap, mAttachedScrap 等等缓存里找，没有找到再往下去找，从代码上来看是这样没错，但我觉得这样表述有问题。因为就我们这篇文章基于 RecyclerView 的滑动场景来说，新卡位的复用以及旧卡位的回收机制，其实都不会涉及到 mChangedScrap 和 mAttachedScrap，所以我觉得还是基于某种场景来分析相对应的回收复用机制会比较好。就像 mChangedScrap 我虽然没理解是干嘛用的，但我猜测应该是在当数据发生变化时才会涉及到的复用场景，所以当我分析基于滑动场景时的复用时，即使我对这块不理解，影响也不会很大。</p>
+<p>滑动场景中的复用会用到这里的机制。mCachedViews 的大小默认为2。遍历 mCachedViews，找到 position 一致的 ViewHolder，之前说过，mCachedViews 里存放的 ViewHolder 的数据信息都保存着，所以 mCachedViews 可以理解成，只有原来的卡位可以重新复用这个 ViewHolder，新位置的卡位无法从 mCachedViews 里拿 ViewHolder出来用。 找到 viewholder 后：<br>就算 position 匹配找到了 ViewHolder，还需要判断一下这个 ViewHolder 是否已经被 remove 掉，type 类型一致不一致</p>
+<p>这里是去 RecyclerViewPool 里取 ViewHolder，ViewPool 会根据不同的 item type 创建不同的 List，每个 List 默认大小为5个。看一下去 ViewPool 里是怎么找的:</p>
+<p>ViewPool 会根据不同的 viewType 创建不同的集合来存放 ViewHolder，那么复用的时候，只要 ViewPool 里相同的 type 有 ViewHolder 缓存的话，就将最后一个拿出来复用，不用像 mCachedViews 需要各种匹配条件，只要有就可以复用。拿到 ViewHolder 之后，还会再次调用 resetInternal() 来重置 ViewHolder，这样 ViewHolder 就可以当作一个全新的 ViewHolder 来使用了，这也就是为什么从这里拿的 ViewHolder 都需要重新 onBindViewHolder() 了。那如果在 ViewPool 里还是没有找到呢，</p>
+<p>如果 ViewPool 中都没有找到 ViewHolder 来使用的话，那就调用 Adapter 的 onCreateViewHolder 来创建一个新的 ViewHolder 使用。上面一共有很多步骤来找 ViewHolder，不管在哪个步骤，只要找到 ViewHolder 的话，那下面那些步骤就不用管了，然后都要继续往下判断是否需要重新绑定数据，还有检查布局参数是否合法</p>
+<h3 id="回收机制"><a href="#回收机制" class="headerlink" title="回收机制"></a>回收机制</h3><p>回收机制的入口就有很多了，因为 Recycler 有各种结构体，比如mAttachedScrap，mCachedViews 等等，不同结构体回收的时机都不一样，入口也就多了。所以，还是基于 RecyclerView 的滑动场景下，移出屏幕的卡位回收时：</p>
+<p>在 RecyclerView 滑动时，会交由 LinearLayoutManager 的 scrollVerticallyBy() 去处理，然后 LayoutManager 会接着调用 fill() 方法去处理需要复用和回收的卡位，最终会调用上述 recyclerView() 这个方法开始进行回收工作。</p>
+<p>在 ViewHolder 扔进 ViewPool 里之前，会先去回调 Adapter 里的 onViewRecycle()，所以 Adapter 接收到该回调时是 ViewHolder 被扔进 ViewPool 里才会触发的。如果 ViewHolder 只是被 mCachedViews 缓存了，那 Adapter 的 onViewRecycle() 是不会回调的，所以不是所有被移出屏幕的 item 都会触发 onViewRecycle() 方法的</p>
+<p>###<br>所以，ViewHolder 在扔进 ViewPool 前会先 reset，这里的重置指的是 ViewHolder 保存的一些信息，比如 position，跟它绑定的 RecycleView 啊之类的，并不会清空 itemView，所以复用时才会经常出现 itemView 显示之前卡位的图片信息之类的情况，这点需要区分一下。</p>
+<p>回收的逻辑比较简单，由 LayoutManager 来遍历移出屏幕的卡位，然后对每个卡位进行回收操作，回收时，都是把 ViewHolder 放在 mCachedViews 里面，如果 mCachedViews 满了，那就在 mCachedViews 里拿一个 ViewHolder 扔到 ViewPool 缓存里，然后 mCachedViews 就可以空出位置来放新回收的 ViewHolder 了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>RecyclerView 滑动场景下的回收复用涉及到的结构体两个：mCachedViews 和 RecyclerViewPool。</p>
+<p>mCachedViews 优先级高于 RecyclerViewPool，回收时，最新的 ViewHolder 都是往 mCachedViews 里放，如果它满了，那就移出一个扔到 ViewPool 里好空出位置来缓存最新的 ViewHolder。</p>
+<p>复用时，也是先到 mCachedViews 里找 ViewHolder，但需要各种匹配条件，概括一下就是只有原来位置的卡位可以复用存在 mCachedViews 里的 ViewHolder，如果 mCachedViews 里没有，那么才去 ViewPool 里找。</p>
+<p>在 ViewPool 里的 ViewHolder 都是跟全新的 ViewHolder 一样，只要 type 一样，有找到，就可以拿出来复用，重新绑定下数据即可。</p>
+<h1 id="ListView对比"><a href="#ListView对比" class="headerlink" title="ListView对比"></a>ListView对比</h1><h3 id="点击事件"><a href="#点击事件" class="headerlink" title="点击事件"></a>点击事件</h3><p>ListView原生提供Item单击、长按的事件, 而RecyclerView则需要使用onTouchListener，相对自己实现会比较复杂。</p>
+<h3 id="ItemDecoration-1"><a href="#ItemDecoration-1" class="headerlink" title="ItemDecoration"></a>ItemDecoration</h3><p>ListView可以很轻松的设置divider属性来显示Item之间的分割线，RecyclerView需要我们自己实现ItemDecoration，前者使用简单，后者可定制性强。</p>
+<h3 id="LayoutManager-1"><a href="#LayoutManager-1" class="headerlink" title="LayoutManager"></a>LayoutManager</h3><p>AdapterView提供了ListView与GridView两种类型，分别对应流式布局与网格式布局。RecyclerView提供了LinearLayoutManager、GridLayoutManager与之抗衡，相对而言，使用RecyclerView来进行更换布局方式更为轻松。只需要更换一个变量即可，而对于AdapterView而言则是需要更换一个View了。</p>
+<h3 id="Cache"><a href="#Cache" class="headerlink" title="Cache"></a>Cache</h3><p>ListView使用了一个名为RecyclerBin的类负责试图的缓存，而Recycler则使用Recycler来进行缓存，原理上两者基本一致。RecyclerView：里面存储的不是View，而是ViewHolder</p>
+<h3 id="Refresh"><a href="#Refresh" class="headerlink" title="Refresh"></a>Refresh</h3><p>这是一个很有用的功能，在ListView中我们想局部刷新某个Item需要自己来编写刷新逻辑，而在RecyclerView中我们可以通过 notifyItemChanged(position) 来刷新单个Item，甚至可以通过 notifyItemChanged(position, payload) 来传入一个payload信息来刷新单个Item中的特定内容。</p>
+<h3 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h3><p>作为视觉动物，我相信很多人喜欢RecylerView都和它简单的动画API有关，因为之前对ListView做动画比较困难，并且不舒服。</p>
+<h3 id="嵌套"><a href="#嵌套" class="headerlink" title="嵌套"></a>嵌套</h3><p>嵌套布局也是最近比较火的一个概念，RecyclerView实现了 NestedScrollingChild 接口，使得它可以和一些嵌套组件很好的工作。我们再来看ListView原生独有的几个特点：<br>头部与尾部的支持<br>ListView原生支持添加头部与尾部，虽然RecyclerView可以通过定义不同的Type来做支持，但实际应用中，如果封装的不好，是很容易出问题的，因为Adapter中的数据位置与物理数据位置发生了偏移。</p>
+<h3 id="Adapter-1"><a href="#Adapter-1" class="headerlink" title="Adapter"></a>Adapter</h3><p>对于RecyclerView 和ListView 来说，比较相同的一点是使用了Adapter 和观察者模式；</p>
+<p>在用setAdapter时最终也会注册一个观察者，这个观察者具体实现类是RecyclerView 的内部类RecyclerViewDataObserver</p>
+<p>在数据集发生变化且调用了Adapter 的notifyDataSetChanged之后就会调用RecyclerViewDataObserver 的onChanged 函数，在该函数中又会调用RecyclerView 的requestLayout函数进行重新布局。这些过程与ListView 的实现基本一致，最大的不同在于它们之间的布局实现上。在ListView中的布局是通过自身的layoutChilden 函数来实现，而对于RecyclerView 来说它的布局职责则是交给了LayoutManager 对象。</p>
+<p>RecyclerView 还是通过Adapter 和观察者模式进行数据绑定，使得Recycler View 的灵活性得到保证。RecyclerView 的Adapter 并不是ListView 中的Adapter，它封装了ViewHolder 的创建与绑定等逻辑，降低了用户的使用成本。RecyclerView 也将缓存单元从Item View 换成了ViewHolder，在一定程度上建立起了规范。</p>
+<p>RecyclerView 与ListView 最大的不同是RecyclerView 将布局的工作交给了LayoutManager，在LayoutManager 的onLayou.tChilden 中对Item View 进行布局、执行动画等操作，这样一来，使得RecyclerView 可以动态地替换掉布局方式，例如，在运行时给RecyclerView 重新设置一个LayoutManager 就可以将原来是线性布局的视图改成网格布局，这大大地增加了灵活性。将布局职责独立出来也符合单一职责原则，而使用组合代替继承也会减少精合、增强健壮性，也使得RecyclerView 的布局具有更好的扩展性。</p>
+<h4 id="RecyclerView-Adapter"><a href="#RecyclerView-Adapter" class="headerlink" title="RecyclerView.Adapter"></a>RecyclerView.Adapter</h4><p>3个重要方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">  public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) &#123;</div><div class="line">      return null;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  @Override</div><div class="line">  public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) &#123;</div><div class="line"> </div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  @Override</div><div class="line">  public int getItemCount() &#123;</div><div class="line">      return 0;</div></pre></td></tr></table></figure></p>
+<ul>
+<li>onCreateViewHolder（）方法，负责承载每个子项的布局。它有两个参数，其中一个是 int viewType;</li>
+<li>onBindViewHolder()方法，负责将每个子项holder绑定数据。俩参数分别是RecyclerView.ViewHolder holder, int position；</li>
+</ul>
+<h3 id="DiffUtil"><a href="#DiffUtil" class="headerlink" title="DiffUtil"></a>DiffUtil</h3><p>主要是判断itemSame,大量Item时，自定义的DiffUtil可以对效率进行提升。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ArrayList old_students = adapter.getData();</div><div class="line">DiffUtil.DiffResult result = DiffUtil.calculateDiff(new MyCallback(old_students, students), true);</div><div class="line">adapter.setData(students);</div><div class="line">result.dispatchUpdatesTo(adapter);</div></pre></td></tr></table></figure>
+<p>参考<br><a href="https://www.jianshu.com/p/5f6151c1b6f8" target="_blank" rel="external">Recycler</a></p>
+<p><a href="https://juejin.im/entry/586a12c5128fe10057037fba" target="_blank" rel="external">对比</a></p>
+<p><a href="https://juejin.im/entry/5ac3339c51882555677ebf0a" target="_blank" rel="external">复用</a></p>
+<p><a href="https://www.kancloud.cn/alex_wsc/android_framework/508113" target="_blank" rel="external">源码解读RecyclerView</a></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/03/22/60-anonymity-class/" data-toggle="tooltip" data-placement="top" title="匿名类优化">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/02/13/48-reprint -1/" data-toggle="tooltip" data-placement="top" title="你为什么努力(by 韩路)">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Jfson">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2019 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jfson.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

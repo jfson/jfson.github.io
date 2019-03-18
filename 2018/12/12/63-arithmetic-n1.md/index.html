@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="慢慢来,比较快">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          LeetCode 《开篇》 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="https://jfson.github.io/2018/12/12/63-arithmetic-n1.md/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>LeetCode 《开篇》</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2018-12-12
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <ul>
+<li>LeetCode 《开篇》</li>
+</ul>
+<p><a href="http://space.bilibili.com/141189820/channel/detail?cid=65058" target="_blank" rel="external">《开篇》</a></p>
+<p>PS: 先更文章，后续更新每道题目详细解读 &amp; 视频<br>通过大概10道题来熟悉，常见的算法题类型：Array ，String，Stack，LinkList，Tree，Dynamic Programming，DFS/BFS，Backtracking，Greedy，Divide and Conquer</p>
+<p>本文中的算法题大概需要2-3周来完成</p>
+<h1 id="1-Array"><a href="#1-Array" class="headerlink" title="1.Array"></a>1.Array</h1><h3 id="LeetCode-283-Move-Zeroes-Easy"><a href="#LeetCode-283-Move-Zeroes-Easy" class="headerlink" title="LeetCode 283.Move Zeroes   (Easy)"></a>LeetCode 283.Move Zeroes   (Easy)</h3><blockquote>
+<p>Given an array nums , write a function to move all 0’s to the end of it while maintaining the relative order of the non-zero elements </p>
+<p>Example:</p>
+<p>Input: [0,1,0,3,12]</p>
+<p>Output: [1,3,12,0,0]</p>
+<p>Note: </p>
+<ol>
+<li>You must do this in-place without making a copy of the array</li>
+<li>Minimize the total number of operations</li>
+</ol>
+</blockquote>
+<ul>
+<li>Solution 1: 复制一个数组，不满足 Note 1</li>
+<li>Solution 2: 遍历一遍，0就交换非0的num<ul>
+<li>[0,1,0,3,12] -&gt; [1,0,0,3,12] -&gt;[1,3,0,0,12] -&gt;[1,3,12,0,0]   ;  T(n)：O(n)   ; operations: 3n</li>
+</ul>
+</li>
+<li>Solution 3: 遍历一遍,填充。T(n): O(2n) 满足Note 2    。operations: n</li>
+<li>题解：<img src="https://github.com/jfson/ImgResource/blob/master/Lc1.jpeg?raw=true" alt="image"></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">Solution&#123;</div><div class="line">    <span class="comment">//Solution 2</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">moveZeroes</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    	<span class="keyword">int</span> j = <span class="number">0</span>;</div><div class="line">    	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</div><div class="line">        	<span class="keyword">if</span>(nums[i] != <span class="number">0</span>) &#123;</div><div class="line">            	<span class="keyword">int</span> temp = nums[j];</div><div class="line">            	nums[j] = nums[i];</div><div class="line">            	nums[i] = temp;</div><div class="line">            	j++;</div><div class="line">            &#125;    	</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//Solution 3</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">moveZeroes</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length == <span class="number">0</span>) <span class="keyword">return</span>;</div><div class="line"></div><div class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</div><div class="line">            <span class="keyword">if</span> (nums[i] != <span class="number">0</span>)&#123;</div><div class="line">                nums[j++] = nums[i];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">for</span> (;j&lt;nums.length;j++)&#123;</div><div class="line">            nums[j] = <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="2-Stack"><a href="#2-Stack" class="headerlink" title="2.Stack"></a>2.Stack</h1><h3 id="LeetCode-20-Valid-Parentheses-Easy"><a href="#LeetCode-20-Valid-Parentheses-Easy" class="headerlink" title="LeetCode  20.  Valid Parentheses (Easy)"></a>LeetCode  20.  Valid Parentheses (Easy)</h3><blockquote>
+<p>Given a string containing just the characters ‘(’,’)’,’{’,’}’,’[’ and ’]’,determine if the input string is valid.<br>An input string is valid if:</p>
+<p>1.Open brackets must be closed by the same type of brackets.<br>2.Open brackets must be closed in correct order.</p>
+<p>题意：类似于代码中括号合法检测。<br>Note that an empty string is also considered valid.<br>Example 1:        Input: “()”          Output:  true<br>Example 2:        Input: “()[]{}”      Output:  true<br>Example 3:        Input: “(]”          Output:  false<br>Example 4:        Input: “()[)]”       Output:  false<br>Example 5:        Input: “{[]}”        Output:  true</p>
+</blockquote>
+<ul>
+<li>Solution 1： 四个if  (error)     </li>
+<li>Solution 2:    计数 (error)   ()()()[(]) </li>
+<li>Solution 3:    Stack  () </li>
+<li>题解： <img src="https://github.com/jfson/ImgResource/blob/master/lc2.png?raw=true" alt="image"></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isValid</span><span class="params">(String s)</span> </span>&#123;</div><div class="line">    	HashMap&lt;Character, Character&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">        map.put(<span class="string">')'</span>, <span class="string">'('</span>);</div><div class="line">        map.put(<span class="string">'&#125;'</span>, <span class="string">'&#123;'</span>);</div><div class="line">        map.put(<span class="string">']'</span>, <span class="string">'['</span>);</div><div class="line">        Stack stack = <span class="keyword">new</span> Stack();</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;s.length;i++) &#123;</div><div class="line">            <span class="keyword">if</span>(map.containtsKey(s.charAt(i)))&#123; <span class="comment">//  end with</span></div><div class="line">            	Character top = stack.empty() ? <span class="string">"*"</span> : statck.pop(); <span class="comment">//remove</span></div><div class="line">            	<span class="keyword">if</span>(top != map.get(s.charAt(i)))&#123;</div><div class="line">                     <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">            	&#125;</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">               	stack.push(s.charAt(i));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">     	<span class="keyword">return</span> stack.empty();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="3-Linked-List"><a href="#3-Linked-List" class="headerlink" title="3.Linked List"></a>3.Linked List</h1><h3 id="LeetCode-61-Rotate-List-Medium"><a href="#LeetCode-61-Rotate-List-Medium" class="headerlink" title="LeetCode 61.Rotate List (Medium)"></a>LeetCode 61.Rotate List (Medium)</h3><blockquote>
+<p>Given a linked list , rotate the list  to the right by k places , where k is non-negative</p>
+<p>Example 1:<br>Input:  1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; NULL, k = 2<br>Output:  4 -&gt; 5 -&gt; 1 -&gt; 2 -&gt; 3 -&gt; NULL<br>Explanation:<br>Rotate 1 steps tp right:  5 -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; NULL<br>Rotate 2 steps tp right:  4 -&gt; 5 -&gt; 1 -&gt; 2 -&gt; 3 -&gt; NULL</p>
+<p>Example 2:<br>Input:  0 -&gt; 1 -&gt; 2-&gt; NULL  ,k = 4<br>Output:  2-&gt; 0 -&gt; 1 -&gt; NULL<br>Rotate 1 steps tp right:  2 -&gt; 0 -&gt; 1 -&gt; NULL<br>Rotate 2 steps tp right:  1 -&gt; 2 -&gt; 0 -&gt; NULL<br>Rotate 3 steps tp right:  0 -&gt; 1 -&gt; 2 -&gt; NULL<br>Rotate 4 steps tp right:  2 -&gt; 0 -&gt; 1 -&gt; NULL</p>
+</blockquote>
+<ul>
+<li><p>Solution :   <img src="https://github.com/jfson/ImgResource/blob/master/lc3.png?raw=true" alt="image"></p>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/lc4.png?raw=true" alt="image"></p>
+<ul>
+<li>Fast index , slow index</li>
+<li>Swap : <img src="https://github.com/jfson/ImgResource/blob/master/lc5.jpeg?raw=true" alt="image"></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Definition for singly-linked list.</div><div class="line"> * public class ListNode &#123;</div><div class="line"> *     int val;</div><div class="line"> *     ListNode next;</div><div class="line"> *     ListNode(int x) &#123; val = x; &#125;</div><div class="line"> * &#125;</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">rotateRight</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (head==<span class="keyword">null</span>||head.next==<span class="keyword">null</span>) <span class="keyword">return</span> head;</div><div class="line"></div><div class="line">        ListNode res = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</div><div class="line">        res.next = head;</div><div class="line"></div><div class="line">        ListNode fast = res;</div><div class="line">        ListNode slower = res;</div><div class="line">        </div><div class="line">        <span class="keyword">int</span> i;</div><div class="line">        <span class="keyword">for</span> ( i = <span class="number">0</span>; fast.next !=<span class="keyword">null</span>; i++) &#123;</div><div class="line">            fast = fast.next;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i - k%i; j &gt;<span class="number">0</span>; j--) &#123;</div><div class="line">            slower = slower.next;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">		<span class="comment">// swap</span></div><div class="line">        fast.next = res.next;</div><div class="line">        res.next = slower.next;</div><div class="line">        slower.next = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> res.next;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="4-Tree"><a href="#4-Tree" class="headerlink" title="4. Tree"></a>4. Tree</h1><h3 id="589-N-ary-Tree-Preorder-Traversal-Easy"><a href="#589-N-ary-Tree-Preorder-Traversal-Easy" class="headerlink" title="589.N-ary Tree Preorder Traversal (Easy)"></a>589.N-ary Tree Preorder Traversal (Easy)</h3><blockquote>
+<p>589 N-ary Tree Preorder Traversal</p>
+<p>Given an n-ary tree, return the preorder traversal of its nodes’ values.<br>Note:<br>Return its preorder traversal as: [1,3,5,6,2,4].<br>Recursive solution is trivial, could you do it iteratively?<br>题意：前序遍历n叉数，不用递归，用遍历</p>
+</blockquote>
+<ul>
+<li>Solution: 遍历<ul>
+<li>LcTree_1</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://assets.leetcode.com/uploads/2018/10/12/narytreeexample.png" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span></span>&#123;</div><div class="line">    <span class="comment">//solution: 用 stack 存储child 节点(因为前序遍历，所以遍历用倒序h)。  </span></div><div class="line">    <span class="comment">//用while 轮训child 节点值并存储..</span></div><div class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">preorder</span><span class="params">(Node root)</span> </span>&#123;</div><div class="line">        List&lt;Integer&gt; ret = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) <span class="keyword">return</span> ret;</div><div class="line"></div><div class="line">        Stack&lt;Node&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</div><div class="line">        stack.add(root);</div><div class="line"></div><div class="line">        <span class="keyword">while</span> (!stack.empty())&#123;</div><div class="line">            root = stack.pop();</div><div class="line">            ret.add(root.val);</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = root.children.size()-<span class="number">1</span>; i &gt;=<span class="number">0</span>; i--) &#123;</div><div class="line">                stack.add(root.children.get(i));</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> ret;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="5-Dynamic-Programming"><a href="#5-Dynamic-Programming" class="headerlink" title="5.Dynamic Programming"></a>5.Dynamic Programming</h1><h3 id="那斐波切数列：0-1-1-2-3-5-8-13-21-34-55-89-144-233…"><a href="#那斐波切数列：0-1-1-2-3-5-8-13-21-34-55-89-144-233…" class="headerlink" title="那斐波切数列：0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233…"></a>那斐波切数列：<a href="https://zh.wikipedia.org/wiki/0" target="_blank" rel="external">0</a>, <a href="https://zh.wikipedia.org/wiki/1" target="_blank" rel="external">1</a>, <a href="https://zh.wikipedia.org/wiki/1" target="_blank" rel="external">1</a>, <a href="https://zh.wikipedia.org/wiki/2" target="_blank" rel="external">2</a>, <a href="https://zh.wikipedia.org/wiki/3" target="_blank" rel="external">3</a>, <a href="https://zh.wikipedia.org/wiki/5" target="_blank" rel="external">5</a>, <a href="https://zh.wikipedia.org/wiki/8" target="_blank" rel="external">8</a>, <a href="https://zh.wikipedia.org/wiki/13" target="_blank" rel="external">13</a>, <a href="https://zh.wikipedia.org/wiki/21" target="_blank" rel="external">21</a>, <a href="https://zh.wikipedia.org/wiki/34" target="_blank" rel="external">34</a>, <a href="https://zh.wikipedia.org/wiki/55" target="_blank" rel="external">55</a>, <a href="https://zh.wikipedia.org/wiki/89" target="_blank" rel="external">89</a>, <a href="https://zh.wikipedia.org/wiki/144" target="_blank" rel="external">144</a>, <a href="https://zh.wikipedia.org/wiki/233" target="_blank" rel="external">233</a>…</h3><ul>
+<li>概念：  <img src="https://github.com/jfson/ImgResource/blob/master/lc6.png?raw=true" alt="image"></li>
+<li>时间复杂度 T(n) = O(2^n)  —&gt;  O(n)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="comment">// 递归</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">fibonacci</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</div><div class="line">    	<span class="keyword">if</span>(n == <span class="number">0</span>)&#123;</div><div class="line">     		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    	&#125;<span class="keyword">else</span> <span class="keyword">if</span>(n == <span class="number">1</span>)&#123;</div><div class="line">        	<span class="keyword">return</span> <span class="number">1</span>;	</div><div class="line">        &#125;<span class="keyword">else</span> &#123; <span class="comment">// n &gt; 2</span></div><div class="line">      		<span class="keyword">return</span> fibonacci(n-<span class="number">1</span>)+fibonacci(n-<span class="number">2</span>);</div><div class="line">		&#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//DP</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">fibonacciDP</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</div><div class="line">        <span class="keyword">int</span>[] res = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n;i++)&#123;</div><div class="line">            <span class="keyword">if</span>(i == <span class="number">0</span>) res[i] = <span class="number">0</span>;</div><div class="line">            <span class="keyword">if</span>(i == <span class="number">1</span>) &#123;</div><div class="line">                res[i] = <span class="number">1</span>;</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="comment">// i &gt;=2</span></div><div class="line">            res[i] = res[i-<span class="number">1</span>] + res[i-<span class="number">2</span>];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>动态规划 :很多重叠子问题，问题能够分解成子问题来解决</li>
+<li>递归: 找出口   –&gt; DP:   找递归</li>
+</ul>
+<h3 id="LeetCode-62-Unique-Paths-Medium"><a href="#LeetCode-62-Unique-Paths-Medium" class="headerlink" title="LeetCode: 62. Unique Paths (Medium)"></a>LeetCode: 62. Unique Paths (Medium)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">A robot is located at the top-left corner of a m x n grid (marked &apos;Start&apos; in the diagram below).</div><div class="line"></div><div class="line">The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked &apos;Finish&apos; in the diagram below).</div><div class="line"></div><div class="line">How many possible unique paths are there?</div><div class="line"></div><div class="line">Note: m and n will be at most 100.</div><div class="line"></div><div class="line">Example 1:</div><div class="line">    Input: m = 3, n = 2</div><div class="line">    Output: 3</div><div class="line">    Explanation:</div><div class="line">    From the top-left corner, there are a total of 3 ways to reach the bottom-right corner:</div><div class="line">    1. Right -&gt; Right -&gt; Down</div><div class="line">    2. Right -&gt; Down -&gt; Right</div><div class="line">    3. Down -&gt; Right -&gt; Right</div><div class="line">Example 2:</div><div class="line">    Input: m = 7, n = 3</div><div class="line">    Output: 28</div></pre></td></tr></table></figure>
+<p><img src="https://assets.leetcode.com/uploads/2018/10/22/robot_maze.png" alt=""></p>
+<ul>
+<li>solution: 找递归  <img src="https://github.com/jfson/ImgResource/blob/master/lc7.png?raw=true" alt="image"></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePaths</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(m == <span class="number">0</span> || n==<span class="number">0</span>)&#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(m == <span class="number">1</span> || n == <span class="number">1</span>)&#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">           <span class="keyword">return</span> uniquePathsDp(m,n-<span class="number">1</span>)+ uniquePathsDp(m-<span class="number">1</span>,n);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePathsDp</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (m == <span class="number">0</span> || n ==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">       <span class="keyword">if</span> (m == <span class="number">1</span> || n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">       <span class="keyword">int</span>[][] dp = <span class="keyword">new</span> <span class="keyword">int</span>[m][n];</div><div class="line">          </div><div class="line">       <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;m; i++)&#123;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j&lt;n; j++)&#123;</div><div class="line">                <span class="keyword">if</span>(i==<span class="number">0</span>||j==<span class="number">0</span>)</div><div class="line">                    dp[i][j] = <span class="number">1</span>;</div><div class="line">                <span class="keyword">else</span></div><div class="line">                    dp[i][j] = dp[i][j-<span class="number">1</span>] + dp[i-<span class="number">1</span>][j];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">return</span> dp[m-<span class="number">1</span>][n-<span class="number">1</span>];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>时间复杂度T(n) ：O(2^(m+n)) —&gt; O(m*n)</li>
+</ul>
+<h1 id="6-DFS-BFS"><a href="#6-DFS-BFS" class="headerlink" title="6.DFS/BFS"></a>6.DFS/BFS</h1><ul>
+<li>概念：  <img src="https://github.com/jfson/ImgResource/blob/master/lc8.png?raw=true" alt="image"></li>
+<li>深度优先搜索，栈(递归)实现；广度优先搜索，队列(遍历)实现；</li>
+<li>DFS: 迷宫出口，不撞南墙不回头。暴力尝试(递归操作)</li>
+<li>BFS:宽度遍历树的。遍历操作</li>
+</ul>
+<h3 id="LeetCode-200-Number-of-Islands-Medium"><a href="#LeetCode-200-Number-of-Islands-Medium" class="headerlink" title="LeetCode 200. Number of Islands (Medium)"></a>LeetCode 200. Number of Islands (Medium)</h3><blockquote>
+<p>Given a 2d grid map of <code>&#39;1&#39;</code>s (land) and <code>&#39;0&#39;</code>s (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt; Input:</div><div class="line">&gt; 11110</div><div class="line">&gt; 11010</div><div class="line">&gt; 11000</div><div class="line">&gt; 00000</div><div class="line">&gt; Output: 1</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p><strong>Example 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt; Input:</div><div class="line">&gt; 11000</div><div class="line">&gt; 11000</div><div class="line">&gt; 00100</div><div class="line">&gt; 00011</div><div class="line">&gt; Output: 3</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+</blockquote>
+<p>题解：  <img src="https://github.com/jfson/ImgResource/blob/master/lc9.jpeg?raw=true" alt="image"> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">class Solution &#123;</div><div class="line">	// DFS</div><div class="line">    public int numIslands(char[][] grid) &#123;</div><div class="line">        if (grid == null || grid.length == 0) return 0;</div><div class="line"></div><div class="line">        int m = grid.length;</div><div class="line">        int n = grid[0].length;</div><div class="line">        int islandNums = 0;</div><div class="line"></div><div class="line">        for (int i = 0; i &lt; m; i++) &#123;</div><div class="line">            for (int j = 0; j &lt; n; j++) &#123;</div><div class="line">                if (grid[i][j] == &apos;1&apos;)&#123;</div><div class="line">                    ++islandNums;</div><div class="line">                    dfs(grid, i, j, m, n);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        return islandNums;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void dfs(char[][] grid, int mStart, int nStart, int m, int n) &#123;</div><div class="line">        if (mStart &lt; 0 || nStart &lt; 0 || mStart &gt;= m || nStart &gt;= n || grid[mStart][nStart] == &apos;0&apos;) return;</div><div class="line"></div><div class="line">        grid[mStart][nStart] = &apos;0&apos;;</div><div class="line">        dfs(grid, mStart - 1, nStart, m, n);</div><div class="line">        dfs(grid, mStart + 1, nStart, m, n);</div><div class="line">        dfs(grid, mStart, nStart - 1, m, n);</div><div class="line">        dfs(grid, mStart, nStart + 1, m, n);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span>[][] directions = <span class="keyword">new</span> <span class="keyword">int</span>[][]&#123;&#123;-<span class="number">1</span>,<span class="number">0</span>&#125;, &#123;<span class="number">1</span>,<span class="number">0</span>&#125;, &#123;<span class="number">0</span>,-<span class="number">1</span>&#125;, &#123;<span class="number">0</span>,<span class="number">1</span>&#125;&#125;;</div><div class="line">	Queue&lt;<span class="keyword">int</span> []&gt; q = <span class="keyword">new</span> LinkedList();</div><div class="line">    </div><div class="line">    <span class="comment">// BFS</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">numIslands</span><span class="params">(<span class="keyword">char</span>[][] grid)</span> </span>&#123;</div><div class="line">    	<span class="keyword">int</span> m = grid.length;</div><div class="line">    	<span class="keyword">if</span> (m == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    	<span class="keyword">int</span> n = grid[<span class="number">0</span>].length;</div><div class="line">    	<span class="keyword">int</span> ans = <span class="number">0</span>;</div><div class="line">    	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++) &#123;</div><div class="line">        	<span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++) &#123;</div><div class="line">            	<span class="keyword">if</span> (grid[i][j] == <span class="string">'1'</span>) &#123;</div><div class="line">                	bfs(grid, i, j);</div><div class="line">                	ans++;</div><div class="line">            	&#125;</div><div class="line">        	&#125;</div><div class="line">    	&#125;</div><div class="line">    	<span class="keyword">return</span> ans;</div><div class="line">	&#125; </div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">char</span>[][] grid, <span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line">    	q.add(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;a,b&#125;);</div><div class="line">    	<span class="keyword">while</span> (!q.isEmpty()) &#123;</div><div class="line">        	<span class="keyword">int</span>[] arr = q.poll();</div><div class="line">        	<span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++) &#123;</div><div class="line">            	<span class="keyword">int</span> x = arr[<span class="number">0</span>] + directions[i][<span class="number">0</span>];</div><div class="line">            	<span class="keyword">int</span> y = arr[<span class="number">1</span>] + directions[i][<span class="number">1</span>];</div><div class="line">            	<span class="keyword">if</span> (x &lt; <span class="number">0</span> || x &gt;= grid.length || y &lt;<span class="number">0</span> || y &gt;= grid[<span class="number">0</span>].length) &#123;</div><div class="line">                	<span class="keyword">continue</span>;</div><div class="line">            	&#125;</div><div class="line">            	<span class="keyword">if</span> (grid[x][y] == <span class="string">'1'</span>) &#123;</div><div class="line">                	q.add(<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;x, y&#125;);</div><div class="line">                	grid[x][y] = <span class="string">'0'</span>;</div><div class="line">            	&#125;</div><div class="line">        	&#125;</div><div class="line">    	&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="7-BackTracking"><a href="#7-BackTracking" class="headerlink" title="7.BackTracking"></a>7.BackTracking</h1><ul>
+<li>暴力解法</li>
+</ul>
+<h3 id="LeetCode-78-Subsets-Medium"><a href="#LeetCode-78-Subsets-Medium" class="headerlink" title="LeetCode 78. Subsets (Medium)"></a>LeetCode 78. Subsets (Medium)</h3><blockquote>
+<p>Given a set of <strong>distinct</strong> integers, <em>nums</em>, return all possible subsets (the power set).</p>
+<p><strong>Note:</strong> The solution set must not contain duplicate subsets.</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&gt; Input: nums = [1,2,3]</div><div class="line">&gt; Output:</div><div class="line">&gt; [</div><div class="line">&gt; [3],</div><div class="line">&gt; [1],</div><div class="line">&gt; [2],</div><div class="line">&gt; [1,2,3],</div><div class="line">&gt; [1,3],</div><div class="line">&gt; [2,3],</div><div class="line">&gt; [1,2],</div><div class="line">&gt; []</div><div class="line">&gt; ]</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+</blockquote>
+<ul>
+<li>Solution: <img src="https://github.com/jfson/ImgResource/blob/master/lc10.jpeg?raw=true" alt="image"> </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class Solution &#123;</div><div class="line">    public List&lt;List&lt;Integer&gt;&gt; subsets(int[] nums) &#123;</div><div class="line">         if (nums == null || nums.length == 0) return null;</div><div class="line">        List&lt;List&lt;Integer&gt;&gt; lists = new ArrayList&lt;&gt;();</div><div class="line">        Arrays.sort(nums);</div><div class="line"></div><div class="line">        backTracking(lists,new ArrayList&lt;Integer&gt;(),nums,0);</div><div class="line">        return lists;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void backTracking(List&lt;List&lt;Integer&gt;&gt; list,List&lt;Integer&gt; tempList, int[] nums, int start) &#123;</div><div class="line">        list.add(new ArrayList&lt;&gt;(tempList));</div><div class="line"></div><div class="line">        for (int i = start; i &lt;  nums.length; i++) &#123;</div><div class="line">            if (i &gt; start &amp;&amp; nums[i] == nums[i-1]) continue; //skip</div><div class="line">            tempList.add(nums[i]);</div><div class="line">            backTracking(list,tempList,nums,i+1);</div><div class="line">            tempList.remove(tempList.size()-1);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="8-Greed"><a href="#8-Greed" class="headerlink" title="8.Greed"></a>8.Greed</h1><ul>
+<li>背包—&gt;局部最优</li>
+</ul>
+<h3 id="LeetCode-714-Best-Time-to-Buy-and-Sell-Stock-with-Transaction-Fee"><a href="#LeetCode-714-Best-Time-to-Buy-and-Sell-Stock-with-Transaction-Fee" class="headerlink" title="LeetCode 714. Best Time to Buy and Sell Stock with Transaction Fee"></a>LeetCode 714. Best Time to Buy and Sell Stock with Transaction Fee</h3><blockquote>
+<p>Your are given an array of integers <code>prices</code>, for which the <code>i</code>-th element is the price of a given stock on day <code>i</code>; and a non-negative integer <code>fee</code> representing a transaction fee.</p>
+<p>You may complete as many transactions as you like, but you need to pay the transaction fee for each transaction. You may not buy more than 1 share of a stock at a time (ie. you must sell the stock share before you buy again.)</p>
+<p>Return the maximum profit you can make.</p>
+<p><strong>Example 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; Input: prices = [1, 3, 2, 8, 4, 9], fee = 2</div><div class="line">&gt; Output: 8</div><div class="line">&gt; Explanation: The maximum profit can be achieved by:</div><div class="line">&gt; Buying at prices[0] = 1Selling at prices[3] = 8Buying at prices[4] = 4Selling at prices[5] = 9The total profit is ((8 - 1) - 2) + ((9 - 4) - 2) = 8.</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p><strong>Note:</strong></p>
+<p><code>0 &lt; prices.length &lt;= 50000</code>.</p>
+<p><code>0 &lt; prices[i] &lt; 50000</code>.</p>
+<p><code>0 &lt;= fee &lt; 50000</code>.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">class Solution &#123;</div><div class="line">    public int maxProfit(int[] prices, int fee) &#123;</div><div class="line">        if (prices == null || prices.length &lt;=1) return 0;</div><div class="line">        int cash = 0;</div><div class="line">        int hold = -prices[0];</div><div class="line">        for (int i = 1;i&lt; prices.length;i++)&#123;</div><div class="line">           cash = Math.max(cash,hold + prices[i]-fee);</div><div class="line">           hold = Math.max(hold, cash-prices[i]);</div><div class="line">        &#125;</div><div class="line">        return cash;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="9-Divide-and-Conquer"><a href="#9-Divide-and-Conquer" class="headerlink" title="9.Divide and Conquer"></a>9.Divide and Conquer</h1>
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/12/15/64-arithmetic-n2/" data-toggle="tooltip" data-placement="top" title="《开篇》Array - LeetCode 283.Move Zeroes">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/08/50-daily/" data-toggle="tooltip" data-placement="top" title="Daily 2018-12-8">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Jfson">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2019 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jfson.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

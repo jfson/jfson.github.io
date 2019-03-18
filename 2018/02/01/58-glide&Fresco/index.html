@@ -13,11 +13,11 @@
 
     <title>
         
-          Daily 2018-12-8 - Jfson的博客 | Jfson
+          Glide&amp;Fresco对比 - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="https://jfson.github.io/2018/12/08/50-daily/">
+    <link rel="canonical" href="https://jfson.github.io/2018/02/01/58-glide&amp;Fresco/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -156,11 +156,11 @@
                     <div class="tags">
                         
                     </div>
-                    <h1>Daily 2018-12-8</h1>
+                    <h1>Glide&amp;Fresco对比</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Jfson on
-                        2018-12-08
+                        2018-02-01
                     </span>
                 </div>
             </div>
@@ -179,15 +179,52 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>​    今年诸多事导致太懒惰，从提交记录来看，差了很多，尽管自己也很讨厌，可心态还是又老了一点,做很多无用的事，屯不喝的酒和茶。</p>
-<p>​    压力大的时候总想去趁周末爬爬山，浪一浪，以为可以放松，回来后还是老样子。解决焦虑的唯一途径就是实现目标。可时间浪费在规划上，言多行少，目前来看，也算有点成效，两个月时间 Rank 100000+ 到现在排名上升6000+。可远远不够…下班到家很累啊，还尼玛要学个锤子的习。</p>
-<p>​    每次放弃之后又总是悔不当初。越来越喜欢熬夜。12点是睡觉的最早点。越来越喜欢咖啡，真是个好东西，特别是不加糖不加奶的贼苦的时候。又到周末，夜深人初静，又来忏悔,被浪费的时间，空白的提交。</p>
-<p>​    个人网站的上一篇是6月份…是时候回顾一下了。总之坚持有点难，不坚持是sb。我也想去加拿大滑雪。实现目标之后!。欲望太多活着真累，没有欲望跟咸鱼有啥区别。还想录算法题解视频。哦，还有大学数据结构挂了科，所以下个月我要给公司大哥们分享的是算法，也不知道为什么给自己挖这个坑。</p>
-<p>​    碎碎念完结。滚去写总结。哦，还有个特别火的是：你这个年级怎么能睡得着觉的!。时间为什么不够用…</p>
-<p>u can do like this:</p>
-<p>​    Don’t talk to strangers, don’t do new things, continue to live a normal life. Be timid, don’t be curious, just play with you,play the tik tok all the time , far from adventure, something think about it and not do it, no need to change. Stay in a familiar place, it is best to stay at home, listen to the same music, see the same people. Repeat the same topic. Don’t be too alive, dreams are practical, don’t try anything. Just live like this！</p>
-<p>​    I knew with absolute clarity that this was not what I wanted！</p>
-<p>December 08nd, 2018 at 23:25pm </p>
+                <p> 貌似框架都被分析烂了，索性来个总结吧</p>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>Glide</p>
+<ul>
+<li>多种图片格式的缓存，适用于更多的内容表现形式（如Gif、WebP、缩略图、Video）</li>
+<li>生命周期集成（根据Activity或者Fragment的生命周期管理图片加载请求）</li>
+<li>高效处理Bitmap（bitmap的复用和主动回收，减少系统回收压力）</li>
+<li>高效的缓存策略，灵活（Picasso只会缓存原始尺寸的图片，Glide缓存的是多种规格），加载速度快且内存开销小（默认Bitmap格式的不同，使得内存开销是Picasso的一半）,缓存的key 是根据url,width,height等等生成的，由此可见，宽高不一致也无法复用。</li>
+<li>支持图片加载顺序的优先级设置</li>
+<li>方法数 2678</li>
+</ul>
+<p>Fresco</p>
+<ul>
+<li>最大的优势在于5.0以下(最低2.3)的bitmap加载。在5.0以下系统，Fresco将图片放到一个特别的内存区域(Ashmem区)</li>
+<li>大大减少OOM（在更底层的Native层对OOM进行处理，图片将不再占用App的内存）</li>
+<li>适用于需要高性能加载大量图片的场景</li>
+<li>框架设计的没毛病，api支持教好</li>
+<li>方法数1w+</li>
+</ul>
+<h4 id="Glide"><a href="#Glide" class="headerlink" title="Glide"></a>Glide</h4><ul>
+<li>Glide 缓存</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">默认情况下，Glide 会在开始一个新的图片请求之前检查以下多级的缓存：</div><div class="line">1. 活动资源 (Active Resources) </div><div class="line">2. 内存缓存 (Memory Cache) </div><div class="line">3. 资源类型（Resource Disk Cache）</div><div class="line">4. 原始数据 (Data Disk Cache)</div></pre></td></tr></table></figure>
+<ul>
+<li>活动资源：如果当前对应的图片资源正在使用，则这个图片会被Glide放入活动缓存。</li>
+<li>内存缓存：如果图片最近被加载过，并且当前没有使用这个图片，则会被放入内存中</li>
+<li>资源类型:  被解码后的图片写入磁盘文件中，解码的过程可能修改了图片的参数(如:inSampleSize、inPreferredConfig)</li>
+<li>原始数据:  图片原始数据在磁盘中的缓存(从网络、文件中直接获得的原始数据)</li>
+<li>内存缓存都为LRU算法，其中包含LruBitmapPool</li>
+</ul>
+<h5 id="缓存策略"><a href="#缓存策略" class="headerlink" title="缓存策略"></a>缓存策略</h5><p>与其他图片加载库的缓存机制不同，Glide缓存图片时默认只缓存最终加载的那张图片。举个栗子，你要加载的图片分辨率为1000x1000，但是最终显示该图片的ImageView大小只有500x500，那么Glide就会只缓存500x500的小图。这也是在从磁盘缓存中加载图片时Glide比Picasso快的原因。Glide目前提供了四种缓存策略：</p>
+<ul>
+<li>DiskCacheStrategy.NONE 不缓存文件</li>
+<li>DiskCacheStrategy.SOURCE 只缓存原图</li>
+<li>DiskCacheStrategy.RESULT 只缓存最终加载的图（默认的缓存策略）</li>
+<li>DiskCacheStrategy.ALL 同时缓存原图和结果图</li>
+</ul>
+<h5 id="缓存算法"><a href="#缓存算法" class="headerlink" title="缓存算法"></a>缓存算法</h5><p>在Glide中磁盘缓存默认使用的是LRU（Least Recently Used）算法。如果你想使用其他的缓存算法，<br>就只能通过实现DiskCache接口来完成了。</p>
+<ul>
+<li>Glide 支持图片加载顺序的优先级设置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"> Glide</div><div class="line">    .with(context)</div><div class="line">    .load(&quot;...&quot;)</div><div class="line">    .priority(Priority.HIGH) //优先级Priority.LOW</div><div class="line">    .into(imageViewHero);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Fresco"><a href="#Fresco" class="headerlink" title="Fresco"></a>Fresco</h3><ul>
+<li>Fresco有三级缓存，分别是 Bitmap缓存，未解码图片缓存， 文件缓存。</li>
+<li>提一点Bitmap缓存：在5.0以下系统，Bitmap缓存位于ashmem，这样Bitmap对象的创建和释放将不会引发GC。5.0及其以上系统，相比之下，内存管理有了很大改进，所以Bitmap缓存直接位于Java的heap上。</li>
+<li>当控件比较小的时候，Fresco会在没有做过任何处理的情况下，会将原图片加入到内存中，即缓存原始图像，然后做一些压缩处理显示在控件上。如果需要根据控件修改图片尺寸，需先获取控件的宽高然后进行压缩。</li>
+</ul>
 
 
                 <hr>
@@ -197,12 +234,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2018/12/12/63-arithmetic-n1.md/" data-toggle="tooltip" data-placement="top" title="LeetCode 《开篇》">&larr; Previous Post</a>
+                            <a href="/2018/02/02/43-decoupling/" data-toggle="tooltip" data-placement="top" title="Android 解耦框架(自定义View)">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2018/06/21/49-svga/" data-toggle="tooltip" data-placement="top" title="SVGA 源码">Next Post &rarr;</a>
+                            <a href="/2018/01/22/42- maven-update/" data-toggle="tooltip" data-placement="top" title="Android maven 库上传">Next Post &rarr;</a>
                         </li>
                     
                 </ul>

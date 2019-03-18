@@ -13,11 +13,11 @@
 
     <title>
         
-          Daily 2018-12-8 - Jfson的博客 | Jfson
+          《开篇》Array - LeetCode 283.Move Zeroes - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="https://jfson.github.io/2018/12/08/50-daily/">
+    <link rel="canonical" href="https://jfson.github.io/2018/12/15/64-arithmetic-n2/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -156,11 +156,11 @@
                     <div class="tags">
                         
                     </div>
-                    <h1>Daily 2018-12-8</h1>
+                    <h1>《开篇》Array - LeetCode 283.Move Zeroes</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Jfson on
-                        2018-12-08
+                        2018-12-15
                     </span>
                 </div>
             </div>
@@ -179,16 +179,31 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>​    今年诸多事导致太懒惰，从提交记录来看，差了很多，尽管自己也很讨厌，可心态还是又老了一点,做很多无用的事，屯不喝的酒和茶。</p>
-<p>​    压力大的时候总想去趁周末爬爬山，浪一浪，以为可以放松，回来后还是老样子。解决焦虑的唯一途径就是实现目标。可时间浪费在规划上，言多行少，目前来看，也算有点成效，两个月时间 Rank 100000+ 到现在排名上升6000+。可远远不够…下班到家很累啊，还尼玛要学个锤子的习。</p>
-<p>​    每次放弃之后又总是悔不当初。越来越喜欢熬夜。12点是睡觉的最早点。越来越喜欢咖啡，真是个好东西，特别是不加糖不加奶的贼苦的时候。又到周末，夜深人初静，又来忏悔,被浪费的时间，空白的提交。</p>
-<p>​    个人网站的上一篇是6月份…是时候回顾一下了。总之坚持有点难，不坚持是sb。我也想去加拿大滑雪。实现目标之后!。欲望太多活着真累，没有欲望跟咸鱼有啥区别。还想录算法题解视频。哦，还有大学数据结构挂了科，所以下个月我要给公司大哥们分享的是算法，也不知道为什么给自己挖这个坑。</p>
-<p>​    碎碎念完结。滚去写总结。哦，还有个特别火的是：你这个年级怎么能睡得着觉的!。时间为什么不够用…</p>
-<p>u can do like this:</p>
-<p>​    Don’t talk to strangers, don’t do new things, continue to live a normal life. Be timid, don’t be curious, just play with you,play the tik tok all the time , far from adventure, something think about it and not do it, no need to change. Stay in a familiar place, it is best to stay at home, listen to the same music, see the same people. Repeat the same topic. Don’t be too alive, dreams are practical, don’t try anything. Just live like this！</p>
-<p>​    I knew with absolute clarity that this was not what I wanted！</p>
-<p>December 08nd, 2018 at 23:25pm </p>
-
+                <p><a href="https://www.bilibili.com/video/av43365814" target="_blank" rel="external">《开篇》Array - LeetCode 283.Move Zeroes 视频讲解</a></p>
+<p>PS: 先更文章，后续更新每道题目详细解读 &amp; 视频<br>通过大概10道题来熟悉，常见的算法题类型：Array ，String，Stack，LinkList，Tree，Dynamic Programming，DFS/BFS，Backtracking，Greedy，Divide and Conquer</p>
+<p>本文中的算法题大概需要2-3周来完成</p>
+<h1 id="1-Array"><a href="#1-Array" class="headerlink" title="1.Array"></a>1.Array</h1><h3 id="LeetCode-283-Move-Zeroes-Easy"><a href="#LeetCode-283-Move-Zeroes-Easy" class="headerlink" title="LeetCode 283.Move Zeroes   (Easy)"></a>LeetCode 283.Move Zeroes   (Easy)</h3><blockquote>
+<p>Given an array nums , write a function to move all 0’s to the end of it while maintaining the relative order of the non-zero elements </p>
+<p>Example:</p>
+<p>Input: [0,1,0,3,12]</p>
+<p>Output: [1,3,12,0,0]</p>
+<p>Note: </p>
+<ol>
+<li>You must do this in-place without making a copy of the array</li>
+<li>Minimize the total number of operations</li>
+</ol>
+</blockquote>
+<p>题意：将0元素移动到数组的末尾，并且要保证非零元素的顺序，不能复制数组。</p>
+<ul>
+<li>Solution 1: 复制一个数组，不满足 Note 1</li>
+<li>Solution 2: 遍历一遍，0就交换非0的num<ul>
+<li>[0,1,0,3,12] -&gt; [1,0,0,3,12] -&gt;[1,3,0,0,12] -&gt;[1,3,12,0,0]   ;  T(n)：O(n)   ; operations: 3n</li>
+</ul>
+</li>
+<li>Solution 3: 遍历一遍,非零元素进行前置，遍历完成后，未前置的进行0的填充。T(n): O(2n) 满足Note 2    。operations: n</li>
+<li>题解：<img src="https://github.com/jfson/ImgResource/blob/master/Lc1.jpeg?raw=true" alt="image"></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">Solution&#123;</div><div class="line">    <span class="comment">//Solution 2</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">moveZeroes</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">    	<span class="keyword">int</span> j = <span class="number">0</span>;</div><div class="line">    	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</div><div class="line">        	<span class="keyword">if</span>(nums[i] != <span class="number">0</span>) &#123;</div><div class="line">            	<span class="keyword">int</span> temp = nums[j];</div><div class="line">            	nums[j] = nums[i];</div><div class="line">            	nums[i] = temp;</div><div class="line">            	j++;</div><div class="line">            &#125;    	</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//Solution 3</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">moveZeroes</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length == <span class="number">0</span>) <span class="keyword">return</span>;</div><div class="line"></div><div class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</div><div class="line">            <span class="keyword">if</span> (nums[i] != <span class="number">0</span>)&#123;</div><div class="line">                nums[j++] = nums[i];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">for</span> (;j&lt;nums.length;j++)&#123;</div><div class="line">            nums[j] = <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
                 <hr>
 
@@ -197,12 +212,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2018/12/12/63-arithmetic-n1.md/" data-toggle="tooltip" data-placement="top" title="LeetCode 《开篇》">&larr; Previous Post</a>
+                            <a href="/2018/12/21/65-arithmetic-n3/" data-toggle="tooltip" data-placement="top" title="LeetCode  20.  Valid Parentheses (Easy)">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2018/06/21/49-svga/" data-toggle="tooltip" data-placement="top" title="SVGA 源码">Next Post &rarr;</a>
+                            <a href="/2018/12/12/63-arithmetic-n1.md/" data-toggle="tooltip" data-placement="top" title="LeetCode 《开篇》">Next Post &rarr;</a>
                         </li>
                     
                 </ul>

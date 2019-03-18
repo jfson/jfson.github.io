@@ -13,11 +13,11 @@
 
     <title>
         
-          Daily 2018-12-8 - Jfson的博客 | Jfson
+          观察者模式 - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="https://jfson.github.io/2018/12/08/50-daily/">
+    <link rel="canonical" href="https://jfson.github.io/2018/05/02/61-builder-observer/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -156,11 +156,11 @@
                     <div class="tags">
                         
                     </div>
-                    <h1>Daily 2018-12-8</h1>
+                    <h1>观察者模式</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Jfson on
-                        2018-12-08
+                        2018-05-02
                     </span>
                 </div>
             </div>
@@ -179,16 +179,10 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>​    今年诸多事导致太懒惰，从提交记录来看，差了很多，尽管自己也很讨厌，可心态还是又老了一点,做很多无用的事，屯不喝的酒和茶。</p>
-<p>​    压力大的时候总想去趁周末爬爬山，浪一浪，以为可以放松，回来后还是老样子。解决焦虑的唯一途径就是实现目标。可时间浪费在规划上，言多行少，目前来看，也算有点成效，两个月时间 Rank 100000+ 到现在排名上升6000+。可远远不够…下班到家很累啊，还尼玛要学个锤子的习。</p>
-<p>​    每次放弃之后又总是悔不当初。越来越喜欢熬夜。12点是睡觉的最早点。越来越喜欢咖啡，真是个好东西，特别是不加糖不加奶的贼苦的时候。又到周末，夜深人初静，又来忏悔,被浪费的时间，空白的提交。</p>
-<p>​    个人网站的上一篇是6月份…是时候回顾一下了。总之坚持有点难，不坚持是sb。我也想去加拿大滑雪。实现目标之后!。欲望太多活着真累，没有欲望跟咸鱼有啥区别。还想录算法题解视频。哦，还有大学数据结构挂了科，所以下个月我要给公司大哥们分享的是算法，也不知道为什么给自己挖这个坑。</p>
-<p>​    碎碎念完结。滚去写总结。哦，还有个特别火的是：你这个年级怎么能睡得着觉的!。时间为什么不够用…</p>
-<p>u can do like this:</p>
-<p>​    Don’t talk to strangers, don’t do new things, continue to live a normal life. Be timid, don’t be curious, just play with you,play the tik tok all the time , far from adventure, something think about it and not do it, no need to change. Stay in a familiar place, it is best to stay at home, listen to the same music, see the same people. Repeat the same topic. Don’t be too alive, dreams are practical, don’t try anything. Just live like this！</p>
-<p>​    I knew with absolute clarity that this was not what I wanted！</p>
-<p>December 08nd, 2018 at 23:25pm </p>
-
+                <p>当对象间存在一对多关系时，则使用观察者模式（Observer Pattern）。比如，当一个对象被修改时，则会自动通知它的依赖对象。观察者模式属于行为型模式。</p>
+<p>一个很经典的例子，上传文件，成功的时候，需要通知给多个位置发送上传成功消息示例。</p>
+<p>1.JAVA 中已经有了对观察者模式的支持类。 2、避免循环引用。 3、如果顺序执行，某一观察者错误会导致系统卡壳，一般采用异步方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div></pre></td><td class="code"><pre><div class="line">public class Observer &#123;</div><div class="line">    static class UploadFile &#123;</div><div class="line">        static ArrayList&lt;UploadListener&gt; mListeners = new ArrayList&lt;&gt;();</div><div class="line"></div><div class="line"></div><div class="line">        public static void  setListener(UploadListener listener) &#123;</div><div class="line">            if (mListeners != null) mListeners.add(listener);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public static void removeListener(UploadListener listener) &#123;</div><div class="line">            if (mListeners != null &amp;&amp; mListeners.contains(listener)) mListeners.remove(listener);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        public static void upload() &#123;</div><div class="line">            // ...</div><div class="line"></div><div class="line">            notifySuccess();</div><div class="line">            notifyFail();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        private static void notifySuccess() &#123;</div><div class="line">            if (mListeners == null) return;</div><div class="line"></div><div class="line">            for (UploadListener listener : mListeners) &#123;</div><div class="line">                if (listener != null) listener.success();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        private static void notifyFail() &#123;</div><div class="line">            if (mListeners == null) return;</div><div class="line"></div><div class="line">            for (UploadListener listener : mListeners) &#123;</div><div class="line">                if (listener != null) listener.fail();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    interface UploadListener &#123;</div><div class="line">        void success();</div><div class="line"></div><div class="line">        void fail();</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    void test() &#123;</div><div class="line">        UploadFile.setListener(new UploadListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void success() &#123;</div><div class="line">                // Observer 1</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            @Override</div><div class="line">            public void fail() &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        UploadFile.setListener(new UploadListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void success() &#123;</div><div class="line">                // Observer 2</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            @Override</div><div class="line">            public void fail() &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        UploadFile.setListener(new UploadListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void success() &#123;</div><div class="line">                // Observer 3</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            @Override</div><div class="line">            public void fail() &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        UploadFile.setListener(new UploadListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void success() &#123;</div><div class="line">                // Observer 4</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            @Override</div><div class="line">            public void fail() &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        UploadFile.upload();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
                 <hr>
 
@@ -197,12 +191,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2018/12/12/63-arithmetic-n1.md/" data-toggle="tooltip" data-placement="top" title="LeetCode 《开篇》">&larr; Previous Post</a>
+                            <a href="/2018/05/12/62-textview-fix/" data-toggle="tooltip" data-placement="top" title="TextView如何优化">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2018/06/21/49-svga/" data-toggle="tooltip" data-placement="top" title="SVGA 源码">Next Post &rarr;</a>
+                            <a href="/2018/04/01/57-android-system/" data-toggle="tooltip" data-placement="top" title="Android系统层次框架结构">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
