@@ -13,11 +13,11 @@
 
     <title>
         
-          Jfson的博客 | Jfson
+          LeetCode 61.Rotate List (Medium) - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="https://jfson.github.io/archives/2018/03/">
+    <link rel="canonical" href="https://jfson.github.io/2019/01/02/66-arithmetic-n4/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -137,7 +137,118 @@
 
 
     <!-- Main Content -->
-    <!-- Default Archive layout, we use archives instead. -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>LeetCode 61.Rotate List (Medium)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2019-01-02
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="LeetCode-61-Rotate-List-Medium"><a href="#LeetCode-61-Rotate-List-Medium" class="headerlink" title="LeetCode 61.Rotate List (Medium)"></a>LeetCode 61.Rotate List (Medium)</h3> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Given a linked list , rotate the list  to the right by k places , where k is non-negative</div><div class="line"></div><div class="line"> Example 1:</div><div class="line"> Input:  1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; NULL, k = 2</div><div class="line"> Output:  4 -&gt; 5 -&gt; 1 -&gt; 2 -&gt; 3 -&gt; NULL</div><div class="line"> Explanation:</div><div class="line"> Rotate 1 steps tp right:  5 -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; NULL</div><div class="line"> Rotate 2 steps tp right:  4 -&gt; 5 -&gt; 1 -&gt; 2 -&gt; 3 -&gt; NULL</div><div class="line"></div><div class="line"> Example 2:</div><div class="line"> Input:  0 -&gt; 1 -&gt; 2-&gt; NULL  ,k = 4</div><div class="line"> Output:  2-&gt; 0 -&gt; 1 -&gt; NULL</div><div class="line"> Rotate 1 steps tp right:  2 -&gt; 0 -&gt; 1 -&gt; NULL</div><div class="line"> Rotate 2 steps tp right:  1 -&gt; 2 -&gt; 0 -&gt; NULL</div><div class="line"> Rotate 3 steps tp right:  0 -&gt; 1 -&gt; 2 -&gt; NULL</div><div class="line"> Rotate 4 steps tp right:  2 -&gt; 0 -&gt; 1 -&gt; NULL</div></pre></td></tr></table></figure>
+<ul>
+<li><p>Solution :   <img src="https://github.com/jfson/ImgResource/blob/master/lc3.png?raw=true" alt="image"></p>
+<p><img src="https://github.com/jfson/ImgResource/blob/master/lc4.png?raw=true" alt="image"></p>
+<ul>
+<li>Fast index , slow index</li>
+<li>Swap : <img src="https://github.com/jfson/ImgResource/blob/master/lc5.jpeg?raw=true" alt="image"></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Definition for singly-linked list.</div><div class="line"> * public class ListNode &#123;</div><div class="line"> *     int val;</div><div class="line"> *     ListNode next;</div><div class="line"> *     ListNode(int x) &#123; val = x; &#125;</div><div class="line"> * &#125;</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">rotateRight</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (head==<span class="keyword">null</span>||head.next==<span class="keyword">null</span>) <span class="keyword">return</span> head;</div><div class="line"></div><div class="line">        ListNode res = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</div><div class="line">        res.next = head;</div><div class="line"></div><div class="line">        ListNode fast = res;</div><div class="line">        ListNode slower = res;</div><div class="line">        </div><div class="line">        <span class="keyword">int</span> i;</div><div class="line">        <span class="keyword">for</span> ( i = <span class="number">0</span>; fast.next !=<span class="keyword">null</span>; i++) &#123;</div><div class="line">            fast = fast.next;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i - k%i; j &gt;<span class="number">0</span>; j--) &#123;</div><div class="line">            slower = slower.next;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">		<span class="comment">// swap</span></div><div class="line">        fast.next = res.next;</div><div class="line">        res.next = slower.next;</div><div class="line">        slower.next = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> res.next;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2019/01/05/52-Android-summary-thread/" data-toggle="tooltip" data-placement="top" title="Android 总结2-线程">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/29/67-EventBus-code/" data-toggle="tooltip" data-placement="top" title="EventBus分析">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
 
     <!-- Footer -->
     <!-- Footer -->

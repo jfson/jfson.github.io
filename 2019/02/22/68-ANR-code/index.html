@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="慢慢来,比较快">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Android ANR - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="https://jfson.github.io/2019/02/22/68-ANR-code/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>Android ANR</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2019-02-22
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="系统如何监听ANR"><a href="#系统如何监听ANR" class="headerlink" title="系统如何监听ANR ?"></a>系统如何监听ANR ?</h3><ul>
+<li>ActivityManagerService中在产生ANR的时候，会回调到AMS的appNotResponding()方法；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">// firstPids与lastPids将记录将要dump线程堆栈信息的进程号，其中firstPids会优先输出，详见后面的dumpStackTraces()方法</div><div class="line">    ArrayList&lt;Integer&gt; firstPids = new ArrayList&lt;Integer&gt;(5);</div><div class="line">    SparseArray&lt;Boolean&gt; lastPids = new SparseArray&lt;Boolean&gt;(20);</div><div class="line">...</div><div class="line">// 判断重启、已处于ANR或Crash状态直接返回不处理</div><div class="line">// 设置notResponding标志位</div><div class="line"> app.notResponding = true;</div><div class="line">...</div><div class="line">// 这里将把当前进程的id最先加到列表中，因此能保证产生ANR的进程能在traces.txt的头部。</div><div class="line"> firstPids.add(app.pid);</div><div class="line">...</div><div class="line">// 将设有persistent属性的进程加入firstPids队列，其他则加入lastPids队列</div><div class="line">// 其中mLruProcesses根据LRU算法存储了最近使用的进程信息</div><div class="line"> // 准备在logcat中打印出Cause Reason信息</div><div class="line">    // Log the ANR to the main log.</div><div class="line">    StringBuilder info = new StringBuilder();</div><div class="line">    info.setLength(0);</div><div class="line">    info.append(&quot;ANR in &quot;).append(app.processName);</div><div class="line">    if (activity != null &amp;&amp; activity.shortComponentName != null) &#123;</div><div class="line">        info.append(&quot; (&quot;).append(activity.shortComponentName).append(&quot;)&quot;);</div><div class="line">    &#125;</div><div class="line">    info.append(&quot;\n&quot;);</div><div class="line">    info.append(&quot;PID: &quot;).append(app.pid).append(&quot;\n&quot;);</div><div class="line">    if (annotation != null) &#123;</div><div class="line">        info.append(&quot;Reason: &quot;).append(annotation).append(&quot;\n&quot;);</div><div class="line">    &#125;</div><div class="line">    if (parent != null &amp;&amp; parent != activity) &#123;</div><div class="line">        info.append(&quot;Parent: &quot;).append(parent.shortComponentName).append(&quot;\n&quot;);</div><div class="line">    &#125;</div><div class="line">...</div><div class="line"> // 执行此函数将dump相关进程中的线程堆栈信息到traces.txt文件中</div><div class="line">    File tracesFile = dumpStackTraces(true, firstPids, processCpuTracker, lastPids,</div><div class="line">            NATIVE_STACKS_OF_INTEREST);</div><div class="line">...</div><div class="line"> // 添加ANR信息至DropBox，默认有效期为3天</div><div class="line">    addErrorToDropBox(&quot;anr&quot;, app, app.processName, activity, parent, annotation,</div><div class="line">            cpuInfo, tracesFile, null);</div><div class="line">// 此处获取开发者选项—&gt;高级—&gt;显示所有&quot;应用程序无响应&quot;中的值，若勾选了显示Background ANR，则会显示Broadcast等后台组件所产生的ANR Dialog</div></pre></td></tr></table></figure>
+<ul>
+<li>dumpStackTraces()这个方法，此处将dump出firstPids与lastPids进程的相关线程堆栈信息至traces.txt，<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 根据此环境变量获取traces.txt生成路径，默认值为/data/anr/traces.txt</div><div class="line">// 删除旧的traces.txt文件，并创建新文件</div><div class="line">// 每个进程是按照先后顺序dump信息至traces.txt文件中的</div><div class="line">// 通过FileObserver监听完成写入的操作，并通过wait()/notify()机制等待/唤醒，并继续发送Signal给下一个进程，见下面的for循环</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="如何监听？"><a href="#如何监听？" class="headerlink" title="如何监听？"></a>如何监听？</h3><p>第一种：</p>
+<ul>
+<li>关于reason信息的获取，到目前为止，我们只知道能在logcat中能检索到相关信息，难道要开个线程不断循环去检测logs？这想法看来还是Too Young Too Simple。</li>
+<li>这里先说下结论，可通过ActivityManagerService.getProcessesInErrorState()方法获取进程的ANR信息，此方法是通过逆向Bugly时发现的，后面会讲到。</li>
+<li>此方法会遍历mLruProcesses，并根据进程目前的异常状态如crash或者anr类型，返回具体的ProcessErrorStateInfo，具体看代码，比较简单：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public List&lt;ActivityManager.ProcessErrorStateInfo&gt; getProcessesInErrorState() &#123;</div><div class="line">    ...</div><div class="line">    synchronized (this) &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">private void makeAppNotRespondingLocked(ProcessRecord app,</div><div class="line">        String activity, String shortMsg, String longMsg) &#123;</div><div class="line">    app.notResponding = true;</div><div class="line">    app.notRespondingReport = generateProcessError(app,</div><div class="line">            ActivityManager.ProcessErrorStateInfo.NOT_RESPONDING,</div><div class="line">            activity, shortMsg, longMsg, null);</div><div class="line">    startAppProblemLocked(app);</div><div class="line">    app.stopFreezingAllLocked();</div><div class="line">&#125;</div><div class="line">注意app.notRespondingReport非空的时候才会返回，那它是什么时候初始化的呢？是在makeAppNotRespondingLocked()方法中。其中此方法又是在appNotResponding()中被调用的（在所有进程写完traces.txt之后，可回看上面AMS相关代码）</div></pre></td></tr></table></figure>
+<p>第二种：<br>这部分内容获取比较简单，直接读取/data/anr/traces.txt里面第一个进程的信息即可，能保证首个进程即是当前ANR的进程，至于为什么上面分析AMS源码中已经说明了，当前进的pid会首先被add进firstPids中被优先输出。此处的难点是如何从traces中过滤出相关的信息，如进程名，进程pid，生成时间，各线程名、tid、优先级、状态、堆栈信息等。这里就要用到强大的正则表达式来进行过滤了，此处忽略一万字…（大家可以反编译Bugly的SDK，参考里面的正则表达式）</p>
+<h4 id="什么时候去获取？"><a href="#什么时候去获取？" class="headerlink" title="什么时候去获取？"></a>什么时候去获取？</h4><p>在上面AMS的源码分析中，我们可以关注到dumpStackTraces()方法中的FileObserver，系统通过该类监听文件/data/anr/traces.txt来达到顺序依次写入各个进程的traces信息。按照这个思路，当ANR发生的时候，我们也可以通过监听该文件的写入情况来判断是否发生了ANR，看起来这是一个不错的时机。需要注意的一点是，所有应用发生ANR的时候都会进行回调，因此需要做一些过滤与判断，如包名、进程号等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">protected synchronized void b() &#123;</div><div class="line">    if(this.d()) &#123;</div><div class="line">        z.d(&quot;start when started!&quot;, new Object[0]);</div><div class="line">    &#125; else &#123;</div><div class="line">        this.o = new FileObserver(&quot;/data/anr/&quot;, 8) &#123;</div><div class="line">            public void onEvent(int event, String path) &#123;</div><div class="line">                if(path != null) &#123;</div><div class="line">                    String var3 = &quot;/data/anr/&quot; + path;</div><div class="line">                    if(!var3.contains(&quot;trace&quot;)) &#123;</div><div class="line">                        z.d(&quot;not anr file %s&quot;, new Object[]&#123;var3&#125;);</div><div class="line">                    &#125; else &#123;</div><div class="line">                        b.this.a(var3);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">        try &#123;</div><div class="line">            this.o.startWatching();</div><div class="line">            z.a(&quot;start anr monitor!&quot;, new Object[0]);</div><div class="line">            ...</div><div class="line">        &#125; catch (Throwable var2) &#123;</div><div class="line">            this.o = null;</div><div class="line">            z.d(&quot;start anr monitor failed!&quot;, new Object[0]);</div><div class="line">            ...</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面这段代码比较简单，就是一个启动monitor的方法，监听/data/anr/这个目录，并过滤包含trace的文件名。在FileObserver创建的时候可以传入一个mask参数，8正是代表着CLOSE_WRITE这个常量，当有写入并且close的时候将会回调，跟AMS中的使用基本吻合。</p>
+<p>继续翻看b.class的代码，当过滤出trace文件的时候，会执行b.this.a(var3)这个方法。从代码逻辑上可以看出，这是一个对trace文件有效性判断的方法，</p>
+<p>然后对进程异常状态和进程号进行判断，过滤掉无效或其他应用的回调，最后对有效的trace进行处理。</p>
+<h3 id="如何获取全部线程信息呢"><a href="#如何获取全部线程信息呢" class="headerlink" title="如何获取全部线程信息呢"></a>如何获取全部线程信息呢</h3><p>监听<br>File ：pid/thread</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/02/01/56-android-kotlin/" data-toggle="tooltip" data-placement="top" title="Kotlin 相关">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Jfson">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2019 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jfson.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

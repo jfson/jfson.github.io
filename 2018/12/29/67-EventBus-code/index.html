@@ -13,11 +13,11 @@
 
     <title>
         
-          Jfson的博客 | Jfson
+          EventBus分析 - Jfson的博客 | Jfson
         
     </title>
 
-    <link rel="canonical" href="https://jfson.github.io/archives/2018/03/">
+    <link rel="canonical" href="https://jfson.github.io/2018/12/29/67-EventBus-code/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -137,7 +137,113 @@
 
 
     <!-- Main Content -->
-    <!-- Default Archive layout, we use archives instead. -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>EventBus分析</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2018-12-29
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h4 id="EventBus"><a href="#EventBus" class="headerlink" title="EventBus"></a>EventBus</h4><p>观察者模式<br>订阅后，对类，方法进行反射发送消息。并且支持订阅线程可配置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">private void postToSubscription(Subscription subscription, Object event, boolean isMainThread) &#123;</div><div class="line">    switch (subscription.subscriberMethod.threadMode) &#123;</div><div class="line">        // 订阅线程跟随发布线程</div><div class="line">        case POSTING:</div><div class="line">            // 订阅线程和发布线程相同，直接订阅</div><div class="line">            invokeSubscriber(subscription, event);</div><div class="line">            break;</div><div class="line">        // 订阅线程为主线程</div><div class="line">        case MAIN:</div><div class="line">            if (isMainThread) &#123;</div><div class="line">                // 发布线程和订阅线程都是主线程，直接订阅</div><div class="line">                invokeSubscriber(subscription, event);</div><div class="line">            &#125; else &#123;</div><div class="line">                // 发布线程不是主线程，订阅线程切换到主线程订阅</div><div class="line">                mainThreadPoster.enqueue(subscription, event);</div><div class="line">            &#125;</div><div class="line">            break;</div><div class="line">        // 订阅线程为后台线程</div><div class="line">        case BACKGROUND:</div><div class="line">            if (isMainThread) &#123;</div><div class="line">                // 发布线程为主线程，切换到后台线程订阅</div><div class="line">                backgroundPoster.enqueue(subscription, event);</div><div class="line">            &#125; else &#123;</div><div class="line">                // 发布线程不为主线程，直接订阅</div><div class="line">                invokeSubscriber(subscription, event);</div><div class="line">            &#125;</div><div class="line">            break;</div><div class="line">        // 订阅线程为异步线程</div><div class="line">        case ASYNC:</div><div class="line">            // 使用线程池线程订阅</div><div class="line">            asyncPoster.enqueue(subscription, event);</div><div class="line">            break;</div><div class="line">        default:</div><div class="line">            throw new IllegalStateException(&quot;Unknown thread mode: &quot; + subscription.subscriberMethod.threadMode);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>看到四种线程模式</p>
+<p>POSTING：事件发布在什么线程，就在什么线程订阅。<br>MAIN：无论事件在什么线程发布，都在主线程订阅。<br>BACKGROUND：如果发布的线程不是主线程，则在该线程订阅，如果是主线程，则使用一个单独的后台线程订阅。<br>ASYNC：在非主线程和发布线程中订阅。</p>
+<p>订阅者四种线程模式的特点对应的就是以上代码，简单来讲就是订阅者指定了在哪个线程订阅事件，无论发布者在哪个线程，它都会将事件发到订阅者指定的线程</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2019/01/02/66-arithmetic-n4/" data-toggle="tooltip" data-placement="top" title="LeetCode 61.Rotate List (Medium)">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/25/51-Android-summary-View/" data-toggle="tooltip" data-placement="top" title="Android总结1-View">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
 
     <!-- Footer -->
     <!-- Footer -->

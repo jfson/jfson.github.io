@@ -87,14 +87,14 @@
 
                         
                         <li>
-                            <a href="/all/">All</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/all/">All</a>
                         </li>
                         
                     
@@ -171,6 +171,30 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2019/02/22/68-ANR-code/">
+        <h2 class="post-title">
+            Android ANR
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            系统如何监听ANR ?
+ActivityManagerService中在产生ANR的时候，会回调到AMS的appNotResponding()方法；
+
+1234567891011121314151617181920212223242526272829303132333435363738// firstPids与lastPids将记录将要dump线程堆栈信息的进程号，其中firstPids会优......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2019-02-22
+    </p>
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -339,6 +363,49 @@ AsyncTask 最好在主线程中初始化。因为AsyncTask需要Handler来将执
 
 <div class="post-preview">
 
+    <a href="/2019/01/02/66-arithmetic-n4/">
+        <h2 class="post-title">
+            LeetCode 61.Rotate List (Medium)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            LeetCode 61.Rotate List (Medium) 12345678910111213141516Given a linked list , rotate the list  to the right by k places , where k is non-negative Example 1: Input:  1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; ......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2019-01-02
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/29/67-EventBus-code/">
+        <h2 class="post-title">
+            EventBus分析
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            EventBus观察者模式订阅后，对类，方法进行反射发送消息。并且支持订阅线程可配置。
+123456789101112131415161718192021222324252627282930313233343536private void postToSubscription(Subscription subscription, Object event, boolean isMainThr......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-12-29
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/12/25/51-Android-summary-View/">
         <h2 class="post-title">
             Android总结1-View
@@ -388,29 +455,6 @@ Given a string containing just the characters ‘(’,’)’,’{’,’}’,�
     <p class="post-meta">
         Posted by Jfson on
         2018-12-21
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/15/64-arithmetic-n2/">
-        <h2 class="post-title">
-            《开篇》Array - LeetCode 283.Move Zeroes
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            《开篇》Array - LeetCode 283.Move Zeroes 视频讲解
-PS: 先更文章，后续更新每道题目详细解读 &amp; 视频通过大概10道题来熟悉，常见的算法题类型：Array ，String，Stack，LinkList，Tree，Dynamic Programming，DFS/BFS，Backtracking，Greedy，Divide and Conquer
-本文中......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-12-15
     </p>
 
 </div>
@@ -647,57 +691,6 @@ by 韩路  （转载 ）
     <p class="post-meta">
         Posted by Jfson on
         2018-02-13
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/02/02/43-decoupling/">
-        <h2 class="post-title">
-            Android 解耦框架(自定义View)
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            起因
-项目越来越大,解耦越来越有必要。从架构上解耦mvc到mvp,从功能上解耦和拆分，这就用到了自定义View，自定义View往往也需要用到Activity/Fragment的生命周期。这时候通常做法是在Activity/Fragment中对View进行生命周期的调用透传。
-
-如果自定义View的功能逻辑过于复杂后，再拆解出一个MVP层级，Presenter层和View层也需要再重复的透传一......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-02-02
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/02/01/58-glide&Fresco/">
-        <h2 class="post-title">
-            Glide&Fresco对比
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-             貌似框架都被分析烂了，索性来个总结吧
-优点Glide
-
-多种图片格式的缓存，适用于更多的内容表现形式（如Gif、WebP、缩略图、Video）
-生命周期集成（根据Activity或者Fragment的生命周期管理图片加载请求）
-高效处理Bitmap（bitmap的复用和主动回收，减少系统回收压力）
-高效的缓存策略，灵活（Picasso只会缓存原始尺寸的图片，Glide缓存的是多种规格），加......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-02-01
     </p>
 
 </div>
