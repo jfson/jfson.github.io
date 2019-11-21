@@ -87,14 +87,14 @@
 
                         
                         <li>
-                            <a href="/all/">All</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/all/">All</a>
                         </li>
                         
                     
@@ -511,31 +511,23 @@ PS: 先更文章，后续更新每道题目详细解读 &amp; 视频通过大概
 
 <div class="post-preview">
 
-    <a href="/2018/06/21/49-svga/">
+    <a href="/2018/06/22/69-Design-prototype/">
         <h2 class="post-title">
-            SVGA 源码
+            8.原型模式（Prototype）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            SVG 概念
-SVG 实际上指的是设计软件中的概念：SVG图片格式，一种矢量图形。
+            
+通过克隆基于现有对象创建对象(克隆羊)当需要一个与现有对象类似的对象时，或者与克隆相比，创建的成本会很高。
 
-另一个角度来讲一张图或者一个动画，是由很多上下层级的图层构成。比如当前的简单的图，看到的是一张图，但在设计工具中是三个图层构成，有着不同的上下层级顺序。
-
-
-
-SVGA成本
-SVGA目不支持种类：
-不支持复杂的矢量形状图层
-AE自带的渐变、生成、描边、擦除…
-对设计工具原生动画不友好，对图片动画友好(适合映......
+示例：Arraylist的clone()123456789101112131415ArrayList&lt;Student&gt; listCopy=(ArrayList&lt;Student&gt;) list.clone();public Object clone() &#12......
         </div>
     </a>
     <p class="post-meta">
         Posted by Jfson on
-        2018-06-21
+        2018-06-22
     </p>
 
 </div>
@@ -543,23 +535,24 @@ AE自带的渐变、生成、描边、擦除…
 
 <div class="post-preview">
 
-    <a href="/2018/05/12/62-textview-fix/">
+    <a href="/2018/06/22/79-design-mediator/">
         <h2 class="post-title">
-            TextView如何优化
+            中介者模式（Mediator）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            大量文本刷新时，性能出现瓶颈，譬如：直播中的聊天
-绘制 和 measure 时间比较长
-优化
-1.节省 measure 时间，Android有很多用于文字展示的控件，但实际上，他们都用text.Layout进行渲染。例如，TextView会将String转化为一个text.Layout对象，并通过canvas API将它绘制到屏幕上。由于text.Layout需要在构造函数中测量文本的高度，......
+            
+Mediator 模式添加第三方对象（称为 mediator）来控制两个对象（称为同事）之间的交互。它有助于减少彼此通信的类之间的耦合。因为现在他们不需要了解彼此的实施。
+
+示例：MVC模式
+1234567891011121314151617181920212223242526272829303132333435363738//创建中介类。public class ChatRoom &#1......
         </div>
     </a>
     <p class="post-meta">
         Posted by Jfson on
-        2018-05-12
+        2018-06-22
     </p>
 
 </div>
@@ -567,23 +560,24 @@ AE自带的渐变、生成、描边、擦除…
 
 <div class="post-preview">
 
-    <a href="/2018/05/02/61-builder-observer/">
+    <a href="/2018/06/22/71-Design-bridage/">
         <h2 class="post-title">
-            观察者模式
+            桥接模式（Bridge）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            当对象间存在一对多关系时，则使用观察者模式（Observer Pattern）。比如，当一个对象被修改时，则会自动通知它的依赖对象。观察者模式属于行为型模式。
-一个很经典的例子，上传文件，成功的时候，需要通知给多个位置发送上传成功消息示例。
-1.JAVA 中已经有了对观察者模式的支持类。 2、避免循环引用。 3、如果顺序执行，某一观察者错误会导致系统卡壳，一般采用异步方式。
-12345678......
+            
+桥接模式是关于优先于继承的组合。实现细节从层次结构推送到具有单独层次结构的另一个对象。将抽象部分与实现部分分离，使它们都可以独立的变化
+
+桥接模式是软件工程中使用的设计模式，旨在“将抽象与其实现分离，以便两者可以独立变化”
+示例：画圆。同时需要多个元素拼接，但又不想复杂继承12345678910111213141516171819202122232425262728293031323334......
         </div>
     </a>
     <p class="post-meta">
         Posted by Jfson on
-        2018-05-02
+        2018-06-22
     </p>
 
 </div>
@@ -591,25 +585,24 @@ AE自带的渐变、生成、描边、擦除…
 
 <div class="post-preview">
 
-    <a href="/2018/04/01/57-android-system/">
+    <a href="/2018/06/22/70-Design-adapter/">
         <h2 class="post-title">
-            Android系统层次框架结构
+            适配器模式（Adapter)
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-由低到高：linux核心层；系统运行库层；应用程序框架层；应用程序层
-linux内核（Linux Kernel）硬件相关的，Binder Diver(IPC),Camera Diver,Power Diver等等
-系统运行库层(Libraries)
-Android 相关：
-虚拟机：Dalvik，Android 5.0（Lollipop）开始，Android Runtime（下文简称ART）......
+适配器模式允许您在适配器中包装其他不兼容的对象，以使其与另一个类兼容。
+
+示例：语言学习，绝大多数人学习英语，日语系的同学要学日语
+1234567891011121314151617181920212223242526272829303132333435363738class Student &#123;   void studyEnglish();&#125;class NormalSt......
         </div>
     </a>
     <p class="post-meta">
         Posted by Jfson on
-        2018-04-01
+        2018-06-22
     </p>
 
 </div>
@@ -617,24 +610,23 @@ Android 相关：
 
 <div class="post-preview">
 
-    <a href="/2018/03/22/60-anonymity-class/">
+    <a href="/2018/06/22/82-design-strategy/">
         <h2 class="post-title">
-            匿名类优化
+            策略模式（Strategy）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            举例说明，通常对动画进行监听时的addListener需要对匿名类复写所有的回调监听，如果用一个实现接口类，去包一层，这时候添加回调监听时只需要Override需要的方法，大大增加代码可读性和简洁性，参考test()方法中的两种setListener方式。
+            
+策略模式允许您根据情况切换算法或策略。
 
-往往只需要end回调时，避免了重写其他多余的方法
-
-12345678910111213141516171819202122232425......
+12345678910111213141516171819202122232425262728293031interface Sort&#123;        void sort();    &#125;    class QuickSort implements Sort&#123;        @Override        public......
         </div>
     </a>
     <p class="post-meta">
         Posted by Jfson on
-        2018-03-22
+        2018-06-22
     </p>
 
 </div>
@@ -642,29 +634,24 @@ Android 相关：
 
 <div class="post-preview">
 
-    <a href="/2018/03/12/59-Recycler-code/">
+    <a href="/2018/06/22/81-design-state/">
         <h2 class="post-title">
-            RecyclerView分析
+            状态模式（State Pattern）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            Adapter
-RecyclerView
-LayoutManager
-ViewHolder
-RecyclerView.Adapter
-Datas
+            
+在状态模式（State Pattern）中，类的行为是基于它的状态改变的。这种类型的设计模式属于行为型模式。
 
-ItemAnimator 、LayoutManager 等等这些模块都当内部类写在了一块
-RecyclerView是一个ViewGroup,Adapter已经将Datas转换为RecyclerView所熟知的View
-ItemDecoration......
+使用场景： 1、行为随状态改变而改变的场景。 2、条件、分支语句的代替者。
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555......
         </div>
     </a>
     <p class="post-meta">
         Posted by Jfson on
-        2018-03-12
+        2018-06-22
     </p>
 
 </div>
@@ -672,25 +659,23 @@ ItemDecoration......
 
 <div class="post-preview">
 
-    <a href="/2018/02/13/48-reprint -1/">
+    <a href="/2018/06/22/84-design-visitor/">
         <h2 class="post-title">
-            你为什么努力(by 韩路)
+            访问者模式（Visitor)
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            ### 你为什么努力
-by 韩路  （转载 ）
+            
+访问者模式（Visitor）允许您向对象添加更多操作，而无需修改它们。在访问者模式（Visitor Pattern）中，我们使用了一个访问者类，它改变了元素类的执行算法。通过这种方式，元素的执行算法可以随着访问者改变而改变。这种类型的设计模式属于行为型模式
 
-1你结婚了，不和父母住一起，有了娃之后，你更体会到了父母当年的艰辛，你想好好爱爱父母，而你从来没语言表达过爱，付出物质和行动是你传递爱的手段。
-你也常问父母，反正你们也退休了，多出去玩玩啊！父母总是跟你说：哎呀，老胳膊老腿不爱动啦！怕出去没医院，慢性病加重不好治了啊！
-有一日，你开车带父母去了郊区的一个度假村住了一夜，突然，你会发现，原来看似......
+我们将创建一个定义接受操作的 ComputerPart 接口。Keyboard、Mouse、Monitor 和 Computer 是......
         </div>
     </a>
     <p class="post-meta">
         Posted by Jfson on
-        2018-02-13
+        2018-06-22
     </p>
 
 </div>
@@ -743,17 +728,21 @@ by 韩路  （转载 ）
                             
                         
                             
+                            <a href="/tags/#sound code" title="sound code" rel="6">sound code</a>
+                            
+                        
+                            
                         
                             
                             <a href="/tags/#arithmetic" title="arithmetic" rel="5">arithmetic</a>
                             
                         
                             
-                            <a href="/tags/#sound code" title="sound code" rel="6">sound code</a>
+                            <a href="/tags/#reprint" title="reprint" rel="2">reprint</a>
                             
                         
                             
-                            <a href="/tags/#reprint" title="reprint" rel="2">reprint</a>
+                            <a href="/tags/#Design Pattern" title="Design Pattern" rel="16">Design Pattern</a>
                             
                         
                     </div>
