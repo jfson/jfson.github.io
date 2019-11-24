@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="慢慢来,比较快">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          直播技术小结 - Jfson的博客 | Jfson
+        
+    </title>
+
+    <link rel="canonical" href="https://jfson.github.io/2019/05/12/85-live-about/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Jfson‘s blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/all/">All</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/image/kite.jpeg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>直播技术小结</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Jfson on
+                        2019-05-12
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>为什么直播相比短视频视频播放而言，会产生发热的情况呢？ 第一反应是推拉流，随之而使用的硬解码等硬件相关的操作。在团队分享之后，想到我之前看到《直播疑难杂症排查》和《直播技术详解》这两篇系列文章，提纲非常好，于是决定总结一下，这几年在直播行业的经验问题，以形成自己的知识体系。很多的名词并没有过于深入去解释，算是一个大的提纲吧，每个点都值得深入~</p>
+</blockquote>
+<h3 id="直播技术"><a href="#直播技术" class="headerlink" title="直播技术"></a>直播技术</h3><p><a href="https://toutiao.io/posts/v553k3/preview" target="_blank" rel="external">参考文章《直播技术详解》系列文</a></p>
+<p>直播技术为视频大致流程我们都了解，用相机进行采集，压缩，编码后进行推流，经由cdn推流，观众端进行拉流，解码后播放。那么在详细的就是一些，采集数据如何编码进行压缩，封装，推流如何优化，延迟如何优化，丢帧策略，网络质量对分辨率大小变更的影响。</p>
+<h3 id="1-直播技术详解"><a href="#1-直播技术详解" class="headerlink" title="1.直播技术详解"></a>1.直播技术详解</h3><blockquote>
+<p>我们列一些重要的节点</p>
+</blockquote>
+<ul>
+<li><p>1.1 手机为什么会发热？</p>
+<ul>
+<li>硬编码：GPU</li>
+<li>软编码：CPU (手机发热)</li>
+</ul>
+</li>
+<li><p>1.2 什么是GOP？</p>
+<ul>
+<li>GOP： I帧（关键帧）和P帧结合。两个I帧之间的集合称之为GOP</li>
+</ul>
+</li>
+<li><p>1.3 音视频如何同步？</p>
+<ul>
+<li>音频同步视频</li>
+<li>视频同步音频 (普通)</li>
+<li>外部起时钟.用于同步（连麦）</li>
+</ul>
+</li>
+<li><p>1.4 直播流程有哪些？</p>
+<ul>
+<li>主播端：格式封装；Camera采集 –&gt; 丢帧 –&gt; CV –&gt; 美颜  –&gt;推流</li>
+<li>推拉流： cdn</li>
+<li>观众端：解协议-&gt; 音视频解码-音视频同步-播放</li>
+</ul>
+</li>
+<li><p>1.5 什么是cdn ？</p>
+<ul>
+<li><p>CDN:内容分发网络</p>
+<ul>
+<li>大量并发</li>
+<li>内容聚合（就近接入）</li>
+</ul>
+</li>
+<li><p>CDN 聚合原理：</p>
+<ul>
+<li>cdn 不同的服务商，地理位置节点优势不同，比如中国南部，北部，国内外不同公司不同的地理位置的cdn优势不同。这就需要我们进行优化，来降低费用。</li>
+<li>主动分发。推流后，分发给所有cdn节点</li>
+<li>冷启动，需要时拉取。类似于懒加载，该节点有需求时，才进行拉取。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>1.6 直播中还有美颜等效果如何实现呢？<ul>
+<li>Camera采集 –&gt; 丢帧 –&gt; CV –&gt; 美颜  –&gt; 编码。在编码时进行对采集数据进行编辑。这里的丢帧就是对采集数据进行压缩</li>
+<li>其实总结起来就是，对采集的数据加入美颜的算法进行优化。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-直播中疑难杂症解决"><a href="#2-直播中疑难杂症解决" class="headerlink" title="2.直播中疑难杂症解决"></a>2.直播中疑难杂症解决</h3><p><a href="http://mp.weixin.qq.com/mp/homepage?__biz=MjM5NzAwNDI4Mg==&amp;hid=15&amp;sn=891ca70d5deedf15a20159a3932a201a&amp;scene=25#wechat_redirectt" target="_blank" rel="external">参考文章《直播疑难杂症排查系列》</a></p>
+<ul>
+<li>2.1 首开慢？<ul>
+<li>DNS 解析慢，后面有dns优化</li>
+<li>cdn服务端线路原因</li>
+</ul>
+</li>
+<li>2.2 秒开优化？<ul>
+<li>CDN 缓存边缘关键帧（可能是4s之前的GOP）,播放端加快加载，减少回源延迟。秒开永远是前4s</li>
+<li>GOP 减少，低buffer播放 </li>
+</ul>
+</li>
+<li><p>2.3延时高?</p>
+<ul>
+<li>延时高就是主播端推流后，观众端需要一段延迟时间后才能看到</li>
+<li>产生的原因<ul>
+<li>图像处理，比如画面剪裁、美颜、特效处理</li>
+<li>视频编码/解码延时</li>
+<li>cdn 网络传输的延时</li>
+<li>业务代码中的缓冲区</li>
+</ul>
+</li>
+<li>当然也会受网络抖动，慢等原因影响，同样可以根据网络状况来加快或者降低延时时间，这中间还会考虑到缓存，当网络卡段是，播放缓存buffer,优化体验。</li>
+</ul>
+</li>
+<li><p>2.4丢帧策略？</p>
+<ul>
+<li>采集丢帧<ul>
+<li>Android采集帧率不可指定具体值，所以要丢帧，否则帧率过大流量带宽和费用扛不住。</li>
+</ul>
+</li>
+<li>卡顿丢帧<ul>
+<li>视频卡顿时，需要丢帧来进行同步，也就是追延迟 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>2.5 如何追延迟？</p>
+<ul>
+<li>快追：延迟的帧全部丢掉。但这时候体验不太好。会产生卡一下的感觉。</li>
+<li>慢追：根据时间差，逐步的丢帧，慢慢追上。体验稍好</li>
+</ul>
+</li>
+<li><p>2.5 码率自适应？</p>
+<ul>
+<li>根据网络或者抖动的情况。自动降低码率，帧率,分辨率</li>
+<li>分辨率遵循：快降慢升原则。</li>
+</ul>
+</li>
+<li><p>2.6 码率转换策略？</p>
+<ul>
+<li>监控和调度，根据主播的开播情况（卡顿，直播流畅），智能调度最优码率配置。</li>
+</ul>
+</li>
+<li><p>2.7 推流如何平滑切换？</p>
+<ul>
+<li>流切换时，cdn流地址不变，自己切。观众不需要重新拉流。</li>
+<li>与此同时。客户端启2个推流器，切换成功后再停一个，进行平滑切换。</li>
+</ul>
+</li>
+<li><p>2.8 Buffer机制(网络优化)有哪些？</p>
+<ul>
+<li><p>根据不同策略，不同的缓冲机制 。   缓冲时间不同。</p>
+</li>
+<li><p>秒开时。利用4s前得buffer来进行播放，达到最快时间打开直播的优化</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>2.9 DNS 如何优化？</p>
+<ul>
+<li>DNS 解析慢：提前完成播放域名-&gt;IP 地址的解析，并缓存起来</li>
+<li>ip 预存：将播放地址中的域名解析为对应的服务器 IP 地址； </li>
+<li>dns 备灾，一个ip地址失败时自动进行多域名切换。</li>
+</ul>
+</li>
+<li><p>2.10 卡顿如何判断？</p>
+<ul>
+<li>存在buffer行为</li>
+<li>buffer 耗尽次数</li>
+<li>卡顿判断：心跳次数 3/10;丢帧行为；观众拉流时间</li>
+</ul>
+</li>
+<li><p>2.11 如何消除回声？</p>
+<ul>
+<li>回声一般出现在同时有音频的采集和播放的场景，比如：连麦互动、混音返听等等，采集到的音频通过扬声器又播放出来了，同时又被采集了进去，从而产生了回声或者啸叫声。</li>
+<li>一般需要通过系统的回声消除 API，或者第三方回声消除库（如：speexdsp，webrtc 等）进行处理。很多 Android 机型硬件自带的回声消除效果并不是很好。</li>
+</ul>
+</li>
+<li><p>2.12 点播拖动不准？</p>
+<ul>
+<li>目前市面上普遍做的不太好，包括tiktok 0.0</li>
+<li>关键帧(GOP)间隔太大</li>
+<li>直播丢帧</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-直播清晰度"><a href="#3-直播清晰度" class="headerlink" title="3.直播清晰度"></a>3.直播清晰度</h3><blockquote>
+<p>有段时间，我对比了市面上所有直播公司的直播清晰度，发现就是很模糊，不思其解。这里也提到了，视频的画质，是由它的编码质量决定的，压缩得越「厉害」，画质损失就越严重，马赛克就越多。编码器最重要的五个参数：画质级别、码率、帧率、GOP 大小、码控方式。当然这里不考虑分辨率，分辨率作为最直观的因素不列为质量原因，肯定是越高越清晰，但是考虑到带宽，流量等等，基本一线厂商做法都一致。</p>
+</blockquote>
+<ul>
+<li><p>3.1画质级别</p>
+<ul>
+<li>H.264 有四种画质级别，Baseline profile，Extended profile，Main profile，High profile。</li>
+<li>级别越高，压缩的效果越好，但算法复杂度更高，导致功耗也更高。</li>
+</ul>
+</li>
+<li><p>3.2 码率</p>
+<ul>
+<li>决定了视频被压缩的程度，码率越低，丢失的信息也就越多，画质也就越差。</li>
+<li>但是，带来的好处是占用的网络带宽会比较小，容易在互联网上传输，不容易出现卡顿。</li>
+</ul>
+</li>
+<li><p>3.3 帧率</p>
+<ul>
+<li>决定了视频的流畅性，帧率越高，视频越流畅，但每秒钟编码器要处理的数据量也就越大，同等码率下压缩出来的视频质量就越差。</li>
+</ul>
+</li>
+<li><p>3.4 GOP 大小</p>
+<ul>
+<li>决定了视频的延时，GOP 越小，延时就越小，但 GOP 小带来的问题是关键帧数量多，数据量变大，因此，同等码率下压缩出来的视频质量就会越差。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>3.5 码控方式</p>
+<ul>
+<li>一般编码器都有固定码率（CBR） 和 动态码率（VBR） 两种码控方式，前者是指码率优先，为了保证码率尽可能稳定，会主动降低画质，因此容易出现马赛克，后者是指画质优先，会优先保证画质，减少马赛克，但码率会浮动很大。</li>
+</ul>
+</li>
+<li><p>3.6 当然，还有一个重要的因素，就是编码器本身的实现质量，软编一般可以保证在不同手机上效果一致，而硬编则完全依赖手机所使用的硬件平台了。</p>
+</li>
+</ul>
+<h3 id="4-手机发热"><a href="#4-手机发热" class="headerlink" title="4.手机发热"></a>4.手机发热</h3><blockquote>
+<p>直播过程中手机发热严重，耗电快。发热严重的根本因素，无外乎就是一点：CPU/GPU 占用率高，所以，我们首先要分析下，哪些因素会导致 CPU/GPU 占用率高。</p>
+</blockquote>
+<ul>
+<li>4.1 采集数据量太大<ul>
+<li>直播主要由：视频采集 -&gt; 视频处理（剪裁、美颜、滤镜） -&gt; 编码 -&gt; 推流 这些环节组成。</li>
+<li>在这整个流程中，决定数据量大小的因素有哪些呢 ？</li>
+<li>视频的尺寸（例如：1280 x 720 的图像，明显要比 320 x 240 的图像处理起来费劲）视频的帧率（例如 每秒 30 帧，明显要比每秒 15 帧，处理起来费劲）</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>4.2 大量的格式转换</p>
+<ul>
+<li>如 Android 摄像头出来的数据大多是 NV21 的，而编码器一般要求 I420 格式的数据；再比如 ffmpeg 解码的视频往往是 YUV 格式，而渲染显示往往需要 RGB 格式，等等。</li>
+<li>我们要尽可能减少不同格式之间的数据转换，或者尽可能利用 GPU 来处理一些复杂的格式转换，比如利用 OpenGL 直接渲染 YUV 格式的数据，而不是用 CPU 做一次 YUV -&gt; RGB 的转换，就是一个不错的选择。 </li>
+</ul>
+</li>
+<li><p>4.3 解码</p>
+<ul>
+<li>硬编码：GPU</li>
+<li>软编码：CPU (手机发热)</li>
+<li>软编/软解靠的是 CPU，非常耗性能，而硬编/硬解是使用专门的硬件编解码器模块，会显著降低 CPU 的负担，相对而言，会省电很多。</li>
+<li>只不过需要小心各种 Android 机型兼容性问题，对于某些奇葩设备，还是加入硬编/硬解黑名单的好。</li>
+</ul>
+</li>
+<li><p>4.4 其他方面</p>
+<ul>
+<li>当然，导致功耗高的因素还有很多，这里就不一一展开说明了，列举如下：</li>
+<li>人脸识别/美颜/滤镜，对 CPU/GPU 消耗很大</li>
+<li>代码逻辑中过多的 memory copy 操作</li>
+<li>后台线程频繁唤醒手机访问网络或者读写 SDCard</li>
+<li>App 的一些动画特效</li>
+</ul>
+</li>
+</ul>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/02/22/68-ANR-code/" data-toggle="tooltip" data-placement="top" title="Android ANR">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Jfson">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Jfson‘s blog 2019 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://jfson.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    pv<span id="busuanzi_value_site_pv"></span>
+</span>
+<span id="busuanzi_container_site_uv">
+  UV:<span id="busuanzi_value_site_uv"></span>
+</span>
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://jfson.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

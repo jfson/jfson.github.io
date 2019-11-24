@@ -87,14 +87,14 @@
 
                         
                         <li>
-                            <a href="/all/">All</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/all/">All</a>
                         </li>
                         
                     
@@ -179,7 +179,15 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h3 id="系统如何监听ANR"><a href="#系统如何监听ANR" class="headerlink" title="系统如何监听ANR ?"></a>系统如何监听ANR ?</h3><ul>
+                <h3 id="1-如何导出日志到-anr目录"><a href="#1-如何导出日志到-anr目录" class="headerlink" title="1.如何导出日志到 anr目录"></a>1.如何导出日志到 anr目录</h3><ul>
+<li><p>a.导出anr日志文件：data/anr/traces.txt /anr<br>  由于厂商限制，部分手机使用adb pull的时候，由于权限问题导致无法导出</p>
+</li>
+<li><p>b.无权限时，使用：adb bugreport /anr<br>  可以将一个包含anr日志的zip包导出到 /anr路径</p>
+</li>
+<li><p>定位：查看主线程block信息即可：”main” prio=5 tid=1 Blocked</p>
+</li>
+</ul>
+<h3 id="2-源码：系统如何监听ANR"><a href="#2-源码：系统如何监听ANR" class="headerlink" title="2.源码：系统如何监听ANR ?"></a>2.源码：系统如何监听ANR ?</h3><ul>
 <li>ActivityManagerService中在产生ANR的时候，会回调到AMS的appNotResponding()方法；</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">// firstPids与lastPids将记录将要dump线程堆栈信息的进程号，其中firstPids会优先输出，详见后面的dumpStackTraces()方法</div><div class="line">    ArrayList&lt;Integer&gt; firstPids = new ArrayList&lt;Integer&gt;(5);</div><div class="line">    SparseArray&lt;Boolean&gt; lastPids = new SparseArray&lt;Boolean&gt;(20);</div><div class="line">...</div><div class="line">// 判断重启、已处于ANR或Crash状态直接返回不处理</div><div class="line">// 设置notResponding标志位</div><div class="line"> app.notResponding = true;</div><div class="line">...</div><div class="line">// 这里将把当前进程的id最先加到列表中，因此能保证产生ANR的进程能在traces.txt的头部。</div><div class="line"> firstPids.add(app.pid);</div><div class="line">...</div><div class="line">// 将设有persistent属性的进程加入firstPids队列，其他则加入lastPids队列</div><div class="line">// 其中mLruProcesses根据LRU算法存储了最近使用的进程信息</div><div class="line"> // 准备在logcat中打印出Cause Reason信息</div><div class="line">    // Log the ANR to the main log.</div><div class="line">    StringBuilder info = new StringBuilder();</div><div class="line">    info.setLength(0);</div><div class="line">    info.append(&quot;ANR in &quot;).append(app.processName);</div><div class="line">    if (activity != null &amp;&amp; activity.shortComponentName != null) &#123;</div><div class="line">        info.append(&quot; (&quot;).append(activity.shortComponentName).append(&quot;)&quot;);</div><div class="line">    &#125;</div><div class="line">    info.append(&quot;\n&quot;);</div><div class="line">    info.append(&quot;PID: &quot;).append(app.pid).append(&quot;\n&quot;);</div><div class="line">    if (annotation != null) &#123;</div><div class="line">        info.append(&quot;Reason: &quot;).append(annotation).append(&quot;\n&quot;);</div><div class="line">    &#125;</div><div class="line">    if (parent != null &amp;&amp; parent != activity) &#123;</div><div class="line">        info.append(&quot;Parent: &quot;).append(parent.shortComponentName).append(&quot;\n&quot;);</div><div class="line">    &#125;</div><div class="line">...</div><div class="line"> // 执行此函数将dump相关进程中的线程堆栈信息到traces.txt文件中</div><div class="line">    File tracesFile = dumpStackTraces(true, firstPids, processCpuTracker, lastPids,</div><div class="line">            NATIVE_STACKS_OF_INTEREST);</div><div class="line">...</div><div class="line"> // 添加ANR信息至DropBox，默认有效期为3天</div><div class="line">    addErrorToDropBox(&quot;anr&quot;, app, app.processName, activity, parent, annotation,</div><div class="line">            cpuInfo, tracesFile, null);</div><div class="line">// 此处获取开发者选项—&gt;高级—&gt;显示所有&quot;应用程序无响应&quot;中的值，若勾选了显示Background ANR，则会显示Broadcast等后台组件所产生的ANR Dialog</div></pre></td></tr></table></figure>
@@ -208,6 +216,10 @@
                 
 
                 <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2019/05/12/85-live-about/" data-toggle="tooltip" data-placement="top" title="直播技术小结">&larr; Previous Post</a>
+                        </li>
                     
                     
                         <li class="next">
