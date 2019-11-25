@@ -87,14 +87,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/all/">All</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/all/">All</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -198,19 +198,20 @@
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/71-Design-bridage/">
+    <a href="/2018/06/22/78-design-iterator/">
         <h2 class="post-title">
-            桥接模式（Bridge）
+            迭代器模式（Iterator）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-桥接模式是关于优先于继承的组合。实现细节从层次结构推送到具有单独层次结构的另一个对象。将抽象部分与实现部分分离，使它们都可以独立的变化
+它提供了一种访问对象元素而不暴露底层表示的方法。
 
-桥接模式是软件工程中使用的设计模式，旨在“将抽象与其实现分离，以便两者可以独立变化”
-示例：画圆。同时需要多个元素拼接，但又不想复杂继承12345678910111213141516171819202122232425262728293031323334......
+示例：收音机频道切换
+应用实例：JAVA 中的 iterator。
+1234567891011121314151617181920212223242526272829303132333435363738394041public class NameRepository implements Container &#123;   publi......
         </div>
     </a>
     <p class="post-meta">
@@ -223,20 +224,19 @@
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/83-design-vtemplate/">
+    <a href="/2018/06/22/70-Design-adapter/">
         <h2 class="post-title">
-            模板模式（Template Pattern）
+            适配器模式（Adapter)
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-模板方法定义了如何执行某个算法的框架，但是将这些步骤的实现推迟到子类。在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。
+适配器模式允许您在适配器中包装其他不兼容的对象，以使其与另一个类兼容。
 
-使用场景： 1、有多个子类共有的方法，且逻辑相同。 2、重要的、复杂的方法，可以考虑作为模板方法。
-抽象类的抽象方法
-12......
+示例：语言学习，绝大多数人学习英语，日语系的同学要学日语
+1234567891011121314151617181920212223242526272829303132333435363738class Student &#123;   void studyEnglish();&#125;class NormalSt......
         </div>
     </a>
     <p class="post-meta">
@@ -249,18 +249,42 @@
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/82-design-strategy/">
+    <a href="/2018/06/22/84-design-visitor/">
         <h2 class="post-title">
-            策略模式（Strategy）
+            访问者模式（Visitor)
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-策略模式允许您根据情况切换算法或策略。
+访问者模式（Visitor）允许您向对象添加更多操作，而无需修改它们。在访问者模式（Visitor Pattern）中，我们使用了一个访问者类，它改变了元素类的执行算法。通过这种方式，元素的执行算法可以随着访问者改变而改变。这种类型的设计模式属于行为型模式
 
-12345678910111213141516171819202122232425262728293031interface Sort&#123;        void sort();    &#125;    class QuickSort implements Sort&#123;        @Override        public......
+我们将创建一个定义接受操作的 ComputerPart 接口。Keyboard、Mouse、Monitor 和 Computer 是......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-06-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/06/22/69-Design-prototype/">
+        <h2 class="post-title">
+            8.原型模式（Prototype）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+通过克隆基于现有对象创建对象(克隆羊)当需要一个与现有对象类似的对象时，或者与克隆相比，创建的成本会很高。
+
+示例：Arraylist的clone()123456789101112131415ArrayList&lt;Student&gt; listCopy=(ArrayList&lt;Student&gt;) list.clone();public Object clone() &#12......
         </div>
     </a>
     <p class="post-meta">
@@ -299,6 +323,32 @@
 
 <div class="post-preview">
 
+    <a href="/2018/06/22/83-design-vtemplate/">
+        <h2 class="post-title">
+            模板模式（Template Pattern）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+模板方法定义了如何执行某个算法的框架，但是将这些步骤的实现推迟到子类。在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。
+
+使用场景： 1、有多个子类共有的方法，且逻辑相同。 2、重要的、复杂的方法，可以考虑作为模板方法。
+抽象类的抽象方法
+12......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-06-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/06/22/81-design-state/">
         <h2 class="post-title">
             状态模式（State Pattern）
@@ -324,17 +374,19 @@
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/76-design-chain/">
+    <a href="/2018/06/22/71-Design-bridage/">
         <h2 class="post-title">
-            责任链模式（Chain Of Responsibilities）
+            桥接模式（Bridge）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。在这种模式中，通常每个接收者都包含对另一个接收者的引用。如果一个对象不能处理该请求，那么它会把相同的请求传给下一个接收者，依此类推。
-它有助于构建一系列对象。请求从一端进入并继续从一个对象到另一......
+桥接模式是关于优先于继承的组合。实现细节从层次结构推送到具有单独层次结构的另一个对象。将抽象部分与实现部分分离，使它们都可以独立的变化
+
+桥接模式是软件工程中使用的设计模式，旨在“将抽象与其实现分离，以便两者可以独立变化”
+示例：画圆。同时需要多个元素拼接，但又不想复杂继承12345678910111213141516171819202122232425262728293031323334......
         </div>
     </a>
     <p class="post-meta">
@@ -347,20 +399,18 @@
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/78-design-iterator/">
+    <a href="/2018/06/22/82-design-strategy/">
         <h2 class="post-title">
-            迭代器模式（Iterator）
+            策略模式（Strategy）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-它提供了一种访问对象元素而不暴露底层表示的方法。
+策略模式允许您根据情况切换算法或策略。
 
-示例：收音机频道切换
-应用实例：JAVA 中的 iterator。
-1234567891011121314151617181920212223242526272829303132333435363738394041public class NameRepository implements Container &#123;   publi......
+12345678910111213141516171819202122232425262728293031interface Sort&#123;        void sort();    &#125;    class QuickSort implements Sort&#123;        @Override        public......
         </div>
     </a>
     <p class="post-meta">
@@ -373,19 +423,17 @@
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/79-design-mediator/">
+    <a href="/2018/06/22/75-Design-flyweight/">
         <h2 class="post-title">
-            中介者模式（Mediator）
+            享元模式（Flyweight）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-Mediator 模式添加第三方对象（称为 mediator）来控制两个对象（称为同事）之间的交互。它有助于减少彼此通信的类之间的耦合。因为现在他们不需要了解彼此的实施。
-
-示例：MVC模式
-1234567891011121314151617181920212223242526272829303132333435363738//创建中介类。public class ChatRoom &#1......
+享元模式（Flyweight Pattern）主要用于减少创建对象的数量，以减少内存占用和提高性能。这种类型的设计模式属于结构型模式，它提供了减少对象数量从而改善应用所需的对象结构的方式。
+享元模式尝试重用现有的同类对象，如果未找到匹配的对象，则创建新对象。我们将通过创建 5 个对象来画出 20 个分布于不同位置的圆来演示这种模式。由于只有 5 种可用的颜色，所以 color 属性被用来检......
         </div>
     </a>
     <p class="post-meta">
@@ -411,6 +459,31 @@ Mediator 模式添加第三方对象（称为 mediator）来控制两个对象�
 
 应用实例： 1、后悔药。 2、打游戏时的存档。 3、Windows 里的 ctri + z。 4、IE 中的后退。 4、数据库的事务管理。
 123456789101112131415161......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-06-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/06/22/79-design-mediator/">
+        <h2 class="post-title">
+            中介者模式（Mediator）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+Mediator 模式添加第三方对象（称为 mediator）来控制两个对象（称为同事）之间的交互。它有助于减少彼此通信的类之间的耦合。因为现在他们不需要了解彼此的实施。
+
+示例：MVC模式
+1234567891011121314151617181920212223242526272829303132333435363738//创建中介类。public class ChatRoom &#1......
         </div>
     </a>
     <p class="post-meta">
@@ -603,95 +676,6 @@ by 韩路  （转载 ）
     <p class="post-meta">
         Posted by Jfson on
         2018-02-13
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/02/02/43-decoupling/">
-        <h2 class="post-title">
-            Android 解耦框架(自定义View)
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            起因
-项目越来越大,解耦越来越有必要。从架构上解耦mvc到mvp,从功能上解耦和拆分，这就用到了自定义View，自定义View往往也需要用到Activity/Fragment的生命周期。这时候通常做法是在Activity/Fragment中对View进行生命周期的调用透传。
-
-如果自定义View的功能逻辑过于复杂后，再拆解出一个MVP层级，Presenter层和View层也需要再重复的透传一......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-02-02
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/02/01/58-glide&Fresco/">
-        <h2 class="post-title">
-            Glide&Fresco对比
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-             貌似框架都被分析烂了，索性来个总结吧
-优点Glide
-
-多种图片格式的缓存，适用于更多的内容表现形式（如Gif、WebP、缩略图、Video）
-生命周期集成（根据Activity或者Fragment的生命周期管理图片加载请求）
-高效处理Bitmap（bitmap的复用和主动回收，减少系统回收压力）
-高效的缓存策略，灵活（Picasso只会缓存原始尺寸的图片，Glide缓存的是多种规格），加......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-02-01
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/01/22/42- maven-update/">
-        <h2 class="post-title">
-            Android maven 库上传
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            账号申请
-
-bintray 申请账号。
-
-
-2.新建一个名称为：maven 的maven库。
-
-库
-
-新建 Android Studio 项目，新建要上传的Module模块。
-
-
-
-在根目录(项目所在)下的 build.gradle中添加库引用
-
-
-
-1234567891011121314151617181920212223242526272829303132buildscript &#12......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-01-22
     </p>
 
 </div>

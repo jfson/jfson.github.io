@@ -87,14 +87,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/all/">All</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/all/">All</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -171,6 +171,95 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/02/02/43-decoupling/">
+        <h2 class="post-title">
+            Android 解耦框架(自定义View)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            起因
+项目越来越大,解耦越来越有必要。从架构上解耦mvc到mvp,从功能上解耦和拆分，这就用到了自定义View，自定义View往往也需要用到Activity/Fragment的生命周期。这时候通常做法是在Activity/Fragment中对View进行生命周期的调用透传。
+
+如果自定义View的功能逻辑过于复杂后，再拆解出一个MVP层级，Presenter层和View层也需要再重复的透传一......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-02-02
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/02/01/58-glide&Fresco/">
+        <h2 class="post-title">
+            Glide&Fresco对比
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+             貌似框架都被分析烂了，索性来个总结吧
+优点Glide
+
+多种图片格式的缓存，适用于更多的内容表现形式（如Gif、WebP、缩略图、Video）
+生命周期集成（根据Activity或者Fragment的生命周期管理图片加载请求）
+高效处理Bitmap（bitmap的复用和主动回收，减少系统回收压力）
+高效的缓存策略，灵活（Picasso只会缓存原始尺寸的图片，Glide缓存的是多种规格），加......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-02-01
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/01/22/42- maven-update/">
+        <h2 class="post-title">
+            Android maven 库上传
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            账号申请
+
+bintray 申请账号。
+
+
+2.新建一个名称为：maven 的maven库。
+
+库
+
+新建 Android Studio 项目，新建要上传的Module模块。
+
+
+
+在根目录(项目所在)下的 build.gradle中添加库引用
+
+
+
+1234567891011121314151617181920212223242526272829303132buildscript &#12......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-01-22
+    </p>
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -646,83 +735,6 @@ lazy loading
     <p class="post-meta">
         Posted by Jfson on
         2017-09-21
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/09/20/27-HUAWEIP9-bug/">
-        <h2 class="post-title">
-            FastgrabCongigReader 华为P9 内存泄漏
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-最近有个泄漏很诡异，来自华为 P9 
-
-泄漏日志：
-123static android.rms.iaware.FastgrabCongigReader.mFastgrabCongigReaderreferences android.rms.iaware.FastgrabCongigReader.mContext...
-借用一张泄漏图：LoginActivity设置给了，导致LoginAct......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-09-20
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/09/08/02-master/">
-        <h2 class="post-title">
-            劝君惜取少年时
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            惜取少年时
-看过 byvoid 的博文，确认，自己的前二十年过的跟玩笑似的，阴差阳错学了计算机专业，从事程序员行业.却带来了前所未有的成就感。当然我也进入了瓶颈期。
-
-困惑
-
-普通玩家指的是，循规蹈矩，按照大多数人的生活轨迹来生活的人，5岁上学，20岁大学毕业参加工作，25岁结婚，30岁生孩子，50岁退休，这不是大多数人的一生吗，这就是普通玩家。高端玩家，不会拘泥于大家眼中该怎样怎样的生活，......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-09-08
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/08/07/26-launch-optimize/">
-        <h2 class="post-title">
-            Android 启动速度优化
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            启动优化
-随着项目越来越大，App的启动时间愈来愈长，有必要对给初始化进行梳理，并预留初始化接口。经过一番折腾后，并对比优化前，成果还不错：优化35%-50%。
-
-Google文档：https://developer.android.com/topic/performance/launch-time.html1.启动时间统计
-a.第一种方式查看Logcat日志，搜索关键字：Displayed......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2017-08-07
     </p>
 
 </div>
