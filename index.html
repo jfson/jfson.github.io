@@ -87,14 +87,14 @@
 
                         
                         <li>
-                            <a href="/all/">All</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/all/">All</a>
                         </li>
                         
                     
@@ -619,6 +619,30 @@ PS: 先更文章，后续更新每道题目详细解读 &amp; 视频通过大概
 
 <div class="post-preview">
 
+    <a href="/2018/06/22/84-design-visitor/">
+        <h2 class="post-title">
+            访问者模式（Visitor)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+访问者模式（Visitor）允许您向对象添加更多操作，而无需修改它们。在访问者模式（Visitor Pattern）中，我们使用了一个访问者类，它改变了元素类的执行算法。通过这种方式，元素的执行算法可以随着访问者改变而改变。这种类型的设计模式属于行为型模式
+
+我们将创建一个定义接受操作的 ComputerPart 接口。Keyboard、Mouse、Monitor 和 Computer 是......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-06-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/06/22/74-Design-facede/">
         <h2 class="post-title">
             外观模式（Facade）
@@ -644,42 +668,18 @@ Facade 模式为复杂的子系统提供了简化的界面。电脑很复杂，�
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/76-design-chain/">
+    <a href="/2018/06/22/69-Design-prototype/">
         <h2 class="post-title">
-            责任链模式（Chain Of Responsibilities）
+            8.原型模式（Prototype）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。在这种模式中，通常每个接收者都包含对另一个接收者的引用。如果一个对象不能处理该请求，那么它会把相同的请求传给下一个接收者，依此类推。
-它有助于构建一系列对象。请求从一端进入并继续从一个对象到另一......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-06-22
-    </p>
+通过克隆基于现有对象创建对象(克隆羊)当需要一个与现有对象类似的对象时，或者与克隆相比，创建的成本会很高。
 
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/06/22/72-Design-composite/">
-        <h2 class="post-title">
-            组合模式（Composite）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
- 复合模式允许客户以统一的方式处理单个对象.部分整体模式，是用于把一组相似的对象当作一个单一的对象.
-
-对象嵌套对象。类似的像ArrayList.addAll(ArrayList);再比如：CEO是员工，CEO实体类里还有员工。
-12345678910class ArrayList&#123;    public boolean addAll(Collection&lt;? extends......
+示例：Arraylist的clone()123456789101112131415ArrayList&lt;Student&gt; listCopy=(ArrayList&lt;Student&gt;) list.clone();public Object clone() &#12......
         </div>
     </a>
     <p class="post-meta">
@@ -725,11 +725,11 @@ Facade 模式为复杂的子系统提供了简化的界面。电脑很复杂，�
                     <div class="tags">
                         
                             
-                            <a href="/tags/#Binder" title="Binder" rel="5">Binder</a>
+                            <a href="/tags/#Design Patterns" title="Design Patterns" rel="12">Design Patterns</a>
                             
                         
                             
-                            <a href="/tags/#Design Patterns" title="Design Patterns" rel="12">Design Patterns</a>
+                            <a href="/tags/#Binder" title="Binder" rel="5">Binder</a>
                             
                         
                             
@@ -737,9 +737,9 @@ Facade 模式为复杂的子系统提供了简化的界面。电脑很复杂，�
                             
                         
                             
-                        
-                            
                             <a href="/tags/#sound code" title="sound code" rel="6">sound code</a>
+                            
+                        
                             
                         
                             
