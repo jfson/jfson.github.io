@@ -87,14 +87,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/all/">All</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/all/">All</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -179,7 +179,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h3 id="Handler、Looper、MessageQueue-初始化"><a href="#Handler、Looper、MessageQueue-初始化" class="headerlink" title="Handler、Looper、MessageQueue 初始化"></a>Handler、Looper、MessageQueue 初始化</h3><ul>
+                <h3 id="源码：Handler、Looper、MessageQueue-初始化"><a href="#源码：Handler、Looper、MessageQueue-初始化" class="headerlink" title="源码：Handler、Looper、MessageQueue 初始化"></a>源码：Handler、Looper、MessageQueue 初始化</h3><ul>
 <li><p>1.在 UI 线程创建 Handler，通常直接new Handler；</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">private Handler mHandler = new Handler() &#123;</div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            super.handleMessage(msg);</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
 <p>  UI Thread 初始Handler化时 对Looper进行初始化过程, main()是在 UI Thread 启动时调用</p>
@@ -248,6 +248,23 @@ mHandler.postDelay();
 <p>看到loop()中，添加了一个死循环，不断去轮训MessageQueue中的队列是否为null，返回或者取出来继续执行 msg.target.dispatchMessage(msg);在最开始我们看到msg.target就是Handler本身</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public static Handler mHandler = new Handler() &#123;</div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            if (msg.what == 101) &#123;</div><div class="line">                Log.i(TAG, &quot;接收到handler消息...&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div></pre></td></tr></table></figure>
 <p>而handleMessage就是我们重写的回调方法。</p>
+<h4 id="postDelay是如何delay的？"><a href="#postDelay是如何delay的？" class="headerlink" title="postDelay是如何delay的？"></a>postDelay是如何delay的？</h4><p>MessageQueue 就是消息队列，即存放多条消息 Message 的容器，它采用的是单向链表数据结构，而非队列。它的 next() 指向链表的下一个 Message 元素。</p>
+<p>从入队消息 enqueueMessage() 的实现来看，它的主要操作其实就是单链表的插入操作，这里就不做过多的解释了，我们可能应该更多的关心它的出队操作方法 next()：</p>
+<p>next() 方法其实很长，不过我们仅仅贴了极少的一部分，可以看到，里面不过是有一个 for (;;) 的无限循环，循环体内部调用了一个 nativePollOnce(long, int) 方法。这是一个 Native 方法，实际作用是通过 Native 层的 MessageQueue 阻塞当前调用栈线程 nextPollTimeoutMillis 毫秒的时间。</p>
+<p>下面是 nextPollTimeoutMillis 取值的不同情况的阻塞表现：</p>
+<ul>
+<li>1.小于 0，一直阻塞，直到被唤醒；</li>
+<li>2.等于 0，不会阻塞；</li>
+<li>3.大于 0，最长阻塞 nextPollTimeoutMillis 毫秒，期间如被唤醒会立即返回。</li>
+</ul>
+<p>可以看到，最开始 nextPollTimeoutMillis 的初始化值是 0，所以不会阻塞，会直接去取 Message 对象，如果没有取到 Message 对象数据，则直接会把 nextPollTimeoutMillis 置为 -1，此时满足小于 0 的条件，会被一直阻塞，直到其他地方调用另外一个 Native 方法 nativeWake(long) 进行唤醒。如果取到值的话，会直接把得到的 Message 对象进行返回。</p>
+<p>原来，nativeWake(long) 方法在前面的 MessageQueue#enqueueMessage 方法有个调用，调用时机是在 MessageQueue 入队消息的过程中。</p>
+<p>现在已经知道：Handler 发送了 Message，消息用 MessageQueue 进行存储，使用 MessageQueue#enqueueMessage 方法进行入队，使用 MessageQueue#next 方法进行轮训消息。这就不免抛出了一个问题，MessageQueue#next 方法是谁调用的？没错，就是 Looper。</p>
+<p>总结：</p>
+<ul>
+<li>1.looper内的for不断去取MessageQueue 队列的数据</li>
+<li>2.MessageQueue的 next() 不断拿消息时会读取delayTime来调用native做消息阻塞（主线程不会anr,说明这个native应该是个类似计时器的东西）</li>
+</ul>
 <ul>
 <li>3.一张图梳理一下流程<br>  <img src="https://github.com/jfson/ImgResource/blob/master/12.png?raw=true" alt="流程图"></li>
 </ul>
