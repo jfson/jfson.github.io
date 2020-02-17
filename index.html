@@ -87,14 +87,14 @@
 
                         
                         <li>
-                            <a href="/all/">All</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/all/">All</a>
                         </li>
                         
                     
@@ -619,54 +619,6 @@ PS: 先更文章，后续更新每道题目详细解读 &amp; 视频通过大概
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/75-Design-flyweight/">
-        <h2 class="post-title">
-            享元模式（Flyweight）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-享元模式（Flyweight Pattern）主要用于减少创建对象的数量，以减少内存占用和提高性能。这种类型的设计模式属于结构型模式，它提供了减少对象数量从而改善应用所需的对象结构的方式。
-享元模式尝试重用现有的同类对象，如果未找到匹配的对象，则创建新对象。我们将通过创建 5 个对象来画出 20 个分布于不同位置的圆来演示这种模式。由于只有 5 种可用的颜色，所以 color 属性被用来检......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-06-22
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/06/22/79-design-mediator/">
-        <h2 class="post-title">
-            中介者模式（Mediator）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-Mediator 模式添加第三方对象（称为 mediator）来控制两个对象（称为同事）之间的交互。它有助于减少彼此通信的类之间的耦合。因为现在他们不需要了解彼此的实施。
-
-示例：MVC模式
-1234567891011121314151617181920212223242526272829303132333435363738//创建中介类。public class ChatRoom &#1......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-06-22
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
     <a href="/2018/06/22/70-Design-adapter/">
         <h2 class="post-title">
             适配器模式（Adapter)
@@ -680,6 +632,55 @@ Mediator 模式添加第三方对象（称为 mediator）来控制两个对象�
 
 示例：语言学习，绝大多数人学习英语，日语系的同学要学日语
 1234567891011121314151617181920212223242526272829303132333435363738class Student &#123;   void studyEnglish();&#125;class NormalSt......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-06-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/06/22/71-Design-bridage/">
+        <h2 class="post-title">
+            桥接模式（Bridge）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+桥接模式是关于优先于继承的组合。实现细节从层次结构推送到具有单独层次结构的另一个对象。将抽象部分与实现部分分离，使它们都可以独立的变化
+
+桥接模式是软件工程中使用的设计模式，旨在“将抽象与其实现分离，以便两者可以独立变化”
+示例：画圆。同时需要多个元素拼接，但又不想复杂继承12345678910111213141516171819202122232425262728293031323334......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-06-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/06/22/69-Design-prototype/">
+        <h2 class="post-title">
+            8.原型模式（Prototype）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+通过克隆基于现有对象创建对象(克隆羊)当需要一个与现有对象类似的对象时，或者与克隆相比，创建的成本会很高。
+
+示例：Arraylist的clone()123456789101112131415ArrayList&lt;Student&gt; listCopy=(ArrayList&lt;Student&gt;) list.clone();public Object clone() &#12......
         </div>
     </a>
     <p class="post-meta">
@@ -836,7 +837,7 @@ Mediator 模式添加第三方对象（称为 mediator）来控制两个对象�
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Jfson‘s blog 2019 
+                    Copyright &copy; Jfson‘s blog 2020 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">
