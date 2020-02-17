@@ -198,19 +198,70 @@
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/70-Design-adapter/">
+    <a href="/2018/06/22/83-design-vtemplate/">
         <h2 class="post-title">
-            适配器模式（Adapter)
+            模板模式（Template Pattern）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-适配器模式允许您在适配器中包装其他不兼容的对象，以使其与另一个类兼容。
+模板方法定义了如何执行某个算法的框架，但是将这些步骤的实现推迟到子类。在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。
 
-示例：语言学习，绝大多数人学习英语，日语系的同学要学日语
-1234567891011121314151617181920212223242526272829303132333435363738class Student &#123;   void studyEnglish();&#125;class NormalSt......
+使用场景： 1、有多个子类共有的方法，且逻辑相同。 2、重要的、复杂的方法，可以考虑作为模板方法。
+抽象类的抽象方法
+12......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-06-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/06/22/79-design-mediator/">
+        <h2 class="post-title">
+            中介者模式（Mediator）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+Mediator 模式添加第三方对象（称为 mediator）来控制两个对象（称为同事）之间的交互。它有助于减少彼此通信的类之间的耦合。因为现在他们不需要了解彼此的实施。
+
+示例：MVC模式
+1234567891011121314151617181920212223242526272829303132333435363738//创建中介类。public class ChatRoom &#1......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-06-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/06/22/80-design-Memento/">
+        <h2 class="post-title">
+            备忘录模式（Memento）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+备忘录模式（Memento Pattern）保存一个对象的某个状态，以便在适当的时候恢复对象。备忘录模式属于行为型模式。Memento 模式是关于以稍后可以以平滑方式恢复的方式捕获和存储对象的当前状态
+
+应用实例： 1、后悔药。 2、打游戏时的存档。 3、Windows 里的 ctri + z。 4、IE 中的后退。 4、数据库的事务管理。
+123456789101112131415161......
         </div>
     </a>
     <p class="post-meta">
@@ -248,18 +299,17 @@
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/82-design-strategy/">
+    <a href="/2018/06/22/76-design-chain/">
         <h2 class="post-title">
-            策略模式（Strategy）
+            责任链模式（Chain Of Responsibilities）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-策略模式允许您根据情况切换算法或策略。
-
-12345678910111213141516171819202122232425262728293031interface Sort&#123;        void sort();    &#125;    class QuickSort implements Sort&#123;        @Override        public......
+责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。在这种模式中，通常每个接收者都包含对另一个接收者的引用。如果一个对象不能处理该请求，那么它会把相同的请求传给下一个接收者，依此类推。
+它有助于构建一系列对象。请求从一端进入并继续从一个对象到另一......
         </div>
     </a>
     <p class="post-meta">
@@ -272,19 +322,18 @@
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/79-design-mediator/">
+    <a href="/2018/06/22/82-design-strategy/">
         <h2 class="post-title">
-            中介者模式（Mediator）
+            策略模式（Strategy）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-Mediator 模式添加第三方对象（称为 mediator）来控制两个对象（称为同事）之间的交互。它有助于减少彼此通信的类之间的耦合。因为现在他们不需要了解彼此的实施。
+策略模式允许您根据情况切换算法或策略。
 
-示例：MVC模式
-1234567891011121314151617181920212223242526272829303132333435363738//创建中介类。public class ChatRoom &#1......
+12345678910111213141516171819202122232425262728293031interface Sort&#123;        void sort();    &#125;    class QuickSort implements Sort&#123;        @Override        public......
         </div>
     </a>
     <p class="post-meta">
@@ -347,29 +396,6 @@ Mediator 模式添加第三方对象（称为 mediator）来控制两个对象�
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/76-design-chain/">
-        <h2 class="post-title">
-            责任链模式（Chain Of Responsibilities）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-责任链模式（Chain of Responsibility Pattern）为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。在这种模式中，通常每个接收者都包含对另一个接收者的引用。如果一个对象不能处理该请求，那么它会把相同的请求传给下一个接收者，依此类推。
-它有助于构建一系列对象。请求从一端进入并继续从一个对象到另一......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-06-22
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
     <a href="/2018/06/22/75-Design-flyweight/">
         <h2 class="post-title">
             享元模式（Flyweight）
@@ -393,45 +419,19 @@ Mediator 模式添加第三方对象（称为 mediator）来控制两个对象�
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/72-Design-composite/">
+    <a href="/2018/06/22/71-Design-bridage/">
         <h2 class="post-title">
-            组合模式（Composite）
+            桥接模式（Bridge）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
- 复合模式允许客户以统一的方式处理单个对象.部分整体模式，是用于把一组相似的对象当作一个单一的对象.
+桥接模式是关于优先于继承的组合。实现细节从层次结构推送到具有单独层次结构的另一个对象。将抽象部分与实现部分分离，使它们都可以独立的变化
 
-对象嵌套对象。类似的像ArrayList.addAll(ArrayList);再比如：CEO是员工，CEO实体类里还有员工。
-12345678910class ArrayList&#123;    public boolean addAll(Collection&lt;? extends......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-06-22
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/06/22/73-Design-Decorator/">
-        <h2 class="post-title">
-            装饰模式（Decorator）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-装饰器模式，Decorator模式允许您通过将对象包装在装饰器类的对象中来动态更改对象在运行时的行为。
-用来包装原有的类，并在保持类方法签名完整性的前提下，提供了额外的功能。
-
-使用场景： 1、扩展一个类的功能。 2、动态增加功能，动态撤销。
-1234567891011121314151617181920212223242526272829303132333435363738//创建一个接......
+桥接模式是软件工程中使用的设计模式，旨在“将抽象与其实现分离，以便两者可以独立变化”
+示例：画圆。同时需要多个元素拼接，但又不想复杂继承12345678910111213141516171819202122232425262728293031323334......
         </div>
     </a>
     <p class="post-meta">
@@ -469,18 +469,20 @@ Facade 模式为复杂的子系统提供了简化的界面。电脑很复杂，�
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/69-Design-prototype/">
+    <a href="/2018/06/22/73-Design-Decorator/">
         <h2 class="post-title">
-            8.原型模式（Prototype）
+            装饰模式（Decorator）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-通过克隆基于现有对象创建对象(克隆羊)当需要一个与现有对象类似的对象时，或者与克隆相比，创建的成本会很高。
+装饰器模式，Decorator模式允许您通过将对象包装在装饰器类的对象中来动态更改对象在运行时的行为。
+用来包装原有的类，并在保持类方法签名完整性的前提下，提供了额外的功能。
 
-示例：Arraylist的clone()123456789101112131415ArrayList&lt;Student&gt; listCopy=(ArrayList&lt;Student&gt;) list.clone();public Object clone() &#12......
+使用场景： 1、扩展一个类的功能。 2、动态增加功能，动态撤销。
+1234567891011121314151617181920212223242526272829303132333435363738//创建一个接......
         </div>
     </a>
     <p class="post-meta">
