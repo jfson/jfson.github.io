@@ -619,31 +619,6 @@ PS: 先更文章，后续更新每道题目详细解读 &amp; 视频通过大概
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/70-Design-adapter/">
-        <h2 class="post-title">
-            适配器模式（Adapter)
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-适配器模式允许您在适配器中包装其他不兼容的对象，以使其与另一个类兼容。
-
-示例：语言学习，绝大多数人学习英语，日语系的同学要学日语
-1234567891011121314151617181920212223242526272829303132333435363738class Student &#123;   void studyEnglish();&#125;class NormalSt......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Jfson on
-        2018-06-22
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
     <a href="/2018/06/22/71-Design-bridage/">
         <h2 class="post-title">
             桥接模式（Bridge）
@@ -669,18 +644,45 @@ PS: 先更文章，后续更新每道题目详细解读 &amp; 视频通过大概
 
 <div class="post-preview">
 
-    <a href="/2018/06/22/69-Design-prototype/">
+    <a href="/2018/06/22/83-design-vtemplate/">
         <h2 class="post-title">
-            8.原型模式（Prototype）
+            模板模式（Template Pattern）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-通过克隆基于现有对象创建对象(克隆羊)当需要一个与现有对象类似的对象时，或者与克隆相比，创建的成本会很高。
+模板方法定义了如何执行某个算法的框架，但是将这些步骤的实现推迟到子类。在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。
 
-示例：Arraylist的clone()123456789101112131415ArrayList&lt;Student&gt; listCopy=(ArrayList&lt;Student&gt;) list.clone();public Object clone() &#12......
+使用场景： 1、有多个子类共有的方法，且逻辑相同。 2、重要的、复杂的方法，可以考虑作为模板方法。
+抽象类的抽象方法
+12......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Jfson on
+        2018-06-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/06/22/80-design-Memento/">
+        <h2 class="post-title">
+            备忘录模式（Memento）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+备忘录模式（Memento Pattern）保存一个对象的某个状态，以便在适当的时候恢复对象。备忘录模式属于行为型模式。Memento 模式是关于以稍后可以以平滑方式恢复的方式捕获和存储对象的当前状态
+
+应用实例： 1、后悔药。 2、打游戏时的存档。 3、Windows 里的 ctri + z。 4、IE 中的后退。 4、数据库的事务管理。
+123456789101112131415161......
         </div>
     </a>
     <p class="post-meta">
